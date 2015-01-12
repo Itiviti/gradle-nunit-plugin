@@ -42,10 +42,10 @@ class NUnitPlugin implements Plugin<Project> {
             def version = task.getNunitVersion()
             downloadNUnit(project, version)
         }
-        task.conventionMapping.map "testAssemblies", {
-            if (project.plugins.hasPlugin('msbuild')) {
-                task.dependsOn project.tasks.msbuild
-                project.tasks.msbuild.projects.findAll { !(it.key =~ 'test') }.collect {
+        if (project.plugins.hasPlugin('msbuild')) {
+            task.dependsOn project.tasks.msbuild
+            task.conventionMapping.map "testAssemblies", {
+                project.tasks.msbuild.projects.findAll { it.key =~ 'test' }.collect {
                     it.value.getProjectPropertyPath('TargetPath')
                 }
             }

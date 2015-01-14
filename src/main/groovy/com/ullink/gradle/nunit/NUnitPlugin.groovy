@@ -45,7 +45,10 @@ class NUnitPlugin implements Plugin<Project> {
         if (project.plugins.hasPlugin('msbuild')) {
             task.dependsOn project.tasks.msbuild
             task.conventionMapping.map "testAssemblies", {
-                project.tasks.msbuild.projects.findAll { it.key =~ 'test' }.collect {
+                project.tasks.msbuild.projects.findAll {
+                    it.key =~ 'test' && it.value.properties.TargetPath
+                }
+                .collect {
                     it.value.getProjectPropertyPath('TargetPath')
                 }
             }

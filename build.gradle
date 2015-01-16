@@ -17,6 +17,15 @@ dependencies {
     compile 'com.ullink.gradle:gradle-repositories-plugin:2.1'
 }
 
+bintray {
+    // to remove when upgraded plugindev to 1.0.4
+    user project.properties.bintrayUser
+    key project.properties.bintrayApiKey
+    pkg.repo = 'gradle-plugins'
+    pkg.version.gpg.sign = true
+    pkg.userOrg = 'ullink'
+}
+
 plugindev {
     pluginId 'com.ullink.nunit'
     pluginName 'com.ullink.gradle:gradle-nunit-plugin'

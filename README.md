@@ -3,7 +3,25 @@ gradle-nunit-plugin
 
 A gradle plugin for launching NUnit tests
 
-The plugin is named 'nunit'. It creates a task 'nunit' that may be configured as follows:
+Is is compatible with the new plugin mechanism and can be used with:
+
+    plugins {
+      id 'com.ullink.nunit' version '1.0'
+    }
+
+Or, when using Gradle lower than 2.1:
+
+    buildscript {
+        repositories {
+          mavenCentral()
+        }
+
+        dependencies {
+            classpath "com.ullink.gradle:gradle-nunit-plugin:1.0"
+        }
+    }
+
+It creates a task 'nunit' that may be configured as follows:
 
     nunit {
         // optional - defaults to '2.6.3'

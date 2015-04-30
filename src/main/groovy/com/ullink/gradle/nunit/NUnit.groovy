@@ -47,14 +47,15 @@ class NUnit extends ConventionTask {
 
     @TaskAction
     def build() {
-        def commandLine = [nunitExec] + buildCommandArgs()
-        execute(commandLine)
+        execute([nunitExec.absolutePath], buildCommandArgs())
     }
 
-    def execute(commandLineArgs) {
+    def execute(commandLineExec, commandLineArgs) {
         prepareExecute()
+
         def mbr = project.exec {
-            commandLine = commandLineArgs
+            commandLine = commandLineExec
+            args = commandLineArgs
             ignoreExitValue = ignoreFailures
         }
 
@@ -89,11 +90,15 @@ class NUnit extends ConventionTask {
             }
         }
         if (verb) {
-            commandLineArgs += '/trace=' + verb
+            commandLineArgs += '-trace=' + verb
         }
-        commandLineArgs += '/xml:' + testReportPath
+        commandLineArgs += '-xml:' + testReportPath
         getTestAssemblies().each {
-            commandLineArgs += project.file(it)
+            def file = project.file(it)
+            if (file.exists() )
+                commandLineArgs += file
+            else
+                commandLineArgs += it
         }
         commandLineArgs
     }

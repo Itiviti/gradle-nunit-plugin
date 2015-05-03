@@ -8,8 +8,12 @@ class NUnit extends ConventionTask {
     def nunitHome
     def nunitVersion
     List testAssemblies
+    def include
+    def exclude
+    def framework
     def verbosity
     boolean useX86 = false
+    boolean noShadow = false
 
     boolean ignoreFailures = false
 
@@ -91,6 +95,18 @@ class NUnit extends ConventionTask {
         }
         if (verb) {
             commandLineArgs += '-trace=' + verb
+        }
+        if (exclude) {
+            commandLineArgs += '-exclude:' + exclude
+        }
+        if (include) {
+            commandLineArgs += '-include:' + include
+        }
+        if (framework) {
+            commandLineArgs += '-framework:' + framework
+        }
+        if (noShadow) {
+            commandLineArgs += '-noshadow'
         }
         commandLineArgs += '-xml:' + testReportPath
         getTestAssemblies().each {

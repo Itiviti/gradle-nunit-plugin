@@ -38,4 +38,10 @@ It creates a task 'nunit' that may be configured as follows:
         // optional - defaults to FALSE and termines the behavior of the task if the nunit-console.exe program exits
         // abnormally
         ignoreFailures = false
+
+        // Mapped NUnit-Console Command Line Options
+        exclude 'Database'
+        include 'BaseLine'
+        framework 'net-1.1'
+        noShadow = true
     }

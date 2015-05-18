@@ -9,7 +9,7 @@ apply from: "${ext.ullinkGradleScripts}/task-rules.gradle"
 apply from: "${ext.ullinkGradleScripts}/functions.gradle"
 
 group = 'com.ullink.gradle'
-version = '1.1'
+version = '1.2-SNAPSHOT'
 description 'gradle-nunit-plugin is a Gradle plugin that enables NUnit testing'
 
 dependencies {

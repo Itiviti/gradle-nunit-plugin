@@ -1,4 +1,4 @@
-gradle-nunit-plugin
+gradle-nunit-plugin [![Build status](https://ci.appveyor.com/api/projects/status/riwqs7bua948ncvw?svg=true)](https://ci.appveyor.com/project/gluck/gradle-nunit-plugin) [![Build Status](https://travis-ci.org/Ullink/gradle-nunit-plugin.svg?branch=master)](https://travis-ci.org/Ullink/gradle-nunit-plugin)
 ===================
 
 A gradle plugin for launching NUnit tests

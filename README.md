@@ -45,3 +45,7 @@ It creates a task 'nunit' that may be configured as follows:
         framework 'net-1.1'
         noShadow = true
     }
+
+# License
+
+All these plugins are licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html) with no warranty (expressed or implied) for any purpose.

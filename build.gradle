@@ -6,7 +6,7 @@ plugins {
 apply plugin: 'groovy'
 
 group = 'com.ullink.gradle'
-version = '1.2-SNAPSHOT'
+version = '1.3-SNAPSHOT'
 description 'gradle-nunit-plugin is a Gradle plugin that enables NUnit testing'
 
 dependencies {

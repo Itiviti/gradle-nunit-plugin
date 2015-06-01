@@ -32,7 +32,7 @@ class NUnitPluginTest {
     public void execution_cleanhelp_works() {
         project.apply plugin: 'base'
         project.nunit {
-            testAssemblies = ['/help']
+            testAssemblies = ['-help']
         }
 
         project.tasks.clean.execute()
@@ -42,7 +42,7 @@ class NUnitPluginTest {
      @Test
     public void execution_help_works() {
         project.nunit {
-            testAssemblies = ['/help']
+            testAssemblies = ['-help']
         }
 
         project.tasks.nunit.execute()

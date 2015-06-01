@@ -4,6 +4,8 @@ import org.gradle.api.GradleException
 import org.gradle.api.internal.ConventionTask
 import org.gradle.api.tasks.TaskAction
 
+import static org.apache.tools.ant.taskdefs.condition.Os.*
+
 class NUnit extends ConventionTask {
     def nunitHome
     def nunitVersion
@@ -26,13 +28,13 @@ class NUnit extends ConventionTask {
         }
     }
 
-    File nunitConsoleBinFile(String file) {
+    File nunitBinFile(String file) {
         new File(project.file(getNunitHome()), "bin/${file}")
     }
 
     File getNunitExec() {
         assert getNunitHome(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable"
-        File nunitExec = new File(project.file(getNunitHome()), "bin/nunit-console${useX86 ? '-x86' : ''}.exe")
+        File nunitExec = nunitBinFile("nunit-console${useX86 ? '-x86' : ''}.exe")
         assert nunitExec.isFile(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable"
         return nunitExec
     }
@@ -51,15 +53,18 @@ class NUnit extends ConventionTask {
 
     @TaskAction
     def build() {
-        execute([nunitExec.absolutePath], buildCommandArgs())
+        def cmdLine = [nunitExec.absolutePath, *buildCommandArgs()]
+        if (!isFamily(FAMILY_WINDOWS)) {
+            cmdLine = ["mono", *cmdLine]
+        }
+        execute(cmdLine)
     }
 
-    def execute(commandLineExec, commandLineArgs) {
+    def execute(commandLineExec) {
         prepareExecute()
 
         def mbr = project.exec {
             commandLine = commandLineExec
-            args = commandLineArgs
             ignoreExitValue = ignoreFailures
         }
 

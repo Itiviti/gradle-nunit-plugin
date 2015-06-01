@@ -1,4 +1,6 @@
 .gradle
+.idea/
+/*.iml
 build/
 
 # Ignore Gradle GUI config

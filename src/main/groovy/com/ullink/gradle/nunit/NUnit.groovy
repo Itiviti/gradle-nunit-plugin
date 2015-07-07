@@ -60,6 +60,9 @@ class NUnit extends ConventionTask {
         execute(cmdLine)
     }
 
+    // Return values of nunit v2 and v3 are defined in
+    // https://github.com/nunit/nunitv2/blob/master/src/ConsoleRunner/nunit-console/ConsoleUi.cs and
+    // https://github.com/nunit/nunit/blob/master/src/NUnitConsole/nunit-console/ConsoleRunner.cs
     def execute(commandLineExec) {
         prepareExecute()
 
@@ -68,17 +71,17 @@ class NUnit extends ConventionTask {
             ignoreExitValue = ignoreFailures
         }
 
-        switch (mbr.exitValue) {
-            case 0:
-            case 16:
-                break;
-            case 1: // nunit test failed
-                // ok & failure
-                if (ignoreFailures) break;
-            default:
-                // nok
-                throw new GradleException("${nunitExec} execution failed (ret=${mbr.exitValue})");
+        int exitValue = mbr.exitValue
+        if (exitValue == 0) {
+            return
         }
+
+        boolean anyTestFailing = exitValue > 0
+        if (anyTestFailing && ignoreFailures) {
+            return
+        }
+
+        throw new GradleException("${nunitExec} execution failed (ret=${mbr.exitValue})");
     }
 
     def prepareExecute() {

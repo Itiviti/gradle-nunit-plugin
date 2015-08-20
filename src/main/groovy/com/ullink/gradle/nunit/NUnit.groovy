@@ -14,6 +14,10 @@ class NUnit extends ConventionTask {
     def exclude
     def framework
     def verbosity
+    def config
+    def timeout
+    def runList
+    def run
     boolean useX86 = false
     boolean noShadow = false
 
@@ -115,6 +119,18 @@ class NUnit extends ConventionTask {
         }
         if (noShadow) {
             commandLineArgs += '-noshadow'
+        }
+        if(runList) {
+            commandLineArgs += '-runList:' + runList
+        }
+        if(run){
+            commandLineArgs += '-run:' + run
+        }
+        if(config){
+            commandLineArgs += '-config:' + config
+        }
+        if(timeout){
+            commandLineArgs += '-timeout:' + timeout
         }
         commandLineArgs += '-xml:' + testReportPath
         getTestAssemblies().each {

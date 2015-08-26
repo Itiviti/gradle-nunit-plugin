@@ -9,6 +9,7 @@ import static org.apache.tools.ant.taskdefs.condition.Os.*
 class NUnit extends ConventionTask {
     def nunitHome
     def nunitVersion
+    def nunitDownloadUrl
     List testAssemblies
     def include
     def exclude

@@ -4,16 +4,23 @@ import org.gradle.api.GradleException
 import org.gradle.api.internal.ConventionTask
 import org.gradle.api.tasks.TaskAction
 
+import static org.apache.tools.ant.taskdefs.condition.Os.*
+
 class NUnit extends ConventionTask {
     def nunitHome
     def nunitVersion
+    def nunitDownloadUrl
     List testAssemblies
     def include
     def exclude
     def framework
     def verbosity
-    String customReportFolder
-    boolean useX86 = false
+    def config
+    def timeout
+    def runList
+    def run
+	String customReportFolder    
+	boolean useX86 = false
     boolean noShadow = false
 
     boolean ignoreFailures = false
@@ -27,13 +34,13 @@ class NUnit extends ConventionTask {
         }
     }
 
-    File nunitConsoleBinFile(String file) {
+    File nunitBinFile(String file) {
         new File(project.file(getNunitHome()), "bin/${file}")
     }
 
     File getNunitExec() {
         assert getNunitHome(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable"
-        File nunitExec = new File(project.file(getNunitHome()), "bin/nunit-console${useX86 ? '-x86' : ''}.exe")
+        File nunitExec = nunitBinFile("nunit-console${useX86 ? '-x86' : ''}.exe")
         assert nunitExec.isFile(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable"
         return nunitExec
     }
@@ -57,29 +64,35 @@ class NUnit extends ConventionTask {
 
     @TaskAction
     def build() {
-        execute([nunitExec.absolutePath], buildCommandArgs())
+        def cmdLine = [nunitExec.absolutePath, *buildCommandArgs()]
+        if (!isFamily(FAMILY_WINDOWS)) {
+            cmdLine = ["mono", *cmdLine]
+        }
+        execute(cmdLine)
     }
 
-    def execute(commandLineExec, commandLineArgs) {
+    // Return values of nunit v2 and v3 are defined in
+    // https://github.com/nunit/nunitv2/blob/master/src/ConsoleRunner/nunit-console/ConsoleUi.cs and
+    // https://github.com/nunit/nunit/blob/master/src/NUnitConsole/nunit-console/ConsoleRunner.cs
+    def execute(commandLineExec) {
         prepareExecute()
 
         def mbr = project.exec {
             commandLine = commandLineExec
-            args = commandLineArgs
             ignoreExitValue = ignoreFailures
         }
 
-        switch (mbr.exitValue) {
-            case 0:
-            case 16:
-                break;
-            case 1: // nunit test failed
-                // ok & failure
-                if (ignoreFailures) break;
-            default:
-                // nok
-                throw new GradleException("${nunitExec} execution failed (ret=${mbr.exitValue})");
+        int exitValue = mbr.exitValue
+        if (exitValue == 0) {
+            return
         }
+
+        boolean anyTestFailing = exitValue > 0
+        if (anyTestFailing && ignoreFailures) {
+            return
+        }
+
+        throw new GradleException("${nunitExec} execution failed (ret=${mbr.exitValue})");
     }
 
     def prepareExecute() {
@@ -113,6 +126,18 @@ class NUnit extends ConventionTask {
         }
         if (noShadow) {
             commandLineArgs += '-noshadow'
+        }
+        if(runList) {
+            commandLineArgs += '-runList:' + runList
+        }
+        if(run){
+            commandLineArgs += '-run:' + run
+        }
+        if(config){
+            commandLineArgs += '-config:' + config
+        }
+        if(timeout){
+            commandLineArgs += '-timeout:' + timeout
         }
         commandLineArgs += '-xml:' + testReportPath
         getTestAssemblies().each {

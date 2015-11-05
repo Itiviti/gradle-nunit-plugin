@@ -1,20 +1,17 @@
 plugins {
     id 'nu.studer.plugindev' version '1.0.3'
+    id "com.jfrog.bintray" version "1.2"
+    id "de.undercouch.download" version "2.0.0"
 }
 
 apply plugin: 'groovy'
 
-ext.ullinkGradleScripts = 'https://raw.github.com/gluck/gradle-scripts/master'
-apply from: "${ext.ullinkGradleScripts}/task-rules.gradle"
-apply from: "${ext.ullinkGradleScripts}/functions.gradle"
-
 group = 'com.ullink.gradle'
-version = '1.2-SNAPSHOT'
+version = '1.3-SNAPSHOT'
 description 'gradle-nunit-plugin is a Gradle plugin that enables NUnit testing'
 
 dependencies {
-    compile localGroovy()
-    compile 'com.ullink.gradle:gradle-repositories-plugin:2.1'
+    compile 'de.undercouch:gradle-download-task:2.0.0'
     testCompile 'junit:junit:4.11'
 }
 
@@ -37,7 +34,7 @@ plugindev {
     authorId 'muryoh'
     authorName 'Remy Masson'
     authorEmail 'muryoh@gmail.com'
-    projectUrl "https://github.com/muryoh/${project.name}"
+    projectUrl "https://github.com/Ullink/${project.name}"
     projectInceptionYear '2015'
     done()
 }

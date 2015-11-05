@@ -12,6 +12,7 @@ class NUnit extends ConventionTask {
     def exclude
     def framework
     def verbosity
+    String customReportFolder
     boolean useX86 = false
     boolean noShadow = false
 
@@ -42,7 +43,12 @@ class NUnit extends ConventionTask {
     }
 
     File getReportsFolder() {
-        new File(outputFolder, 'reports')
+        if( customReportFolder == null)
+        {
+            return new File(outputFolder, 'reports')    
+        }
+        return new File(customReportFolder)
+        
     }
 
     File getTestReportPath() {

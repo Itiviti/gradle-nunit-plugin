@@ -15,6 +15,7 @@ description 'gradle-nunit-plugin is a Gradle plugin that enables NUnit testing'
 dependencies {
     compile localGroovy()
     compile 'com.ullink.gradle:gradle-repositories-plugin:2.1'
+    testCompile 'junit:junit:4.11'
 }
 
 bintray {

@@ -19,7 +19,8 @@ class NUnit extends ConventionTask {
     def timeout
     def runList
     def run
-    boolean useX86 = false
+	String customReportFolder    
+	boolean useX86 = false
     boolean noShadow = false
 
     boolean ignoreFailures = false
@@ -49,7 +50,12 @@ class NUnit extends ConventionTask {
     }
 
     File getReportsFolder() {
-        new File(outputFolder, 'reports')
+        if( customReportFolder == null)
+        {
+            return new File(outputFolder, 'reports')    
+        }
+        return new File(customReportFolder)
+        
     }
 
     File getTestReportPath() {

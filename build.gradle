@@ -12,6 +12,7 @@ description 'gradle-nunit-plugin is a Gradle plugin that enables NUnit testing'
 
 dependencies {
     compile 'de.undercouch:gradle-download-task:2.0.0'
+    testCompile 'junit:junit:4.11'
 }
 
 bintray {

@@ -37,9 +37,28 @@ class NUnit extends ConventionTask {
         new File(project.file(getNunitHome()), "bin/${file}")
     }
 
+    String getNunitDownloadUrl() {
+        if (nunitDownloadUrl)
+            nunitDownloadUrl
+        else "https://github.com/nunit/${isV3 ? 'nunit' : 'nunitv2'}/releases/download"
+    }
+
+    boolean getIsV3() {
+        nunitVersion && nunitVersion[0] == '3'
+    }
+
     File getNunitExec() {
         assert getNunitHome(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable"
-        File nunitExec = nunitBinFile("nunit-console${useX86 ? '-x86' : ''}.exe")
+
+        String exeName
+        if(isV3) {
+            exeName = 'nunit3-console.exe'
+            if(useX86) logger.warn('"useX86" is ignored for NUnit v3. The console tool is built in AnyCPU.')
+        } else {
+            exeName = "nunit-console${useX86 ? '-x86' : ''}.exe"
+        }
+
+        File nunitExec = nunitBinFile(exeName)
         assert nunitExec.isFile(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable"
         return nunitExec
     }

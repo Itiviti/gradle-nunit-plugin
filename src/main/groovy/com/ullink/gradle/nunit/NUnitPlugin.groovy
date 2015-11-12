@@ -20,7 +20,6 @@ class NUnitPlugin implements Plugin<Project> {
     }
 
     def applyNunitConventions(NUnit task, Project project) {
-        task.conventionMapping.map "nunitDownloadUrl", { 'https://github.com/nunit/nunitv2/releases/download' }
         task.conventionMapping.map "nunitVersion", { '2.6.4' }
         task.conventionMapping.map "nunitHome", {
             if (System.getenv()['NUNIT_HOME']) {
@@ -52,7 +51,11 @@ class NUnitPlugin implements Plugin<Project> {
         if (!nunitCacheDir.exists()) {
             nunitCacheDir.mkdirs()
         }
-        def ret = new File(nunitCacheDir, NUnitName)
+        // The v2 zip file contains a folder which is the nunit version. The v3 doesn't.
+        // We don't need to create the last folder fo v3. The unzip phase will create it.
+        if(task.isV3)
+            nunitCacheDir = new File(nunitCacheDir, NUnitName)
+        def ret = task.isV3 ? nunitCacheDir : new File(nunitCacheDir,  NUnitName)
         if (!ret.exists()) {
             project.logger.info "Downloading & Unpacking NUnit ${version}"
             project.download {

@@ -26,7 +26,7 @@ class NUnit extends ConventionTask {
     def reportFolder
     boolean useX86 = false
     boolean shadowCopy = false
-
+    def reportFileName  = 'TestResult.xml'
     boolean ignoreFailures = false
 
     NUnit() {
@@ -65,7 +65,7 @@ class NUnit extends ConventionTask {
     }
 
     File getTestReportPath() {
-        new File(getReportFolderImpl(), 'TestResult.xml')
+        new File(getReportFolderImpl(), reportFileName)
     }
 
     @TaskAction

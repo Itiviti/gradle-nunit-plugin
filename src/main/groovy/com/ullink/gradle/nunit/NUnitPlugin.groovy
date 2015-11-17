@@ -52,7 +52,12 @@ class NUnitPlugin implements Plugin<Project> {
         if (!nunitCacheDir.exists()) {
             nunitCacheDir.mkdirs()
         }
-        def ret = new File(nunitCacheDir, NUnitName)
+        def nunitCacheDirForVersion = new File(nunitCacheDir, NUnitName)
+
+        // special handling for nunit3 flat zip file
+        def zipOutputDir = version().startsWith("3.") ? nunitCacheDirForVersion : nunitCacheDir;
+
+        def ret = nunitCacheDirForVersion
         if (!ret.exists()) {
             project.logger.info "Downloading & Unpacking NUnit ${version}"
             project.download {
@@ -61,7 +66,7 @@ class NUnitPlugin implements Plugin<Project> {
             }
             project.copy {
                 from project.zipTree(downloadedFile)
-                into nunitCacheDir
+                into zipOutputDir
             }
         }
         ret

@@ -39,7 +39,9 @@ class NUnit extends ConventionTask {
 
     File getNunitExec() {
         assert getNunitHome(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable"
-        File nunitExec = nunitBinFile("nunit-console${useX86 ? '-x86' : ''}.exe")
+        File nunitExec = getNunitVersion().startsWith("3.")
+            ? nunitBinFile('nunit3-console.exe')
+            : nunitBinFile("nunit-console${useX86 ? '-x86' : ''}.exe")
         assert nunitExec.isFile(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable"
         return nunitExec
     }

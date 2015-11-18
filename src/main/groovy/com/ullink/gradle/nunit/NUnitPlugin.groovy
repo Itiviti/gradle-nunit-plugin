@@ -55,7 +55,7 @@ class NUnitPlugin implements Plugin<Project> {
         def nunitCacheDirForVersion = new File(nunitCacheDir, NUnitName)
 
         // special handling for nunit3 flat zip file
-        def zipOutputDir = version().startsWith("3.") ? nunitCacheDirForVersion : nunitCacheDir;
+        def zipOutputDir = version.startsWith("3.") ? nunitCacheDirForVersion : nunitCacheDir;
 
         def ret = nunitCacheDirForVersion
         if (!ret.exists()) {

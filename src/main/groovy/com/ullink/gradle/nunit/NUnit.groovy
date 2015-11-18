@@ -19,6 +19,8 @@ class NUnit extends ConventionTask {
     def timeout
     def runList
     def run
+    def testList
+    def test
     boolean useX86 = false
     boolean noShadow = false
 
@@ -97,6 +99,7 @@ class NUnit extends ConventionTask {
 
     def buildCommandArgs() {
         def commandLineArgs = []
+        boolean isNunit3 = getNunitVersion().startsWith("3.")
 
         String verb = verbosity
         if (!verb) {
@@ -111,31 +114,65 @@ class NUnit extends ConventionTask {
         if (verb) {
             commandLineArgs += '-trace=' + verb
         }
-        if (exclude) {
-            commandLineArgs += '-exclude:' + exclude
+        if (isNunit3) {
+            if (useX86) {
+                commandLineArgs += '-x86'
+            }
         }
-        if (include) {
-            commandLineArgs += '-include:' + include
+        if (isNunit3) {
+            // TODO: use --where instead of exclude and include
+        } else {
+            if (exclude) {
+                commandLineArgs += '-exclude:' + exclude
+            }
+            if (include) {
+                commandLineArgs += '-include:' + include
+            }
         }
         if (framework) {
             commandLineArgs += '-framework:' + framework
         }
-        if (noShadow) {
-            commandLineArgs += '-noshadow'
+        if (isNunit3) {
+            // TODO: default behaviour has changed: The console runner now disables shadow copy by default. use --shadowcopy on the command-line to turn it on.
+        } else {
+            if (noShadow) {
+                commandLineArgs += '-noshadow'
+            }
         }
-        if(runList) {
-            commandLineArgs += '-runList:' + runList
+        if (isNunit3) {
+            // Maintain backward compatibility with old (nunit 2.x) gradle files.
+            if (!testList && runList) {
+                testList = runList
+            }
+            if (!test && run) {
+                test = run
+            }
+
+            if (testList) {
+                commandLineArgs += "-testlist:${testList}"
+            }
+            if (test) {
+                commandLineArgs += "-test:${test}"
+            }
+        } else {
+            if (runList) {
+                commandLineArgs += '-runList:' + runList
+            }
+            if (run){
+                commandLineArgs += '-run:' + run
+            }
         }
-        if(run){
-            commandLineArgs += '-run:' + run
-        }
-        if(config){
+        if (config){
             commandLineArgs += '-config:' + config
         }
-        if(timeout){
+        if (timeout){
             commandLineArgs += '-timeout:' + timeout
         }
-        commandLineArgs += '-xml:' + testReportPath
+        if (isNunit3) {
+            commandLineArgs += '-out:' + testReportPath
+        } else {
+            commandLineArgs += '-xml:' + testReportPath
+        }
         getTestAssemblies().each {
             def file = project.file(it)
             if (file.exists() )

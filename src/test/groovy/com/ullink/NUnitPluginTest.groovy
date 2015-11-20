@@ -55,4 +55,14 @@ class NUnitPluginTest {
 
         project.tasks.nunit.execute()
     }
+
+    @Test
+    public void execute_help_works_for_v3() {
+        project.nunit {
+            testAssemblies = ['-help']
+            nunitVersion = '3.0.0-rc-2'
+        }
+
+        project.tasks.nunit.execute()
+    }
 }

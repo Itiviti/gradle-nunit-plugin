@@ -20,7 +20,7 @@ class NUnitPlugin implements Plugin<Project> {
     }
 
     def applyNunitConventions(NUnit task, Project project) {
-        task.conventionMapping.map "nunitDownloadUrl", { 'https://github.com/nunit/nunitv2/releases/download' }
+        task.conventionMapping.map "nunitDownloadUrl", { "https://github.com/nunit/${task.isV3 ? 'nunit' : 'nunitv2'}/releases/download" }
         task.conventionMapping.map "nunitVersion", { '2.6.4' }
         task.conventionMapping.map "nunitHome", {
             if (System.getenv()['NUNIT_HOME']) {
@@ -55,7 +55,7 @@ class NUnitPlugin implements Plugin<Project> {
         def nunitCacheDirForVersion = new File(nunitCacheDir, NUnitName)
 
         // special handling for nunit3 flat zip file
-        def zipOutputDir = version.startsWith("3.") ? nunitCacheDirForVersion : nunitCacheDir;
+        def zipOutputDir = task.isV3 ? nunitCacheDirForVersion : nunitCacheDir;
 
         def ret = nunitCacheDirForVersion
         if (!ret.exists()) {

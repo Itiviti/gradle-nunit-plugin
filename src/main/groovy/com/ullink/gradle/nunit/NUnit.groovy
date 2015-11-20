@@ -39,9 +39,13 @@ class NUnit extends ConventionTask {
         new File(project.file(getNunitHome()), "bin/${file}")
     }
 
+    boolean getIsV3() {
+        nunitVersion && nunitVersion.startsWith("3.")
+    }
+
     File getNunitExec() {
         assert getNunitHome(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable"
-        File nunitExec = getNunitVersion().startsWith("3.")
+        File nunitExec = isV3
             ? nunitBinFile('nunit3-console.exe')
             : nunitBinFile("nunit-console${useX86 ? '-x86' : ''}.exe")
         assert nunitExec.isFile(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable"
@@ -99,7 +103,6 @@ class NUnit extends ConventionTask {
 
     def buildCommandArgs() {
         def commandLineArgs = []
-        boolean isNunit3 = getNunitVersion().startsWith("3.")
 
         String verb = verbosity
         if (!verb) {
@@ -114,12 +117,12 @@ class NUnit extends ConventionTask {
         if (verb) {
             commandLineArgs += '-trace=' + verb
         }
-        if (isNunit3) {
+        if (isV3) {
             if (useX86) {
                 commandLineArgs += '-x86'
             }
         }
-        if (isNunit3) {
+        if (isV3) {
             // TODO: use --where instead of exclude and include
         } else {
             if (exclude) {
@@ -132,14 +135,14 @@ class NUnit extends ConventionTask {
         if (framework) {
             commandLineArgs += '-framework:' + framework
         }
-        if (isNunit3) {
+        if (isV3) {
             // TODO: default behaviour has changed: The console runner now disables shadow copy by default. use --shadowcopy on the command-line to turn it on.
         } else {
             if (noShadow) {
                 commandLineArgs += '-noshadow'
             }
         }
-        if (isNunit3) {
+        if (isV3) {
             // Maintain backward compatibility with old (nunit 2.x) gradle files.
             if (!testList && runList) {
                 testList = runList
@@ -168,7 +171,7 @@ class NUnit extends ConventionTask {
         if (timeout){
             commandLineArgs += '-timeout:' + timeout
         }
-        if (isNunit3) {
+        if (isV3) {
             commandLineArgs += '-out:' + testReportPath
         } else {
             commandLineArgs += '-xml:' + testReportPath

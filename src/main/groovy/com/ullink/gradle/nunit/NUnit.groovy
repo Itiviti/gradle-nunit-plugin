@@ -21,12 +21,14 @@ class NUnit extends ConventionTask {
     def run
     def testList
     def test
+    def reportFolder
     boolean useX86 = false
     boolean noShadow = false
 
     boolean ignoreFailures = false
 
     NUnit() {
+        conventionMapping.map "reportFolder", { new File(outputFolder, 'reports') }
         inputs.files {
             getTestAssemblies()
         }
@@ -56,12 +58,12 @@ class NUnit extends ConventionTask {
         new File(project.buildDir, 'nunit')
     }
 
-    File getReportsFolder() {
-        new File(outputFolder, 'reports')
+    File getReportFolderImpl() {
+        project.file(getReportFolder())
     }
 
     File getTestReportPath() {
-        new File(reportsFolder, 'TestResult.xml')
+        new File(getReportFolderImpl(), 'TestResult.xml')
     }
 
     @TaskAction
@@ -98,7 +100,7 @@ class NUnit extends ConventionTask {
     }
 
     def prepareExecute() {
-        reportsFolder.mkdirs()
+        getReportFolderImpl().mkdirs()
     }
 
     def buildCommandArgs() {

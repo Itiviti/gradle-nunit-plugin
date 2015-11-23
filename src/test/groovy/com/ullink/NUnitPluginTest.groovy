@@ -10,6 +10,7 @@ import org.junit.Test
 import org.junit.rules.ExpectedException
 
 import static org.junit.Assert.assertTrue
+import static org.junit.Assert.assertEquals
 
 class NUnitPluginTest {
     @Rule
@@ -64,5 +65,14 @@ class NUnitPluginTest {
         }
 
         project.tasks.nunit.execute()
+    }
+
+    @Test
+    public void ensures_settingsReportFolder_works() {
+        project.nunit {
+            testAssemblies = ['TestA.dll']
+            reportFolder = './foo'
+        }
+        assertEquals('foo', project.nunit.testReportPath.parentFile.name)
     }
 }

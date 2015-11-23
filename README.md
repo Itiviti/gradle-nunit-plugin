@@ -6,7 +6,7 @@ A gradle plugin for launching NUnit tests
 Is is compatible with the new plugin mechanism and can be used with:
 
     plugins {
-      id 'com.ullink.nunit' version '1.0'
+      id 'com.ullink.nunit' version '1.4'
     }
 
 Or, when using Gradle lower than 2.1:
@@ -17,14 +17,14 @@ Or, when using Gradle lower than 2.1:
         }
 
         dependencies {
-            classpath "com.ullink.gradle:gradle-nunit-plugin:1.0"
+            classpath "com.ullink.gradle:gradle-nunit-plugin:1.4"
         }
     }
 
 It creates a task 'nunit' that may be configured as follows:
 
     nunit {
-        // optional - defaults to '2.6.4'
+        // optional - defaults to '2.6.4', but plugin is compatible with v3+ as well
         nunitVersion
         // optional - defaults to 'https://github.com/nunit/nunitv2/releases/download'
         nunitDownloadUrl
@@ -35,7 +35,7 @@ It creates a task 'nunit' that may be configured as follows:
         testAssemblies
         // optional - if set, specifies the /trace argument of nunit-console
         verbosity
-        // optional - defaults to FALSE and determines the nunit-console.exe used (-x86 one if TRUE)
+        // optional - defaults to FALSE and determines whether tests should run in x86 mode
         useX86
         // optional - defaults to FALSE and termines the behavior of the task if the nunit-console.exe program exits
         // abnormally
@@ -44,8 +44,9 @@ It creates a task 'nunit' that may be configured as follows:
         // Mapped NUnit-Console Command Line Options
         exclude 'Database'
         include 'BaseLine'
+        // for NUnit v3+, use _where_ option instead of include/exclude
         framework 'net-1.1'
-        noShadow = true
+        shadowCopy = true
     }
 
 # License

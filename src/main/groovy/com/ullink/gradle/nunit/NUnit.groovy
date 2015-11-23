@@ -1,5 +1,6 @@
 package com.ullink.gradle.nunit
 
+import org.bouncycastle.math.raw.Nat
 import org.gradle.api.GradleException
 import org.gradle.api.internal.ConventionTask
 import org.gradle.api.tasks.TaskAction
@@ -13,6 +14,7 @@ class NUnit extends ConventionTask {
     List testAssemblies
     def include
     def exclude
+    def where
     def framework
     def verbosity
     def config
@@ -23,7 +25,7 @@ class NUnit extends ConventionTask {
     def test
     def reportFolder
     boolean useX86 = false
-    boolean noShadow = false
+    boolean shadowCopy = false
 
     boolean ignoreFailures = false
 
@@ -42,7 +44,7 @@ class NUnit extends ConventionTask {
     }
 
     boolean getIsV3() {
-        nunitVersion && nunitVersion.startsWith("3.")
+        getNunitVersion().startsWith("3.")
     }
 
     File getNunitExec() {
@@ -117,7 +119,7 @@ class NUnit extends ConventionTask {
             }
         }
         if (verb) {
-            commandLineArgs += '-trace=' + verb
+            commandLineArgs += "-trace=$verb"
         }
         if (isV3) {
             if (useX86) {
@@ -125,58 +127,67 @@ class NUnit extends ConventionTask {
             }
         }
         if (isV3) {
-            // TODO: use --where instead of exclude and include
+            if (include || exclude) {
+                throw new GradleException("'include'/'exclude' options aren't supported on NUnit v3, use 'where' option instead")
+            }
+            if (where) {
+                commandLineArgs += "-where:$where"
+            }
         } else {
+            if (where) {
+                throw new GradleException("'where' isn't supported on NUnit v2, you need to set the NUnit version to v3+")
+            }
             if (exclude) {
-                commandLineArgs += '-exclude:' + exclude
+                commandLineArgs += "-exclude:$exclude"
             }
             if (include) {
-                commandLineArgs += '-include:' + include
+                commandLineArgs += "-include:$include"
             }
         }
         if (framework) {
-            commandLineArgs += '-framework:' + framework
+            commandLineArgs += "-framework:$framework"
         }
         if (isV3) {
-            // TODO: default behaviour has changed: The console runner now disables shadow copy by default. use --shadowcopy on the command-line to turn it on.
+            if (shadowCopy) {
+                commandLineArgs += '-shadowcopy'
+            }
         } else {
-            if (noShadow) {
+            if (!shadowCopy) {
                 commandLineArgs += '-noshadow'
             }
         }
-        if (isV3) {
-            // Maintain backward compatibility with old (nunit 2.x) gradle files.
-            if (!testList && runList) {
-                testList = runList
-            }
-            if (!test && run) {
-                test = run
-            }
+        // Maintain backward compatibility with old (nunit 2.x) gradle files.
+        if (!testList && runList) {
+            testList = runList
+        }
+        if (!test && run) {
+            test = run
+        }
 
-            if (testList) {
-                commandLineArgs += "-testlist:${testList}"
+        if (testList) {
+            if (isV3) {
+                commandLineArgs += "-testlist:$testList"
+            } else {
+                commandLineArgs += "-runList:$testList"
             }
-            if (test) {
-                commandLineArgs += "-test:${test}"
-            }
-        } else {
-            if (runList) {
-                commandLineArgs += '-runList:' + runList
-            }
-            if (run){
-                commandLineArgs += '-run:' + run
+        }
+        if (test) {
+            if (isV3) {
+                commandLineArgs += "-test:$test"
+            } else {
+                commandLineArgs += "-run:$test"
             }
         }
         if (config){
-            commandLineArgs += '-config:' + config
+            commandLineArgs += "-config:$config"
         }
         if (timeout){
-            commandLineArgs += '-timeout:' + timeout
+            commandLineArgs += "-timeout:$timeout"
         }
         if (isV3) {
-            commandLineArgs += '-out:' + testReportPath
+            commandLineArgs += "-out:$testReportPath"
         } else {
-            commandLineArgs += '-xml:' + testReportPath
+            commandLineArgs += "-xml:$testReportPath"
         }
         getTestAssemblies().each {
             def file = project.file(it)

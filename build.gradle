@@ -2,12 +2,12 @@ plugins {
     id 'nu.studer.plugindev' version '1.0.3'
     id "com.jfrog.bintray" version "1.2"
     id "de.undercouch.download" version "2.0.0"
+    id 'net.researchgate.release' version '2.3.4'
 }
 
 apply plugin: 'groovy'
 
 group = 'com.ullink.gradle'
-version = '1.4-SNAPSHOT'
 description 'gradle-nunit-plugin is a Gradle plugin that enables NUnit testing'
 
 dependencies {
@@ -37,3 +37,5 @@ plugindev {
     projectInceptionYear '2015'
     done()
 }
+
+project.tasks.afterReleaseBuild.dependsOn project.tasks.bintrayUpload

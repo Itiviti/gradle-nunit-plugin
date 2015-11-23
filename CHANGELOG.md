@@ -1,0 +1,14 @@
+# gradle-nunit-plugin changelog
+
+## 1.4
+### Added
+* Added support for NUnit v3 (#11 #12)
+* Support overriding the report folder (#10)
+
+### Changed
+* noShadow option has been replaced by shadowCopy one, which defaults to false. Which means behavior will change when upgrading, but this is better matching NUnit v3 defaults, so it's for the best (as long as you read this changelog).
+
+### Removed
+
+### Deprecated
+

@@ -23,7 +23,7 @@ class NUnitPluginTest {
         project.apply plugin: 'nunit'
     }
 
-     @Test
+    @Test
     public void nunitPluginAddsNUnitTaskToProject() {
         assertTrue(project.tasks.nunit instanceof NUnit)
     }
@@ -39,7 +39,7 @@ class NUnitPluginTest {
         project.tasks.nunit.execute()
     }
 
-     @Test
+    @Test
     public void execution_help_works() {
         project.nunit {
             testAssemblies = ['-help']
@@ -52,6 +52,16 @@ class NUnitPluginTest {
     public void execution_noProject_throwsGradleException() {
         expectedException.expect(GradleException.class);
         expectedException.expectMessage("Execution failed for task ':nunit'.")
+
+        project.tasks.nunit.execute()
+    }
+
+    @Test
+    public void execute_help_works_for_v3() {
+        project.nunit {
+            testAssemblies = ['-help']
+            nunitVersion = '3.0.0'
+        }
 
         project.tasks.nunit.execute()
     }

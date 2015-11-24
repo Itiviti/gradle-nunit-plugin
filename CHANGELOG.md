@@ -2,6 +2,7 @@
 
 ## 1.4
 ### Added
+* Support overriding the report file name
 * Added support for NUnit v3 (#11 #12)
 * Support overriding the report folder (#10)
 

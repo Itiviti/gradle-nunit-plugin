@@ -3,7 +3,7 @@ gradle-nunit-plugin [![Build status](https://ci.appveyor.com/api/projects/status
 
 A gradle plugin for launching NUnit tests
 
-Is is compatible with the new plugin mechanism and can be used with:
+It is compatible with the new plugin mechanism and can be used with:
 
     plugins {
       id 'com.ullink.nunit' version '1.0'

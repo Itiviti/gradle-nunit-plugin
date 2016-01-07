@@ -185,7 +185,7 @@ class NUnit extends ConventionTask {
             commandLineArgs += "-timeout:$timeout"
         }
         if (isV3) {
-            commandLineArgs += "-out:$testReportPath"
+            commandLineArgs += "-result:$testReportPath"
         } else {
             commandLineArgs += "-xml:$testReportPath"
         }

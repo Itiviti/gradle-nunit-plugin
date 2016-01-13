@@ -3,11 +3,14 @@ package com.ullink.gradle.nunit
 import org.bouncycastle.math.raw.Nat
 import org.gradle.api.GradleException
 import org.gradle.api.internal.ConventionTask
+import groovyx.gpars.GParsPool
 import org.gradle.api.tasks.TaskAction
 
 import static org.apache.tools.ant.taskdefs.condition.Os.*
 
 class NUnit extends ConventionTask {
+    final String testResultPlaceholder = "<<TEST_RESULT>>"
+
     def nunitHome
     def nunitVersion
     def nunitDownloadUrl
@@ -26,16 +29,14 @@ class NUnit extends ConventionTask {
     def reportFolder
     boolean useX86 = false
     boolean shadowCopy = false
-    def reportFileName  = 'TestResult.xml'
+    def reportFileName  = "TestResult_${testResultPlaceholder}.xml"
     boolean ignoreFailures = false
+    boolean parallel_forks = true
 
     NUnit() {
         conventionMapping.map "reportFolder", { new File(outputFolder, 'reports') }
         inputs.files {
             getTestAssemblies()
-        }
-        outputs.files {
-            getTestReportPath()
         }
     }
 
@@ -68,9 +69,53 @@ class NUnit extends ConventionTask {
         new File(getReportFolderImpl(), reportFileName)
     }
 
+    File getTestReportPath(def test) {
+        new File(getReportFolderImpl(), reportFileName.replace(testResultPlaceholder, test))
+    }
+
     @TaskAction
     def build() {
-        def cmdLine = [nunitExec.absolutePath, *buildCommandArgs()]
+        if (!test && run) {
+            test = run
+        }
+
+        if (parallel_forks) {
+            def testRuns = getTestInputAsList(test)
+            GParsPool.withPool {
+                testRuns.eachParallel { t -> testRun(t, getTestReportPath(t)) }
+            }
+        }
+        else
+        {
+            def testRuns = getTestInputsAsString(test)
+            testRun(testRuns, testReportPath)
+        }
+    }
+
+    List getTestInputAsList(def testInput)
+    {
+        if (testInput instanceof List) {
+            return testInput
+        }
+
+        if (testInput.contains(',')) {
+            return testInput.tokenize(',')
+        }
+
+        return [testInput]
+    }
+
+    String getTestInputsAsString(def testInput)
+    {
+        if (testInput instanceof String) {
+            return testInput
+        }
+
+        return testInput.join(',')
+    }
+
+    def testRun(def test, def testReportPath) {
+        def cmdLine = [nunitExec.absolutePath, *buildCommandArgs(test, testReportPath)]
         if (!isFamily(FAMILY_WINDOWS)) {
             cmdLine = ["mono", *cmdLine]
         }
@@ -105,7 +150,7 @@ class NUnit extends ConventionTask {
         getReportFolderImpl().mkdirs()
     }
 
-    def buildCommandArgs() {
+    def buildCommandArgs(def test, def testReportPath) {
         def commandLineArgs = []
 
         String verb = verbosity
@@ -159,9 +204,6 @@ class NUnit extends ConventionTask {
         // Maintain backward compatibility with old (nunit 2.x) gradle files.
         if (!testList && runList) {
             testList = runList
-        }
-        if (!test && run) {
-            test = run
         }
 
         if (testList) {

@@ -4,6 +4,7 @@ import org.bouncycastle.math.raw.Nat
 import org.gradle.api.GradleException
 import org.gradle.api.internal.ConventionTask
 import groovyx.gpars.GParsPool
+import org.gradle.api.tasks.OutputFiles
 import org.gradle.api.tasks.TaskAction
 
 import static org.apache.tools.ant.taskdefs.condition.Os.*
@@ -75,25 +76,59 @@ class NUnit extends ConventionTask {
 
     @TaskAction
     def build() {
+        decideExecutionPath(this.&singleRunExecute, this.&multipleRunsExecute)
+    }
+
+    @OutputFiles
+    def getOutputFiles(){
+        return decideExecutionPath(this.&singleRunGetOutput, this.&multipleRunsGetOutput)
+    }
+
+    def decideExecutionPath(singleRunAction, multipleRunsAction){
         if (!test && run) {
             test = run
         }
-
-        if (parallel_forks) {
-            def testRuns = getTestInputAsList(test)
-            GParsPool.withPool {
-                testRuns.eachParallel { t -> testRun(t, getTestReportPath(t)) }
-            }
+        if (!parallel_forks || !test) {
+            return singleRunAction(test)
         }
-        else
-        {
-            def testRuns = getTestInputsAsString(test)
-            testRun(testRuns, testReportPath)
+        else {
+            return multipleRunsAction(test)
         }
     }
 
-    List getTestInputAsList(def testInput)
+    def singleRunExecute(test)
     {
+        def testRuns = getTestInputsAsString(test)
+        testRun(testRuns, getTestReportPath())
+    }
+
+    def multipleRunsExecute(test)
+    {
+        def testRuns = getTestInputAsList(test)
+        GParsPool.withPool {
+            testRuns.eachParallel { t -> testRun(t, getTestReportPath(t)) }
+        }
+    }
+
+    def singleRunGetOutput(test)
+    {
+        return [getTestReportPath()]
+    }
+
+    def multipleRunsGetOutput(test)
+    {
+        def testRuns = getTestInputAsList(test)
+        def out = []
+        testRuns.each { t -> out.add(getTestReportPath(t))}
+        return out
+    }
+
+    List getTestInputAsList(testInput)
+    {
+        if (!testInput){
+            return []
+        }
+
         if (testInput instanceof List) {
             return testInput
         }
@@ -105,8 +140,12 @@ class NUnit extends ConventionTask {
         return [testInput]
     }
 
-    String getTestInputsAsString(def testInput)
+    String getTestInputsAsString(testInput)
     {
+        if (!testInput){
+            return ''
+        }
+
         if (testInput instanceof String) {
             return testInput
         }
@@ -114,8 +153,8 @@ class NUnit extends ConventionTask {
         return testInput.join(',')
     }
 
-    def testRun(def test, def testReportPath) {
-        def cmdLine = [nunitExec.absolutePath, *buildCommandArgs(test, testReportPath)]
+    def testRun(def test, def reportPath) {
+        def cmdLine = [nunitExec.absolutePath, *buildCommandArgs(test, reportPath)]
         if (!isFamily(FAMILY_WINDOWS)) {
             cmdLine = ["mono", *cmdLine]
         }

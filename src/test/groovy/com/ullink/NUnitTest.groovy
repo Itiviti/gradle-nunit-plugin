@@ -44,9 +44,9 @@ public class NUnitTest {
         nunit.reportFileName = 'TestResult.xml'
         nunit.parallel_forks = true
         nunit.run = 'Test1'
-        nunit.reportFolder = '.\\'
+        nunit.reportFolder = './'
 
-        assert nunit.getOutputFiles() == [new File("${nunit.project.projectDir}\\TestResult.xml")]
+        assert nunit.getOutputFiles() == [new File("${nunit.project.projectDir}/TestResult.xml")]
     }
 
     @Test
@@ -55,9 +55,9 @@ public class NUnitTest {
         nunit.reportFileName = 'TestResult.xml'
         nunit.parallel_forks = true
         nunit.run = 'Test1'
-        nunit.reportFolder = '.\\'
+        nunit.reportFolder = './'
 
-        assert nunit.getOutputFiles() == [new File("${nunit.project.projectDir}\\TestResult.xml")]
+        assert nunit.getOutputFiles() == [new File("${nunit.project.projectDir}/TestResult.xml")]
     }
 
     @Test
@@ -66,9 +66,9 @@ public class NUnitTest {
         nunit.reportFileName = 'TestResult.xml'
         nunit.parallel_forks = false
         nunit.run = ['Test1', 'Test2']
-        nunit.reportFolder = '.\\'
+        nunit.reportFolder = './'
 
-        assert nunit.getOutputFiles() == [new File("${nunit.project.projectDir}\\TestResult.xml")]
+        assert nunit.getOutputFiles() == [new File("${nunit.project.projectDir}/TestResult.xml")]
     }
 
     @Test
@@ -77,10 +77,10 @@ public class NUnitTest {
         nunit.reportFileName = 'TestResult_<<TEST_RESULT>>.xml'
         nunit.parallel_forks = true
         nunit.run = ['Test1', 'Test2']
-        nunit.reportFolder = '.\\'
+        nunit.reportFolder = './'
 
-        assert nunit.getOutputFiles() == [new File("${nunit.project.projectDir}\\TestResult_Test1.xml"),
-                                          new File("${nunit.project.projectDir}\\TestResult_Test2.xml")]
+        assert nunit.getOutputFiles() == [new File("${nunit.project.projectDir}/TestResult_Test1.xml"),
+                                          new File("${nunit.project.projectDir}/TestResult_Test2.xml")]
     }
 
     def getNUnitTask() {

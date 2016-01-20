@@ -13,6 +13,7 @@ description 'gradle-nunit-plugin is a Gradle plugin that enables NUnit testing'
 dependencies {
     compile 'de.undercouch:gradle-download-task:2.0.0'
     compile 'org.codehaus.gpars:gpars:1.2.1'
+    testCompile 'xmlunit:xmlunit:1.6'
 }
 
 bintray {

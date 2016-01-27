@@ -73,6 +73,6 @@ class NUnitPluginTest {
             testAssemblies = ['TestA.dll']
             reportFolder = './foo'
         }
-        assertEquals('foo', project.nunit.getTestReportPath('testA').parentFile.name)
+        assertEquals('foo', project.nunit.testReportPath.parentFile.name)
     }
 }

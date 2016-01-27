@@ -39,48 +39,47 @@ public class NUnitTest {
     }
 
     @Test
-    public void whenSingleTest_notParallel_singleOutputFile(){
+    public void whenSingleTest_notParallel_singleTestReport(){
         def nunit = getNUnitTask()
         nunit.reportFileName = 'TestResult.xml'
         nunit.parallel_forks = true
         nunit.run = 'Test1'
         nunit.reportFolder = './'
 
-        assert nunit.getOutputFiles() == [new File("${nunit.project.projectDir}/TestResult.xml")]
+        assert nunit.getTestReportPath() == new File(nunit.project.projectDir, "TestResult.xml")
     }
 
     @Test
-    public void whenSingleTest_Parallel_singleOutputFile(){
+    public void whenSingleTest_Parallel_singleTestReport(){
         def nunit = getNUnitTask()
         nunit.reportFileName = 'TestResult.xml'
         nunit.parallel_forks = true
         nunit.run = 'Test1'
         nunit.reportFolder = './'
 
-        assert nunit.getOutputFiles() == [new File("${nunit.project.projectDir}/TestResult.xml")]
+        assert nunit.getTestReportPath() == new File(nunit.project.projectDir, "TestResult.xml")
     }
 
     @Test
-    public void whenMultipleTests_notParallel_singleOutputFile(){
+    public void whenMultipleTests_notParallel_singleTestReport(){
         def nunit = getNUnitTask()
         nunit.reportFileName = 'TestResult.xml'
         nunit.parallel_forks = false
         nunit.run = ['Test1', 'Test2']
         nunit.reportFolder = './'
 
-        assert nunit.getOutputFiles() == [new File("${nunit.project.projectDir}/TestResult.xml")]
+        assert nunit.getTestReportPath() == new File(nunit.project.projectDir, "TestResult.xml")
     }
 
     @Test
-    public void whenMultipleTests_Parallel_multipleOutputFiles(){
+    public void whenMultipleTests_parallel_singleTestReport(){
         def nunit = getNUnitTask()
-        nunit.reportFileName = 'TestResult_<<TEST_RESULT>>.xml'
+        nunit.reportFileName = 'TestResult.xml'
         nunit.parallel_forks = true
         nunit.run = ['Test1', 'Test2']
         nunit.reportFolder = './'
 
-        assert nunit.getOutputFiles() == [new File("${nunit.project.projectDir}/TestResult_Test1.xml"),
-                                          new File("${nunit.project.projectDir}/TestResult_Test2.xml")]
+        assert nunit.getTestReportPath() == new File(nunit.project.projectDir, "TestResult.xml")
     }
 
     def getNUnitTask() {

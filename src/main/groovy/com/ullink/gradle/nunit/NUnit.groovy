@@ -4,14 +4,13 @@ import org.bouncycastle.math.raw.Nat
 import org.gradle.api.GradleException
 import org.gradle.api.internal.ConventionTask
 import groovyx.gpars.GParsPool
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.OutputFiles
 import org.gradle.api.tasks.TaskAction
 
 import static org.apache.tools.ant.taskdefs.condition.Os.*
 
 class NUnit extends ConventionTask {
-    final String testResultPlaceholder = "<<TEST_RESULT>>"
-
     def nunitHome
     def nunitVersion
     def nunitDownloadUrl
@@ -23,14 +22,20 @@ class NUnit extends ConventionTask {
     def verbosity
     def config
     def timeout
+
+    // TODO: shouldn't we just make it a single variable and detect which case it is when invoking NUnit instead?
+    // runList and run are mutually exclusive
     def runList
     def run
+
+    // testList and test are mutually exclusive, NUnit3-specific
     def testList
     def test
+
     def reportFolder
     boolean useX86 = false
     boolean shadowCopy = false
-    def reportFileName  = "TestResult_${testResultPlaceholder}.xml"
+    String reportFileName = 'TestResult.xml'
     boolean ignoreFailures = false
     boolean parallel_forks = true
 
@@ -66,12 +71,11 @@ class NUnit extends ConventionTask {
         project.file(getReportFolder())
     }
 
+    @OutputFile
     File getTestReportPath() {
-        new File(getReportFolderImpl(), reportFileName)
-    }
-
-    File getTestReportPath(def test) {
-        new File(getReportFolderImpl(), reportFileName.replace(testResultPlaceholder, test))
+        // for the non-default nunit tasks, ensure we write the report in a separate file
+        def reportFileNamePrefix = name == 'nunit' ? '' : name
+        new File(getReportFolderImpl(), reportFileNamePrefix + reportFileName)
     }
 
     @TaskAction
@@ -79,15 +83,11 @@ class NUnit extends ConventionTask {
         decideExecutionPath(this.&singleRunExecute, this.&multipleRunsExecute)
     }
 
-    @OutputFiles
-    def getOutputFiles(){
-        return decideExecutionPath(this.&singleRunGetOutput, this.&multipleRunsGetOutput)
-    }
-
-    def decideExecutionPath(singleRunAction, multipleRunsAction){
+    def decideExecutionPath(Closure singleRunAction, Closure multipleRunsAction) {
         if (!test && run) {
             test = run
         }
+
         if (!parallel_forks || !test) {
             return singleRunAction(test)
         }
@@ -96,34 +96,29 @@ class NUnit extends ConventionTask {
         }
     }
 
-    def singleRunExecute(test)
-    {
+    def singleRunExecute(def test) {
         def testRuns = getTestInputsAsString(test)
         testRun(testRuns, getTestReportPath())
     }
 
-    def multipleRunsExecute(test)
-    {
+    def multipleRunsExecute(def test) {
+        def intermediatReportsPath = new File(getReportFolderImpl(), "intermediate-results-" + name)
+        intermediatReportsPath.mkdirs()
+
         def testRuns = getTestInputAsList(test)
         GParsPool.withPool {
-            testRuns.eachParallel { t -> testRun(t, getTestReportPath(t)) }
+            testRuns.eachParallel { testRun(it, new File(intermediatReportsPath, it + ".xml")) }
         }
+
+        mergeTestReports(intermediatReportsPath.listFiles(), getTestReportPath())
     }
 
-    def singleRunGetOutput(test)
-    {
-        return [getTestReportPath()]
+    void mergeTestReports(File[] files, File outputFile) {
+        logger.info("Merging test reports $files into $outputFile ...")
+        outputFile.write(new NUnitTestResultsMerger().merge(files.collect { it.text }))
     }
 
-    def multipleRunsGetOutput(test)
-    {
-        def testRuns = getTestInputAsList(test)
-        def out = []
-        testRuns.each { t -> out.add(getTestReportPath(t))}
-        return out
-    }
-
-    List getTestInputAsList(testInput)
+    List<String> getTestInputAsList(def testInput)
     {
         if (!testInput){
             return []
@@ -133,6 +128,7 @@ class NUnit extends ConventionTask {
             return testInput
         }
 
+        // Behave like NUnit
         if (testInput.contains(',')) {
             return testInput.tokenize(',')
         }
@@ -140,7 +136,7 @@ class NUnit extends ConventionTask {
         return [testInput]
     }
 
-    String getTestInputsAsString(testInput)
+    String getTestInputsAsString(def testInput)
     {
         if (!testInput){
             return ''
@@ -270,6 +266,7 @@ class NUnit extends ConventionTask {
         } else {
             commandLineArgs += "-xml:$testReportPath"
         }
+
         getTestAssemblies().each {
             def file = project.file(it)
             if (file.exists() )
@@ -277,6 +274,7 @@ class NUnit extends ConventionTask {
             else
                 commandLineArgs += it
         }
+
         commandLineArgs
     }
 }

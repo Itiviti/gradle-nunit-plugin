@@ -18,8 +18,6 @@ class NUnitTestResultsMergerTest {
 
         String testResult = new NUnitTestResultsMerger().merge(testResults)
 
-        System.err.println(testResult)
-
         XMLUnit.setIgnoreComments(true)
         XMLUnit.setIgnoreWhitespace(true)
         XMLUnit.setIgnoreAttributeOrder(true)
@@ -27,7 +25,7 @@ class NUnitTestResultsMergerTest {
                 getTestResult('TestResults_merged'),
                 testResult)
         diff.overrideElementQualifier(new RecursiveElementNameAndTextQualifier());
-        Assert.assertEquals(String.join('\n', new DetailedDiff(diff).allDifferences.collect {it.toString()}), "");
+        Assert.assertEquals('', new DetailedDiff(diff).allDifferences.join('\n'));
     }
 
     private String getTestResult(String fileName) {

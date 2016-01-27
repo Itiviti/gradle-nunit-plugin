@@ -3,6 +3,9 @@ package com.ullink.gradle.nunit
 import org.bouncycastle.math.raw.Nat
 import org.gradle.api.GradleException
 import org.gradle.api.internal.ConventionTask
+import groovyx.gpars.GParsPool
+import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.OutputFiles
 import org.gradle.api.tasks.TaskAction
 
 import static org.apache.tools.ant.taskdefs.condition.Os.*
@@ -19,23 +22,27 @@ class NUnit extends ConventionTask {
     def verbosity
     def config
     def timeout
+
+    // TODO: shouldn't we just make it a single variable and detect which case it is when invoking NUnit instead?
+    // runList and run are mutually exclusive
     def runList
     def run
+
+    // testList and test are mutually exclusive, NUnit3-specific
     def testList
     def test
+
     def reportFolder
     boolean useX86 = false
     boolean shadowCopy = false
-    def reportFileName  = 'TestResult.xml'
+    String reportFileName = 'TestResult.xml'
     boolean ignoreFailures = false
+    boolean parallel_forks = true
 
     NUnit() {
         conventionMapping.map "reportFolder", { new File(outputFolder, 'reports') }
         inputs.files {
             getTestAssemblies()
-        }
-        outputs.files {
-            getTestReportPath()
         }
     }
 
@@ -64,13 +71,86 @@ class NUnit extends ConventionTask {
         project.file(getReportFolder())
     }
 
+    @OutputFile
     File getTestReportPath() {
-        new File(getReportFolderImpl(), reportFileName)
+        // for the non-default nunit tasks, ensure we write the report in a separate file
+        def reportFileNamePrefix = name == 'nunit' ? '' : name
+        new File(getReportFolderImpl(), reportFileNamePrefix + reportFileName)
     }
 
     @TaskAction
     def build() {
-        def cmdLine = [nunitExec.absolutePath, *buildCommandArgs()]
+        decideExecutionPath(this.&singleRunExecute, this.&multipleRunsExecute)
+    }
+
+    def decideExecutionPath(Closure singleRunAction, Closure multipleRunsAction) {
+        if (!test && run) {
+            test = run
+        }
+
+        if (!parallel_forks || !test) {
+            return singleRunAction(test)
+        }
+        else {
+            return multipleRunsAction(test)
+        }
+    }
+
+    def singleRunExecute(def test) {
+        def testRuns = getTestInputsAsString(test)
+        testRun(testRuns, getTestReportPath())
+    }
+
+    def multipleRunsExecute(def test) {
+        def intermediatReportsPath = new File(getReportFolderImpl(), "intermediate-results-" + name)
+        intermediatReportsPath.mkdirs()
+
+        def testRuns = getTestInputAsList(test)
+        GParsPool.withPool {
+            testRuns.eachParallel { testRun(it, new File(intermediatReportsPath, it + ".xml")) }
+        }
+
+        mergeTestReports(intermediatReportsPath.listFiles(), getTestReportPath())
+    }
+
+    void mergeTestReports(File[] files, File outputFile) {
+        logger.info("Merging test reports $files into $outputFile ...")
+        outputFile.write(new NUnitTestResultsMerger().merge(files.collect { it.text }))
+    }
+
+    List<String> getTestInputAsList(def testInput)
+    {
+        if (!testInput){
+            return []
+        }
+
+        if (testInput instanceof List) {
+            return testInput
+        }
+
+        // Behave like NUnit
+        if (testInput.contains(',')) {
+            return testInput.tokenize(',')
+        }
+
+        return [testInput]
+    }
+
+    String getTestInputsAsString(def testInput)
+    {
+        if (!testInput){
+            return ''
+        }
+
+        if (testInput instanceof String) {
+            return testInput
+        }
+
+        return testInput.join(',')
+    }
+
+    def testRun(def test, def reportPath) {
+        def cmdLine = [nunitExec.absolutePath, *buildCommandArgs(test, reportPath)]
         if (!isFamily(FAMILY_WINDOWS)) {
             cmdLine = ["mono", *cmdLine]
         }
@@ -105,7 +185,7 @@ class NUnit extends ConventionTask {
         getReportFolderImpl().mkdirs()
     }
 
-    def buildCommandArgs() {
+    def buildCommandArgs(def test, def testReportPath) {
         def commandLineArgs = []
 
         String verb = verbosity
@@ -160,9 +240,6 @@ class NUnit extends ConventionTask {
         if (!testList && runList) {
             testList = runList
         }
-        if (!test && run) {
-            test = run
-        }
 
         if (testList) {
             if (isV3) {
@@ -189,6 +266,7 @@ class NUnit extends ConventionTask {
         } else {
             commandLineArgs += "-xml:$testReportPath"
         }
+
         getTestAssemblies().each {
             def file = project.file(it)
             if (file.exists() )
@@ -196,6 +274,7 @@ class NUnit extends ConventionTask {
             else
                 commandLineArgs += it
         }
+
         commandLineArgs
     }
 }

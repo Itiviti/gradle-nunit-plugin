@@ -4,6 +4,9 @@
 ### Fixed
 * Fix NUnit v3 console argument in specifying test result output
 
+### Added
+* The `nuget-base` plugin allows proper NUnit-based tasks creation without creating the default `nunit` task
+
 ## 1.4
 ### Added
 * Support overriding the report file name

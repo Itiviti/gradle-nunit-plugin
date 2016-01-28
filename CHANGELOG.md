@@ -1,5 +1,7 @@
 # gradle-nunit-plugin changelog
 
+## 1.6
+
 ## 1.5
 ### Fixed
 * Fix NUnit v3 console argument in specifying test result output

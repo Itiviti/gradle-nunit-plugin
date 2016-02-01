@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results date="2016-01-19" errors="0" failures="1" ignored="0" inconclusive="0" invalid="0" name="Merged results" not-run="0" skipped="0" time="13:25:39" total="87">
+  <environment clr-version="2.0.50727.8670" cwd="E:\src\p\il-repack" machine-name="machinename" nunit-version="2.6.4.14350" os-version="Microsoft Windows NT 6.2.9200.0" platform="Win32NT" user="username" user-domain="domain"/>
+  <culture-info current-culture="en-US" current-uiculture="en-US"/>
+  <test-suite asserts="0" executed="True" name="" result="Failure" time="126.676" type="Test Project">
+    <results>
+      <test-suite asserts="0" executed="True" name="E:\src\p\il-repack\ILRepack.IntegrationTests\bin\Release\ILRepack.IntegrationTests.dll" result="Success" success="True" time="123.035" type="Assembly">
+        <results>
+          <test-suite asserts="0" executed="True" name="ILRepack" result="Success" success="True" time="123.028" type="Namespace">
+            <results>
+              <test-suite asserts="0" executed="True" name="IntegrationTests" result="Success" success="True" time="123.028" type="Namespace">
+                <results>
+                  <test-suite asserts="0" executed="True" name="NuGet" result="Success" success="True" time="123.028" type="Namespace">
+                    <results>
+                      <test-suite asserts="0" executed="True" name="RepackNuGetTests" result="Success" success="True" time="123.027" type="TestFixture">
+                        <results>
+                          <test-suite asserts="0" executed="True" name="NupkgPlatform" result="Success" success="True" time="114.464" type="ParameterizedTest">
+                            <categories>
+                              <category name="LongRunning"/>
+                            </categories>
+                            <results>
+                              <test-case asserts="3" executed="True" name="ILRepack.IntegrationTests.NuGet.RepackNuGetTests.NupkgPlatform(UnionArgParser:0.8.7,FSharp.Core:3.0.2)" result="Success" success="True" time="3.651">
+                                <categories>
+                                  <category name="ComplexTests"/>
+                                </categories>
+                              </test-case>
+                              <test-case asserts="3" executed="True" name="ILRepack.IntegrationTests.NuGet.RepackNuGetTests.NupkgPlatform(UnionArgParser:0.8.7,FSharp.Core:3.0.2)" result="Success" success="True" time="2.868">
+                                <categories>
+                                  <category name="ComplexTests"/>
+                                </categories>
+                              </test-case>
+                              <test-case asserts="3" executed="True" name="ILRepack.IntegrationTests.NuGet.RepackNuGetTests.NupkgPlatform(MassTransit:2.9.9,Magnum:2.1.3,Newtonsoft.Json:6.0.8)" result="Success" success="True" time="7.779">
+                                <categories>
+                                  <category name="ComplexTests"/>
+                                </categories>
+                              </test-case>
+                              <test-case asserts="3" executed="True" name="ILRepack.IntegrationTests.NuGet.RepackNuGetTests.NupkgPlatform(MassTransit:2.9.9,Magnum:2.1.3,Newtonsoft.Json:6.0.8)" result="Success" success="True" time="5.489">
+                                <categories>
+                                  <category name="ComplexTests"/>
+                                </categories>
+                              </test-case>
+                              <test-case asserts="3" executed="True" name="ILRepack.IntegrationTests.NuGet.RepackNuGetTests.NupkgPlatform(Paket.Core:1.11.6,FSharp.Core:3.1.2.1)" result="Success" success="True" time="8.046">
+                                <categories>
+                                  <category name="ComplexTests"/>
+                                </categories>
+                              </test-case>
+                              <test-case asserts="3" executed="True" name="ILRepack.IntegrationTests.NuGet.RepackNuGetTests.NupkgPlatform(FSharp.Compiler.Service:1.4.0.6,FSharp.Core:4.0.0.1)" result="Success" success="True" time="86.619">
+                                <categories>
+                                  <category name="ComplexTests"/>
+                                </categories>
+                              </test-case>
+                            </results>
+                          </test-suite>
+                          <test-suite asserts="0" executed="True" name="RoundtripNupkg" result="Success" success="True" time="6.525" type="ParameterizedTest">
+                            <results>
+                              <test-case asserts="2" executed="True" name="ILRepack.IntegrationTests.NuGet.RepackNuGetTests.RoundtripNupkg(Antlr:3.5.0.2)" result="Success" success="True" time="1.198"/>
+                              <test-case asserts="2" executed="True" name="ILRepack.IntegrationTests.NuGet.RepackNuGetTests.RoundtripNupkg(Autofac:3.5.2)" result="Success" success="True" time="0.721"/>
+                              <test-case asserts="3" executed="True" name="ILRepack.IntegrationTests.NuGet.RepackNuGetTests.RoundtripNupkg(AutoMapper:3.3.1)" result="Success" success="True" time="1.084"/>
+                              <test-case asserts="5" executed="True" name="ILRepack.IntegrationTests.NuGet.RepackNuGetTests.RoundtripNupkg(MahApps.Metro:1.1.2)" result="Success" success="True" time="2.665"/>
+                              <test-case asserts="4" executed="True" name="ILRepack.IntegrationTests.NuGet.RepackNuGetTests.RoundtripNupkg(Microsoft.Bcl.Async:1.0.168)" result="Success" success="True" time="0.853"/>
+                            </results>
+                          </test-suite>
+                          <test-case asserts="3" executed="True" name="ILRepack.IntegrationTests.NuGet.RepackNuGetTests.VerifiesMergedSignedAssemblyHasNoUnsignedFriend" result="Success" success="True" time="1.248"/>
+                          <test-case asserts="4" executed="True" name="ILRepack.IntegrationTests.NuGet.RepackNuGetTests.VerifiesMergesBclFine" result="Success" success="True" time="0.779"/>
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite asserts="0" executed="True" name="E:\src\p\il-repack\ILRepack.IntegrationTests\bin\Release\ILRepack.IntegrationTests.dll" result="Failure" success="False" time="2.561" type="Assembly">
+        <results>
+          <test-suite asserts="0" executed="True" name="ILRepack" result="Failure" success="False" time="2.554" type="Namespace">
+            <results>
+              <test-suite asserts="0" executed="True" name="IntegrationTests" result="Failure" success="False" time="2.554" type="Namespace">
+                <results>
+                  <test-suite asserts="0" executed="True" name="WPF" result="Failure" success="False" time="2.554" type="Namespace">
+                    <results>
+                      <test-suite asserts="0" executed="True" name="WPFScenarios" result="Failure" success="False" time="2.553" type="TestFixture">
+                        <results>
+                          <test-case asserts="3" executed="True" name="ILRepack.IntegrationTests.WPF.WPFScenarios.GivenApplicationThatUsesThemingAndStylesFromA_MergedWPFApplicationRunsSuccessfully" result="Success" success="True" time="0.343"/>
+                          <test-case asserts="3" executed="True" name="ILRepack.IntegrationTests.WPF.WPFScenarios.GivenSampleApplicationWithMahAppsAndSystemWindowsInteractivityWPF_MergedWPFApplicationRunsSuccessfully" result="Success" success="True" time="1.334"/>
+                          <test-case asserts="1" executed="True" name="ILRepack.IntegrationTests.WPF.WPFScenarios.GivenTrue_ThisTestFails" result="Failure" success="False" time="0.006">
+                            <failure>
+                              <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+                              <stack-trace><![CDATA[]]></stack-trace>
+                            </failure>
+                          </test-case>
+                          <test-case asserts="3" executed="True" name="ILRepack.IntegrationTests.WPF.WPFScenarios.GivenXAMLThatUsesLibraryClass_MergedWPFApplicationRunsSuccessfully" result="Success" success="True" time="0.283"/>
+                          <test-case asserts="3" executed="True" name="ILRepack.IntegrationTests.WPF.WPFScenarios.GivenXAMLThatUsesLibraryUserControl_MergedWPFApplicationRunsSuccessfully" result="Success" success="True" time="0.298"/>
+                          <test-case asserts="3" executed="True" name="ILRepack.IntegrationTests.WPF.WPFScenarios.GivenXAMLThatUsesNestedLibraryUserControlAndClass_MergedWPFApplicationRunsSuccessfully" result="Success" success="True" time="0.269"/>
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite asserts="0" executed="True" name="E:\src\p\il-repack\ILRepack.Tests\bin\Release\ILRepack.Tests.dll" result="Success" success="True" time="1.080" type="Assembly">
+        <results>
+          <test-suite asserts="0" executed="True" name="ILRepack" result="Success" success="True" time="1.073" type="Namespace">
+            <results>
+              <test-suite asserts="0" executed="True" name="Tests" result="Success" success="True" time="1.073" type="Namespace">
+                <results>
+                  <test-suite asserts="0" executed="True" name="CommandLineTests" result="Success" success="True" time="0.054" type="TestFixture">
+                    <results>
+                      <test-case asserts="2" executed="True" name="ILRepack.Tests.CommandLineTests.WithArguments__GetCount__ReturnCount" result="Success" success="True" time="0.018"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.CommandLineTests.WithBoolOption__GetOption__ReturnOption" result="Success" success="True" time="0.002"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.CommandLineTests.WithEmptyOption__GetOption__ReturnEmptyString" result="Success" success="True" time="0.001"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.CommandLineTests.WithEmptyOption__GetOption__ReturnNull" result="Success" success="True" time="0.000"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.CommandLineTests.WithInvalidOptionPrefix__GetOption__ReturnNull" result="Success" success="True" time="0.000"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.CommandLineTests.WithNoArguments__NewObject__NoOtherArguments" result="Success" success="True" time="0.001"/>
+                      <test-case asserts="3" executed="True" name="ILRepack.Tests.CommandLineTests.WithOneOption__NewObject__ReturnOption" result="Success" success="True" time="0.007"/>
+                      <test-case asserts="5" executed="True" name="ILRepack.Tests.CommandLineTests.WithOptions__RemoveOption__ReturnAllOptionsExceptTheOneRemoved" result="Success" success="True" time="0.001"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.CommandLineTests.WithOptions__RemoveOptions__ReturnMatchedOptions" result="Success" success="True" time="0.006"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.CommandLineTests.WithOptionWithInvalidAssignChar__GetOption__ReturnNull" result="Success" success="True" time="0.000"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.CommandLineTests.WithValidOption__GetOptionWithNameInCaps__ReturnOption" result="Success" success="True" time="0.000"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.CommandLineTests.WithValidOption__GetOtherOption__ReturnNull" result="Success" success="True" time="0.000"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.CommandLineTests.WithValidOptionPrefix__GetOption__ReturnNull" result="Success" success="True" time="0.000"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.CommandLineTests.WithZeroArguments__GetIsEmpty__ReturnTrue" result="Success" success="True" time="0.000"/>
+                    </results>
+                  </test-suite>
+                  <test-suite asserts="0" executed="True" name="RepackLoggerTests" result="Success" success="True" time="0.051" type="TestFixture">
+                    <results>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackLoggerTests.GivenAnEmptyOutputFile__OpenFile_CloseFile__OpenReturnsFalse_ClosedDoesNotThrowError" result="Success" success="True" time="0.001"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackLoggerTests.GivenAnEmptyOutputFile__OpenFile_LogLine__OpenReturnsFalse_LogDoesNotThrowError" result="Success" success="True" time="0.001"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackLoggerTests.GivenOutputFile__OpenFile_CloseFile_LogError__StreamIsOpened_StreamIsClosed_NoErrorIsThrown" result="Success" success="True" time="0.046"/>
+                    </results>
+                  </test-suite>
+                  <test-suite asserts="0" executed="True" name="RepackOptionsTests" result="Success" success="True" time="0.453" type="TestFixture">
+                    <results>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithAllowDuplicateResources__GetModifier__ReturnModifier" result="Success" success="True" time="0.311"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithAllowDuplicateTypes_WithNamespaces__CallParse__NamespacesAreSet" result="Success" success="True" time="0.007"/>
+                      <test-case asserts="2" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithAllowDuplicateTypes_WithNamespaces_WithTypes__CallParse__TypesAndNamespacesAreSet" result="Success" success="True" time="0.004"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithAllowDuplicateTypes_WithTypes__CallParse__DuplicateTypesAreSet" result="Success" success="True" time="0.001"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithAllowMultipleAssign_WithNoCopyAttributes__Parse__ThrowsInvalidOperationException" result="Success" success="True" time="0.004"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithAttributeFile_WithCopyAttributes__Parse__ThrowsInvalidOperationException" result="Success" success="True" time="0.002"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithHelpModifierh__CallShouldShowUsage__ReturnTrue" result="Success" success="True" time="0.007"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithHelpModifierHelp__CallShouldShowUsage__ReturnTrue" result="Success" success="True" time="0.002"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithHelpModifierQuestionMark__CallShouldShowUsage__ReturnTrue" result="Success" success="True" time="0.001"/>
+                      <test-case asserts="2" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithModifierNDebug__Parse__DebugInfoFalseIsSet" result="Success" success="True" time="0.001"/>
+                      <test-suite asserts="0" executed="True" name="WithModifierTargetVersion__Parse__TargetPlatformVersionIsSet" result="Success" success="True" time="0.012" type="ParameterizedTest">
+                        <results>
+                          <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithModifierTargetVersion__Parse__TargetPlatformVersionIsSet(&quot;v2&quot;)" result="Success" success="True" time="0.009"/>
+                          <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithModifierTargetVersion__Parse__TargetPlatformVersionIsSet(&quot;v4&quot;)" result="Success" success="True" time="0.001"/>
+                        </results>
+                      </test-suite>
+                      <test-case asserts="0" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithNoInputAssemblies__ParseProperties__ThrowException" result="Success" success="True" time="0.003"/>
+                      <test-case asserts="3" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithNoKeyFile__ParseProperties__ReadExcludeInternalizedMatches" result="Success" success="True" time="0.063"/>
+                      <test-case asserts="0" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithNoKeyFile__ParseProperties__ThrowException" result="Success" success="True" time="0.003"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithNoOptions_CallShouldShowUsage__ReturnTrue" result="Success" success="True" time="0.003"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithOptionInternalize__Parse__ExcludeFileIsSet" result="Success" success="True" time="0.002"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithOptionKeyFileNotSet_WithDelaySign__Parse__ThrowsInvalidOperationException" result="Success" success="True" time="0.001"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithOptionLog__Parse__LogFileIsSet" result="Success" success="True" time="0.002"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithOptions_CallShouldShowUsage__ReturnFalse" result="Success" success="True" time="0.000"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithOptionTargetKindEXE__Parse__TargetKindIsSet" result="Success" success="True" time="0.001"/>
+                      <test-case asserts="0" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithOptionTargetKindInvalid__Parse__TargetKindIsSet" result="Success" success="True" time="0.002"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithOptionTargetKindLibrary__Parse__TargetKindIsSet" result="Success" success="True" time="0.001"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithOptionTargetKindWinEXE__Parse__TargetKindIsSet" result="Success" success="True" time="0.001"/>
+                      <test-case asserts="2" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithOptionTargetPlatform__Parse__DirectoryAndVersionAreSet" result="Success" success="True" time="0.001"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithOptionTargetPlatform__Parse__VersionIsSet" result="Success" success="True" time="0.001"/>
+                      <test-case asserts="1" executed="True" name="ILRepack.Tests.RepackOptionsTests.WithOptionVersion__Parse__VersionIsSet" result="Success" success="True" time="0.001"/>
+                    </results>
+                  </test-suite>
+                  <test-suite asserts="0" executed="True" name="Steps" result="Success" success="True" time="0.508" type="Namespace">
+                    <results>
+                      <test-suite asserts="0" executed="True" name="ResourceProcessing" result="Success" success="True" time="0.495" type="Namespace">
+                        <results>
+                          <test-suite asserts="0" executed="True" name="BamlGeneratorTests" result="Success" success="True" time="0.495" type="TestFixture">
+                            <results>
+                              <test-suite asserts="0" executed="True" name="AddMergedDictionaries_GivenExistingGenericXaml_CreatesExpectedXaml" result="Success" success="True" time="0.472" type="ParameterizedTest">
+                                <results>
+                                  <test-case asserts="2" executed="True" name="ILRepack.Tests.Steps.ResourceProcessing.BamlGeneratorTests.AddMergedDictionaries_GivenExistingGenericXaml_CreatesExpectedXaml(&quot;EmptyResourceDictionary/Start.xaml&quot;,&quot;EmptyResourceDictionary/End.xaml&quot;)" result="Success" success="True" time="0.442"/>
+                                  <test-case asserts="2" executed="True" name="ILRepack.Tests.Steps.ResourceProcessing.BamlGeneratorTests.AddMergedDictionaries_GivenExistingGenericXaml_CreatesExpectedXaml(&quot;NonExistingMergedDictionaries/Start.xaml&quot;,&quot;NonExistingMergedDictionaries/End.xaml&quot;)" result="Success" success="True" time="0.013"/>
+                                  <test-case asserts="2" executed="True" name="ILRepack.Tests.Steps.ResourceProcessing.BamlGeneratorTests.AddMergedDictionaries_GivenExistingGenericXaml_CreatesExpectedXaml(&quot;ExistingMergedDictionaries/Start.xaml&quot;,&quot;ExistingMergedDictionaries/End.xaml&quot;)" result="Success" success="True" time="0.016"/>
+                                </results>
+                              </test-suite>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.ResourceProcessing.BamlGeneratorTests.AddMergedDictionaries_GivenExistingGenericXamlThatIsNotAResourceDictionary_LogsErrorAndReturnsSameBaml" result="Success" success="True" time="0.011"/>
+                              <test-case asserts="2" executed="True" name="ILRepack.Tests.Steps.ResourceProcessing.BamlGeneratorTests.GenerateThemesGenericXaml_GivenIncludedXamlFiles_GeneratesSameBamlAsSample" result="Success" success="True" time="0.009"/>
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                      <test-suite asserts="0" executed="True" name="XamlResourcePathPatcherStepTests" result="Success" success="True" time="0.012" type="TestFixture">
+                        <results>
+                          <test-suite asserts="0" executed="True" name="PatchPath_GivenPathInMainAssembly_ReturnsExpectedPatchedPath" result="Success" success="True" time="0.007" type="ParameterizedTest">
+                            <results>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInMainAssembly_ReturnsExpectedPatchedPath(&quot;pack://application:,,,/ClassLibrary;component/TextBlockStyles.xaml&quot;,&quot;pack://application:,,,/MainAssembly;component/ClassLibrary/TextBlockStyles.xaml&quot;)" result="Success" success="True" time="0.002"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInMainAssembly_ReturnsExpectedPatchedPath(&quot;/MainAssembly;component/ButtonStyles.xaml&quot;,&quot;/MainAssembly;component/ButtonStyles.xaml&quot;)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInMainAssembly_ReturnsExpectedPatchedPath(&quot;/ClassLibrary;component/ButtonStyles.xaml&quot;,&quot;/MainAssembly;component/ClassLibrary/ButtonStyles.xaml&quot;)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInMainAssembly_ReturnsExpectedPatchedPath(&quot;/themes/ButtonStyles.xaml&quot;,&quot;/themes/ButtonStyles.xaml&quot;)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInMainAssembly_ReturnsExpectedPatchedPath(null,null)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInMainAssembly_ReturnsExpectedPatchedPath(&quot;&quot;,&quot;&quot;)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInMainAssembly_ReturnsExpectedPatchedPath(&quot;asdasd&quot;,&quot;asdasd&quot;)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInMainAssembly_ReturnsExpectedPatchedPath(&quot;/lol&quot;,&quot;/lol&quot;)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInMainAssembly_ReturnsExpectedPatchedPath(&quot;123&quot;,&quot;123&quot;)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInMainAssembly_ReturnsExpectedPatchedPath(&quot;/ClassLibrary&quot;,&quot;/ClassLibrary&quot;)" result="Success" success="True" time="0.000"/>
+                            </results>
+                          </test-suite>
+                          <test-suite asserts="0" executed="True" name="PatchPath_GivenPathInReferencedAssembly_ReturnsExpectedPatchedPath" result="Success" success="True" time="0.004" type="ParameterizedTest">
+                            <results>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInReferencedAssembly_ReturnsExpectedPatchedPath(&quot;pack://application:,,,/ClassLibrary;component/TextBlockStyles.xaml&quot;,&quot;pack://application:,,,/MainAssembly;component/ClassLibrary/TextBlockStyles.xaml&quot;)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInReferencedAssembly_ReturnsExpectedPatchedPath(&quot;/ClassLibrary;component/ButtonStyles.xaml&quot;,&quot;/MainAssembly;component/ClassLibrary/ButtonStyles.xaml&quot;)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInReferencedAssembly_ReturnsExpectedPatchedPath(&quot;/themes/ButtonStyles.xaml&quot;,&quot;/ClassLibrary/themes/ButtonStyles.xaml&quot;)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInReferencedAssembly_ReturnsExpectedPatchedPath(null,null)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInReferencedAssembly_ReturnsExpectedPatchedPath(&quot;&quot;,&quot;&quot;)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInReferencedAssembly_ReturnsExpectedPatchedPath(&quot;asdasd&quot;,&quot;asdasd&quot;)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInReferencedAssembly_ReturnsExpectedPatchedPath(&quot;/lol&quot;,&quot;/lol&quot;)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInReferencedAssembly_ReturnsExpectedPatchedPath(&quot;123&quot;,&quot;123&quot;)" result="Success" success="True" time="0.000"/>
+                              <test-case asserts="1" executed="True" name="ILRepack.Tests.Steps.XamlResourcePathPatcherStepTests.PatchPath_GivenPathInReferencedAssembly_ReturnsExpectedPatchedPath(&quot;/ClassLibrary&quot;,&quot;/ClassLibrary&quot;)" result="Success" success="True" time="0.000"/>
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="E:\src\p\il-repack\ILRepack.IntegrationTests\bin\Release\ILRepack.IntegrationTests.dll" total="6" errors="0" failures="1" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2016-01-19" time="13:25:43">
+  <environment nunit-version="2.6.4.14350" clr-version="2.0.50727.8670" os-version="Microsoft Windows NT 6.2.9200.0" platform="Win32NT" cwd="E:\src\p\il-repack" machine-name="machinename" user="username" user-domain="domain" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Assembly" name="E:\src\p\il-repack\ILRepack.IntegrationTests\bin\Release\ILRepack.IntegrationTests.dll" executed="True" result="Failure" success="False" time="2.561" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="ILRepack" executed="True" result="Failure" success="False" time="2.554" asserts="0">
+        <results>
+          <test-suite type="Namespace" name="IntegrationTests" executed="True" result="Failure" success="False" time="2.554" asserts="0">
+            <results>
+              <test-suite type="Namespace" name="WPF" executed="True" result="Failure" success="False" time="2.554" asserts="0">
+                <results>
+                  <test-suite type="TestFixture" name="WPFScenarios" executed="True" result="Failure" success="False" time="2.553" asserts="0">
+                    <results>
+                      <test-case name="ILRepack.IntegrationTests.WPF.WPFScenarios.GivenApplicationThatUsesThemingAndStylesFromA_MergedWPFApplicationRunsSuccessfully" executed="True" result="Success" success="True" time="0.343" asserts="3" />
+                      <test-case name="ILRepack.IntegrationTests.WPF.WPFScenarios.GivenSampleApplicationWithMahAppsAndSystemWindowsInteractivityWPF_MergedWPFApplicationRunsSuccessfully" executed="True" result="Success" success="True" time="1.334" asserts="3" />
+                      <test-case name="ILRepack.IntegrationTests.WPF.WPFScenarios.GivenTrue_ThisTestFails" executed="True" result="Failure" success="False" time="0.006" asserts="1">
+                        <failure>
+                          <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+                          <stack-trace><![CDATA[]]></stack-trace>
+                        </failure>
+                      </test-case>
+                      <test-case name="ILRepack.IntegrationTests.WPF.WPFScenarios.GivenXAMLThatUsesLibraryClass_MergedWPFApplicationRunsSuccessfully" executed="True" result="Success" success="True" time="0.283" asserts="3" />
+                      <test-case name="ILRepack.IntegrationTests.WPF.WPFScenarios.GivenXAMLThatUsesLibraryUserControl_MergedWPFApplicationRunsSuccessfully" executed="True" result="Success" success="True" time="0.298" asserts="3" />
+                      <test-case name="ILRepack.IntegrationTests.WPF.WPFScenarios.GivenXAMLThatUsesNestedLibraryUserControlAndClass_MergedWPFApplicationRunsSuccessfully" executed="True" result="Success" success="True" time="0.269" asserts="3" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

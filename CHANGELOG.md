@@ -1,6 +1,7 @@
 # gradle-nunit-plugin changelog
 
 ## 1.6
+* Default working directory of NUnit v3 to build\nunit\
 
 ## 1.5
 ### Fixed

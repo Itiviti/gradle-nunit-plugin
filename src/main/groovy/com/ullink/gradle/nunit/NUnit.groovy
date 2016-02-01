@@ -266,6 +266,9 @@ class NUnit extends ConventionTask {
         } else {
             commandLineArgs += "-xml:$testReportPath"
         }
+        if (isV3) {
+            commandLineArgs += "-work:$outputFolder"
+        }
 
         getTestAssemblies().each {
             def file = project.file(it)

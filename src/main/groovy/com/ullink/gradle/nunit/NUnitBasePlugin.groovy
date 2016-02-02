@@ -7,6 +7,7 @@ class NUnitBasePlugin implements Plugin<Project> {
         project.apply plugin: 'de.undercouch.download'
         project.tasks.withType(NUnit).whenTaskAdded { NUnit task ->
             applyNunitConventions(task, project)
+            task.metaClass.mixin NUnit2Mixins
         }
     }
 

@@ -1,6 +1,9 @@
 # gradle-nunit-plugin changelog
 
 ## 1.6
+### Changed
+* Default working directory of NUnit v3 to build\nunit\
+* Renamed parallel_forks to parallelForks in NUnit task
 
 ## 1.5
 ### Fixed

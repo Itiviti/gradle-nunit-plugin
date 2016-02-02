@@ -42,7 +42,7 @@ public class NUnitTest {
     public void whenSingleTest_notParallel_singleTestReport(){
         def nunit = getNUnitTask()
         nunit.reportFileName = 'TestResult.xml'
-        nunit.parallel_forks = true
+        nunit.parallelForks = true
         nunit.run = 'Test1'
         nunit.reportFolder = './'
 
@@ -53,7 +53,7 @@ public class NUnitTest {
     public void whenSingleTest_Parallel_singleTestReport(){
         def nunit = getNUnitTask()
         nunit.reportFileName = 'TestResult.xml'
-        nunit.parallel_forks = true
+        nunit.parallelForks = true
         nunit.run = 'Test1'
         nunit.reportFolder = './'
 
@@ -64,7 +64,7 @@ public class NUnitTest {
     public void whenMultipleTests_notParallel_singleTestReport(){
         def nunit = getNUnitTask()
         nunit.reportFileName = 'TestResult.xml'
-        nunit.parallel_forks = false
+        nunit.parallelForks = false
         nunit.run = ['Test1', 'Test2']
         nunit.reportFolder = './'
 
@@ -75,7 +75,7 @@ public class NUnitTest {
     public void whenMultipleTests_parallel_singleTestReport(){
         def nunit = getNUnitTask()
         nunit.reportFileName = 'TestResult.xml'
-        nunit.parallel_forks = true
+        nunit.parallelForks = true
         nunit.run = ['Test1', 'Test2']
         nunit.reportFolder = './'
 

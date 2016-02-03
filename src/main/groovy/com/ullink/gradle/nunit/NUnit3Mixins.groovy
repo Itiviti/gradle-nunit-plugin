@@ -5,41 +5,35 @@ import org.gradle.api.GradleException
 class NUnit3Mixins {
 
     def where
-    def test
-    def testList
 
-    def useX86
-    def shadowCopy
-
-    def methodMissing(String name, args) {
-        def obsoleteParameters = [
-            run: 'test',
-            runList: 'testList',
-            include: 'where',
-            exclude: 'where'
-        ]
-        methodMissing(obsoleteParameters, name, args)
+    // Deprecated
+    void setRun(def run) {
+        logDeprecatedParameters('run', 'test')
+        this.setTest(run)
     }
 
-    static void methodMissing(def obsoleteParameterMap, String name, args) {
-        if (name.startsWith('set')) {
-
-            // variables missing in NUnit 3
-            def variableName = name.substring(3, 1).toLowerCase()
-            if (name.length > 3) {
-                 variableName += name.substring(4)
-            }
-
-            // Obsolete variables
-            if (obsoleteParameterMap[variableName]) {
-                throwOnObsoleteParameter variableName obsoleteParameterMap[variableName]
-            }
-        }
-        throw new MissingMethodException(name, NUnit3Mixins.class, args)
+    // Deprecated
+    void setRunList(def runList) {
+        logDeprecatedParameters('runList', 'testList')
+        this.setTestList(runList)
     }
 
-    static void throwOnObsoleteParameter(def oldName, def newName) {
-        throw new GradleException("'$oldName' option isn't supported, use '$newName' option instead")
+    void logDeprecatedParameters(def variableName, def newVariableName) {
+        this.getLogger().warn("'$variableName' option has been deprecated, please use '$newVariableName' option instead")
+    }
+
+    // Obsolete
+    void setInclude(def obj) {
+        throwOnObsoleteParameters('include', 'where')
+    }
+
+    // Obsolete
+    void setExclude(def obj) {
+        throwOnObsoleteParameters('exclude', 'where')
+    }
+
+    void throwOnObsoleteParameters(def variableName, def newVariableName) {
+        throw new GradleException("'$variableName' option isn't supported, please use '$newVariableName' option instead")
     }
 
     File getNunitExec() {
@@ -51,20 +45,20 @@ class NUnit3Mixins {
     def buildAdditionalCommandArgs(def test, def testReportPath) {
         def commandLineArgs = []
 
-        if (useX86) {
+        if (this.useX86) {
             commandLineArgs += '-x86'
         }
         if (where) {
             commandLineArgs += "-where:$where"
         }
-        if (shadowCopy) {
+        if (this.shadowCopy) {
             commandLineArgs += '-shadowcopy'
         }
-        if (testList) {
-            commandLineArgs += "-testlist:$testList"
+        if (this.testList) {
+            commandLineArgs += "-testlist:${this.testList}"
         }
         if (test) {
-            commandLineArgs += "-test:$test"
+            commandLineArgs += "-test:${test}"
         }
         commandLineArgs += "-result:$testReportPath"
 

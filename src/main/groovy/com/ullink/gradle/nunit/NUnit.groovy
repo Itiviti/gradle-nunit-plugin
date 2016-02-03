@@ -28,6 +28,9 @@ class NUnit extends ConventionTask {
     boolean ignoreFailures = false
     boolean parallelForks = true
 
+    def test
+    def testList
+
     NUnit() {
         conventionMapping.map "reportFolder", { new File(outputFolder, 'reports') }
         inputs.files {
@@ -36,12 +39,16 @@ class NUnit extends ConventionTask {
     }
 
     boolean getIsV3() {
-        getNunitVersion().startsWith('3.')
+        getIsV3(getNunitVersion())
+    }
+
+    static boolean getIsV3(def version) {
+        version.startsWith('3.')
     }
 
     void setNunitVersion(def version) {
         this.nunitVersion = version
-        if (version.startsWith('3.')) {
+        if (getIsV3(version)) {
             this.metaClass.mixin NUnit3Mixins
         }
     }
@@ -95,6 +102,12 @@ class NUnit extends ConventionTask {
         }
 
         mergeTestReports(intermediatReportsPath.listFiles(), getTestReportPath())
+    }
+
+    // Used by gradle-opencover-plugin
+    def getCommandArgs() {
+        def testRuns = getTestInputsAsString(this.getTest())
+        buildCommandArgs (testRuns, getTestReportPath())
     }
 
     void mergeTestReports(File[] files, File outputFile) {
@@ -169,7 +182,7 @@ class NUnit extends ConventionTask {
         getReportFolderImpl().mkdirs()
     }
 
-    def buildCommandArgs(def test, def testReportPath) {
+    def buildCommandArgs(def testInput, def testReportPath) {
         def commandLineArgs = []
 
         String verb = verbosity
@@ -197,7 +210,7 @@ class NUnit extends ConventionTask {
         }
         commandLineArgs += "-work:$outputFolder"
 
-        commandLineArgs += buildAdditionalCommandArgs(test, testReportPath)
+        commandLineArgs += buildAdditionalCommandArgs(testInput, testReportPath)
 
         getTestAssemblies().each {
             def file = project.file(it)

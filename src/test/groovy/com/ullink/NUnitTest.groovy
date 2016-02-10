@@ -1,5 +1,8 @@
 package com.ullink
 
+import static groovy.test.GroovyAssert.shouldFail
+
+import org.gradle.api.GradleException
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Test
 
@@ -42,7 +45,7 @@ public class NUnitTest {
     public void whenSingleTest_notParallel_singleTestReport(){
         def nunit = getNUnitTask()
         nunit.reportFileName = 'TestResult.xml'
-        nunit.parallel_forks = true
+        nunit.parallelForks = true
         nunit.run = 'Test1'
         nunit.reportFolder = './'
 
@@ -50,10 +53,10 @@ public class NUnitTest {
     }
 
     @Test
-    public void whenSingleTest_Parallel_singleTestReport(){
+    public void whenSingleTest_parallel_singleTestReport(){
         def nunit = getNUnitTask()
         nunit.reportFileName = 'TestResult.xml'
-        nunit.parallel_forks = true
+        nunit.parallelForks = true
         nunit.run = 'Test1'
         nunit.reportFolder = './'
 
@@ -64,7 +67,7 @@ public class NUnitTest {
     public void whenMultipleTests_notParallel_singleTestReport(){
         def nunit = getNUnitTask()
         nunit.reportFileName = 'TestResult.xml'
-        nunit.parallel_forks = false
+        nunit.parallelForks = false
         nunit.run = ['Test1', 'Test2']
         nunit.reportFolder = './'
 
@@ -75,11 +78,99 @@ public class NUnitTest {
     public void whenMultipleTests_parallel_singleTestReport(){
         def nunit = getNUnitTask()
         nunit.reportFileName = 'TestResult.xml'
-        nunit.parallel_forks = true
+        nunit.parallelForks = true
         nunit.run = ['Test1', 'Test2']
         nunit.reportFolder = './'
 
         assert nunit.getTestReportPath() == new File(nunit.project.projectDir, "TestResult.xml")
+    }
+
+    @Test
+    public void whenNUnit2_run_runSpecified() {
+        def nunit = getNUnitTask()
+        nunit.nunitVersion = '2.0.0'
+        nunit.run = ['Test1', 'Test2']
+
+        def commandArgs = nunit.getCommandArgs()
+
+        // list contains does not work with GString
+        assert commandArgs.find { it == '-run:Test1,Test2' }
+    }
+
+    @Test
+    public void whenNUnit2_test_runSpecified() {
+        def nunit = getNUnitTask()
+        nunit.nunitVersion = '2.0.0'
+        nunit.test = ['Test1', 'Test2']
+
+        def commandArgs = nunit.getCommandArgs()
+
+        assert commandArgs.find { it == '-run:Test1,Test2' }
+    }
+
+    @Test
+    public void whenNUnit3_test_testSpecified() {
+        def nunit = getNUnitTask()
+        nunit.nunitVersion = '3.0.0'
+        nunit.test = ['Test1', 'Test2']
+
+        def commandArgs = nunit.getCommandArgs()
+
+        assert commandArgs.find { it == '-test:Test1,Test2' }
+    }
+
+    @Test
+    public void whenNUnit3_run_testSpecified() {
+        def nunit = getNUnitTask()
+        nunit.nunitVersion = '3.0.0'
+        nunit.run = ['Test1', 'Test2']
+
+        def commandArgs = nunit.getCommandArgs()
+
+        assert commandArgs.find { it == '-test:Test1,Test2' }
+    }
+
+    @Test
+    public void whenNUnit2_include_shouldPass() {
+        def nunit = getNUnitTask()
+        nunit.nunitVersion = '2.0.0'
+        nunit.include = 'foo'
+
+        def commandArgs = nunit.getCommandArgs()
+
+        assert commandArgs.find { it == '-include:foo' }
+    }
+
+    @Test
+    public void whenNUnit3_include_shouldFail() {
+        def nunit = getNUnitTask()
+        nunit.nunitVersion = '3.0.0'
+
+        shouldFail(GradleException) {
+            nunit.include = 'foo'
+        }
+    }
+
+    @Test
+    public void whenNUnit3_shadowcopy_shadowcopy() {
+        def nunit = getNUnitTask()
+        nunit.nunitVersion = '3.0.0'
+        nunit.shadowCopy = true
+
+        def commandArgs = nunit.getCommandArgs()
+
+        assert commandArgs.find { it == '-shadowcopy' }
+    }
+
+    @Test
+    public void whenNUnit2_notShadowcopy_noshadow() {
+        def nunit = getNUnitTask()
+        nunit.nunitVersion = '2.0.0'
+        nunit.shadowCopy = false
+
+        def commandArgs = nunit.getCommandArgs()
+
+        assert commandArgs.find { it == '-noshadow' }
     }
 
     def getNUnitTask() {

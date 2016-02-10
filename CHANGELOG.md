@@ -1,6 +1,13 @@
 # gradle-nunit-plugin changelog
 
 ## 1.6
+### Added
+* `getCommandArgs` is added to NUnit task
+
+### Changed
+* Default working directory of NUnit v3 to build\nunit\
+* Renamed parallel_forks to parallelForks in NUnit task
+* Refactored for NUnit3 support and log a warnings if deprecated parameters `run` or `runList` has been specified
 
 ## 1.5
 ### Fixed

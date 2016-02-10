@@ -1,9 +1,9 @@
 package com.ullink.gradle.nunit
 
 import org.bouncycastle.math.raw.Nat
-import org.gradle.api.GradleException
 import org.gradle.api.internal.ConventionTask
 import groovyx.gpars.GParsPool
+import org.gradle.api.GradleException
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.OutputFiles
 import org.gradle.api.tasks.TaskAction
@@ -15,29 +15,21 @@ class NUnit extends ConventionTask {
     def nunitVersion
     def nunitDownloadUrl
     List testAssemblies
-    def include
-    def exclude
-    def where
+
     def framework
     def verbosity
     def config
     def timeout
-
-    // TODO: shouldn't we just make it a single variable and detect which case it is when invoking NUnit instead?
-    // runList and run are mutually exclusive
-    def runList
-    def run
-
-    // testList and test are mutually exclusive, NUnit3-specific
-    def testList
-    def test
 
     def reportFolder
     boolean useX86 = false
     boolean shadowCopy = false
     String reportFileName = 'TestResult.xml'
     boolean ignoreFailures = false
-    boolean parallel_forks = true
+    boolean parallelForks = true
+
+    def test
+    def testList
 
     NUnit() {
         conventionMapping.map "reportFolder", { new File(outputFolder, 'reports') }
@@ -46,21 +38,24 @@ class NUnit extends ConventionTask {
         }
     }
 
-    File nunitBinFile(String file) {
-        new File(project.file(getNunitHome()), "bin/${file}")
-    }
-
     boolean getIsV3() {
-        getNunitVersion().startsWith("3.")
+        getIsV3(getNunitVersion())
     }
 
-    File getNunitExec() {
+    static boolean getIsV3(def version) {
+        version.startsWith('3.')
+    }
+
+    void setNunitVersion(def version) {
+        this.nunitVersion = version
+        if (getIsV3(version)) {
+            this.metaClass.mixin NUnit3Mixins
+        }
+    }
+
+    File nunitBinFile(String file) {
         assert getNunitHome(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable"
-        File nunitExec = isV3
-            ? nunitBinFile('nunit3-console.exe')
-            : nunitBinFile("nunit-console${useX86 ? '-x86' : ''}.exe")
-        assert nunitExec.isFile(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable"
-        return nunitExec
+        new File(project.file(getNunitHome()), "bin/${file}")
     }
 
     File getOutputFolder() {
@@ -74,6 +69,7 @@ class NUnit extends ConventionTask {
     @OutputFile
     File getTestReportPath() {
         // for the non-default nunit tasks, ensure we write the report in a separate file
+        // TODO: Do we need to supply prefix when user has specified its own report file name?
         def reportFileNamePrefix = name == 'nunit' ? '' : name
         new File(getReportFolderImpl(), reportFileNamePrefix + reportFileName)
     }
@@ -84,14 +80,9 @@ class NUnit extends ConventionTask {
     }
 
     def decideExecutionPath(Closure singleRunAction, Closure multipleRunsAction) {
-        if (!test && run) {
-            test = run
-        }
-
-        if (!parallel_forks || !test) {
+        if (!parallelForks || !test) {
             return singleRunAction(test)
-        }
-        else {
+        } else {
             return multipleRunsAction(test)
         }
     }
@@ -111,6 +102,12 @@ class NUnit extends ConventionTask {
         }
 
         mergeTestReports(intermediatReportsPath.listFiles(), getTestReportPath())
+    }
+
+    // Used by gradle-opencover-plugin
+    def getCommandArgs() {
+        def testRuns = getTestInputsAsString(this.getTest())
+        buildCommandArgs (testRuns, getTestReportPath())
     }
 
     void mergeTestReports(File[] files, File outputFile) {
@@ -150,7 +147,7 @@ class NUnit extends ConventionTask {
     }
 
     def testRun(def test, def reportPath) {
-        def cmdLine = [nunitExec.absolutePath, *buildCommandArgs(test, reportPath)]
+        def cmdLine = [getNunitExec().absolutePath, *buildCommandArgs(test, reportPath)]
         if (!isFamily(FAMILY_WINDOWS)) {
             cmdLine = ["mono", *cmdLine]
         }
@@ -178,14 +175,14 @@ class NUnit extends ConventionTask {
             return
         }
 
-        throw new GradleException("${nunitExec} execution failed (ret=${mbr.exitValue})");
+        throw new GradleException("${getNunitExec()} execution failed (ret=${mbr.exitValue})");
     }
 
     def prepareExecute() {
         getReportFolderImpl().mkdirs()
     }
 
-    def buildCommandArgs(def test, def testReportPath) {
+    def buildCommandArgs(def testInput, def testReportPath) {
         def commandLineArgs = []
 
         String verb = verbosity
@@ -194,82 +191,30 @@ class NUnit extends ConventionTask {
                 verb = 'Verbose'
             } else if (logger.infoEnabled) {
                 verb = 'Info'
-            } else { // 'quiet'
+            } else {
+                // 'quiet'
                 verb = 'Warning'
             }
         }
         if (verb) {
             commandLineArgs += "-trace=$verb"
         }
-        if (isV3) {
-            if (useX86) {
-                commandLineArgs += '-x86'
-            }
-        }
-        if (isV3) {
-            if (include || exclude) {
-                throw new GradleException("'include'/'exclude' options aren't supported on NUnit v3, use 'where' option instead")
-            }
-            if (where) {
-                commandLineArgs += "-where:$where"
-            }
-        } else {
-            if (where) {
-                throw new GradleException("'where' isn't supported on NUnit v2, you need to set the NUnit version to v3+")
-            }
-            if (exclude) {
-                commandLineArgs += "-exclude:$exclude"
-            }
-            if (include) {
-                commandLineArgs += "-include:$include"
-            }
-        }
         if (framework) {
             commandLineArgs += "-framework:$framework"
         }
-        if (isV3) {
-            if (shadowCopy) {
-                commandLineArgs += '-shadowcopy'
-            }
-        } else {
-            if (!shadowCopy) {
-                commandLineArgs += '-noshadow'
-            }
-        }
-        // Maintain backward compatibility with old (nunit 2.x) gradle files.
-        if (!testList && runList) {
-            testList = runList
-        }
-
-        if (testList) {
-            if (isV3) {
-                commandLineArgs += "-testlist:$testList"
-            } else {
-                commandLineArgs += "-runList:$testList"
-            }
-        }
-        if (test) {
-            if (isV3) {
-                commandLineArgs += "-test:$test"
-            } else {
-                commandLineArgs += "-run:$test"
-            }
-        }
-        if (config){
+        if (config) {
             commandLineArgs += "-config:$config"
         }
-        if (timeout){
+        if (timeout) {
             commandLineArgs += "-timeout:$timeout"
         }
-        if (isV3) {
-            commandLineArgs += "-result:$testReportPath"
-        } else {
-            commandLineArgs += "-xml:$testReportPath"
-        }
+        commandLineArgs += "-work:$outputFolder"
+
+        commandLineArgs += buildAdditionalCommandArgs(testInput, testReportPath)
 
         getTestAssemblies().each {
             def file = project.file(it)
-            if (file.exists() )
+            if (file.exists())
                 commandLineArgs += file
             else
                 commandLineArgs += it

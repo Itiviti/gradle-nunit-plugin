@@ -25,6 +25,7 @@ It creates a task 'nunit' that may be configured as follows:
 
     nunit {
         // optional - defaults to '2.6.4', but plugin is compatible with v3+ as well
+        // for compatibility reason, nunitVersion should be set (if needed) before applying version specific parameters
         nunitVersion
         // optional - defaults to 'https://github.com/nunit/nunitv2/releases/download'
         nunitDownloadUrl

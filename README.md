@@ -48,6 +48,9 @@ It creates a task 'nunit' that may be configured as follows:
         // for NUnit v3+, use _where_ option instead of include/exclude
         framework 'net-1.1'
         shadowCopy = true
+
+        // for NUnit v3+
+        resultFormat = nunit2
     }
 
 # License

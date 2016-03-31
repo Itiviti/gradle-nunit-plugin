@@ -6,6 +6,8 @@ class NUnit3Mixins {
 
     def where
 
+    def resultFormat
+
     // Deprecated
     void setRun(def run) {
         logDeprecatedParameters('run', 'test')
@@ -60,7 +62,11 @@ class NUnit3Mixins {
         if (test) {
             commandLineArgs += "-test:${test}"
         }
-        commandLineArgs += "-result:$testReportPath"
+        String resultFormatArg = ''
+        if(resultFormat) {
+            resultFormatArg = ";format=$resultFormat"
+        }
+        commandLineArgs += "-result:$testReportPath$resultFormatArg"
 
         commandLineArgs
     }

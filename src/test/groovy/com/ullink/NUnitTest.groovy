@@ -173,6 +173,18 @@ public class NUnitTest {
         assert commandArgs.find { it == '-noshadow' }
     }
 
+    @Test
+    public void whenNUnit3_setResultFormat_resultFormatIsSet()
+    {
+        def nunit = getNUnitTask()
+        nunit.nunitVersion = '3.0.1'
+        nunit.resultFormat = 'nunit3'
+
+        def commandArgs = nunit.getCommandArgs()
+
+        assert commandArgs.find { it =~ /-result:.*TestResult\.xml;format=nunit3/ }
+    }
+
     def getNUnitTask() {
         def project = ProjectBuilder.builder().build()
         project.apply plugin: 'nunit'

@@ -2,6 +2,8 @@ package com.ullink.gradle.nunit
 
 import groovy.xml.XmlUtil
 
+import java.text.NumberFormat
+
 class NUnitTestResultsMerger {
     String merge(List<String> stringTestResults) {
         def testResults = stringTestResults.collect { new XmlParser().parseText(it) }
@@ -15,7 +17,13 @@ class NUnitTestResultsMerger {
         )
 
         baseXml.children().add(0, firstTestResult.environment.first())
-        baseXml.children().add(1, firstTestResult.'culture-info'.first())
+        def cultureInfo = firstTestResult.'culture-info'.first()
+        baseXml.children().add(1, cultureInfo)
+
+        def splitCurrentCulture = cultureInfo.@'current-culture'.split('-')
+        def numberFormat = NumberFormat.getInstance(new Locale(
+                splitCurrentCulture[0], // language code
+                splitCurrentCulture[1]))// country code
 
         def mergedResultsNode = baseXml.'test-suite'.results.first()
         testResults.each { xml -> mergedResultsNode.append(xml.'test-suite') }
@@ -30,7 +38,7 @@ class NUnitTestResultsMerger {
 
         def mergedTestSuite = baseXml.'test-suite'
         mergedTestSuite.@time = testResults.inject(0.0d) { r, node ->
-            r + Double.valueOf(node.'test-suite'.first().@time)
+            r + numberFormat.parse(node.'test-suite'.first().@time)
         }
         mergedTestSuite.@result = testResults.inject('Success') { r, node ->
             r == 'Failure' ? r : node.'test-suite'.first().@result

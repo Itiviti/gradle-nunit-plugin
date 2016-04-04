@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<test-results name="Merged results" total="349" errors="0" failures="0" not-run="0" inconclusive="0" skipped="0" invalid="0" ignored="0" date="2016-04-01" time="12:15:04">
+  <environment nunit-version="1.0.0.0" clr-version="4.0.30319.42000" os-version="Microsoft Windows NT 10.0.10240.0" platform="Win32NT" cwd="C:\sources\git\project\" machine-name="blabla" user="username" user-domain="adomain"/>
+  <culture-info current-culture="fr-FR" current-uiculture="en-US"/>
+  <test-suite type="Test Project" executed="True" name="" asserts="0" time="13.413" result="Failure">
+    <results>
+      <test-suite type="Assembly" name="project.dll" executed="True" result="Failure" success="False" time="13,413" asserts="1424">
+        <properties>
+          <property name="ApartmentState" value="STA"/>
+          <property name="_PID" value="38932"/>
+          <property name="_APPDOMAIN" value="test-domain-"/>
+        </properties>
+        <failure>
+          <message>One or more child tests had errors</message>
+          <stack-trace/>
+        </failure>
+        <results>
+          <test-suite type="TestSuite" name="namespace1" executed="True" result="Failure" success="False" time="13,406" asserts="1424">
+            <failure>
+              <message>One or more child tests had errors</message>
+              <stack-trace/>
+            </failure>
+            <results>
+              <test-suite type="TestSuite" name="common" executed="True" result="Failure" success="False" time="13,406" asserts="1424">
+                <failure>
+                  <message>One or more child tests had errors</message>
+                  <stack-trace/>
+                </failure>
+                <results>
+                  <test-suite type="TestSuite" name="controls" executed="True" result="Success" success="True" time="12,813" asserts="918">
+                    <results>
+                      <test-suite type="TestSuite" name="tests" executed="True" result="Success" success="True" time="12,813" asserts="918">
+                        <results>
+                          <test-suite type="TestSuite" name="AdvControls" executed="True" result="Success" success="True" time="2,123" asserts="12">
+                            <results>
+                              <test-suite type="TestFixture" name="AdvTimesTests" executed="True" result="Success" success="True" time="1,729" asserts="8">
+                                <results>
+                                  <test-suite type="ParameterizedMethod" name="ValueShouldBeReturned_WhateverControlState" executed="True" result="Success" success="True" time="0,954" asserts="8">
+                                    <results>
+                                      <test-case name="namespace1.common.controls.tests.AdvControls.AdvTimesTests.ValueShouldBeReturned_WhateverControlState(True,True)" executed="True" result="Success" success="True" time="0,905" asserts="2"/>
+                                      <test-case name="namespace1.common.controls.tests.AdvControls.AdvTimesTests.ValueShouldBeReturned_WhateverControlState(True,False)" executed="True" result="Success" success="True" time="0,017" asserts="2"/>
+                                      <test-case name="namespace1.common.controls.tests.AdvControls.AdvTimesTests.ValueShouldBeReturned_WhateverControlState(False,True)" executed="True" result="Success" success="True" time="0,013" asserts="2"/>
+                                      <test-case name="namespace1.common.controls.tests.AdvControls.AdvTimesTests.ValueShouldBeReturned_WhateverControlState(False,False)" executed="True" result="Success" success="True" time="0,013" asserts="2"/>
+                                    </results>
+                                  </test-suite>
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

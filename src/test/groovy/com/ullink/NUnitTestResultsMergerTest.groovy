@@ -29,6 +29,24 @@ class NUnitTestResultsMergerTest {
     }
 
     private String getTestResult(String fileName) {
-        getClass().getResource("/sample-testresults/${fileName}.xml").text
+        getClass().getResource("/sample-testresults/${fileName}.xml")
+                .text
+                // remove stuff like ?
+                .replaceAll("[^\\x20-\\x7e\\x0A]", "")
+    }
+
+    @Test
+    public void givenAReportGeneratedWithFrenchLocalization_merge_timeShouldBeParsedProperly()
+    {
+        String testResult = new NUnitTestResultsMerger().merge([getTestResult('TestResult_withFrenchCultureInfo')])
+        XMLUnit.setIgnoreComments(true)
+        XMLUnit.setIgnoreWhitespace(true)
+        XMLUnit.setIgnoreAttributeOrder(true)
+        def diff = XMLUnit.compareXML(
+                getTestResult('TestResult_withFrenchCultureInfo_merged'),
+                testResult)
+        diff.overrideElementQualifier(new RecursiveElementNameAndTextQualifier());
+        String result = new DetailedDiff(diff).allDifferences.join('\n')
+        Assert.assertEquals('', result);
     }
 }

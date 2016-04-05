@@ -112,7 +112,7 @@ class NUnit extends ConventionTask {
 
     void mergeTestReports(File[] files, File outputFile) {
         logger.info("Merging test reports $files into $outputFile ...")
-        outputFile.write(new NUnitTestResultsMerger().merge(files.collect { it.text }))
+        outputFile.write(new NUnitTestResultsMerger().merge(files.collect { it.text }, isV3))
     }
 
     List<String> getTestInputAsList(def testInput)

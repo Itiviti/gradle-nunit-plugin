@@ -3,7 +3,6 @@
 ## 1.7
 ### Added
 * `resultFormat` is added to NUnit task. It allows to set the test report format (nunit2 or nunit3) for NUnit v3.
-* Numbers are parsed using the localization set in the first report.
 
 ## 1.6
 ### Added

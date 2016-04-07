@@ -8,7 +8,16 @@ import org.junit.Test
 
 class NUnitTestResultsMergerTest {
     @Test
-    public void givenMultipleTestResultFilesForSameAssembly_merge_mergesIntoExpectedOutputResult()
+    public void givenMultipleTestResultFilesForSameAssemblyWithoutTakingCultureFromFile_merge_mergesIntoExpectedOutputResult(){
+        givenMultipleTestResultFilesForSameAssembly_merge_mergesIntoExpectedOutputResult(false);
+    }
+
+    @Test
+    public void givenMultipleTestResultFilesForSameAssemblyTakingCultureFromFile_merge_mergesIntoExpectedOutputResult(){
+        givenMultipleTestResultFilesForSameAssembly_merge_mergesIntoExpectedOutputResult(true);
+    }
+
+    public void givenMultipleTestResultFilesForSameAssembly_merge_mergesIntoExpectedOutputResult(boolean takeCultureFromFile)
     {
         def testResults = [
                 'TestResult_integrationTest_ILRepack.IntegrationTests.NuGet',
@@ -16,7 +25,7 @@ class NUnitTestResultsMergerTest {
                 'TestResult_unitTests'
                 ].collect { getTestResult(it) }
 
-        String testResult = new NUnitTestResultsMerger().merge(testResults)
+        String testResult = new NUnitTestResultsMerger().merge(testResults, takeCultureFromFile)
 
         XMLUnit.setIgnoreComments(true)
         XMLUnit.setIgnoreWhitespace(true)
@@ -38,7 +47,7 @@ class NUnitTestResultsMergerTest {
     @Test
     public void givenAReportGeneratedWithFrenchLocalization_merge_timeShouldBeParsedProperly()
     {
-        String testResult = new NUnitTestResultsMerger().merge([getTestResult('TestResult_withFrenchCultureInfo')])
+        String testResult = new NUnitTestResultsMerger().merge([getTestResult('TestResult_withFrenchCultureInfo')], true)
         XMLUnit.setIgnoreComments(true)
         XMLUnit.setIgnoreWhitespace(true)
         XMLUnit.setIgnoreAttributeOrder(true)

@@ -18,7 +18,6 @@ class NUnitBasePlugin implements Plugin<Project> {
             if (System.getenv()['NUNIT_HOME']) {
                 return System.getenv()['NUNIT_HOME']
             }
-            downloadNUnit(project, task)
         }
         if (project.plugins.hasPlugin('msbuild')) {
             task.dependsOn project.tasks.msbuild
@@ -31,36 +30,5 @@ class NUnitBasePlugin implements Plugin<Project> {
                 }
             }
         }
-    }
-
-    File downloadNUnit(Project project, NUnit task) {
-        def version = task.getNunitVersion()
-        def nunitDowloadUrl = task.getNunitDownloadUrl()
-        def tempDir = task.getTemporaryDir()
-        def NUnitName = "NUnit-$version"
-        def NUnitZipFile = NUnitName + '.zip'
-        def downloadedFile = new File(tempDir, NUnitZipFile)
-        def nunitCacheDir = new File(new File(project.gradle.gradleUserHomeDir, 'caches'), 'nunit')
-        if (!nunitCacheDir.exists()) {
-            nunitCacheDir.mkdirs()
-        }
-        def nunitCacheDirForVersion = new File(nunitCacheDir, NUnitName)
-
-        // special handling for nunit3 flat zip file
-        def zipOutputDir = task.isV3 ? nunitCacheDirForVersion : nunitCacheDir;
-
-        def ret = nunitCacheDirForVersion
-        if (!ret.exists()) {
-            project.logger.info "Downloading & Unpacking NUnit ${version}"
-            project.download {
-                src "$nunitDowloadUrl/$version/$NUnitZipFile"
-                dest downloadedFile
-            }
-            project.copy {
-                from project.zipTree(downloadedFile)
-                into zipOutputDir
-            }
-        }
-        ret
     }
 }

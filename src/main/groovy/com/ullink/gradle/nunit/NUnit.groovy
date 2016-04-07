@@ -36,6 +36,7 @@ class NUnit extends ConventionTask {
         inputs.files {
             getTestAssemblies()
         }
+
     }
 
     boolean getIsV3() {
@@ -54,8 +55,51 @@ class NUnit extends ConventionTask {
     }
 
     File nunitBinFile(String file) {
-        assert getNunitHome(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable"
-        new File(project.file(getNunitHome()), "bin/${file}")
+        def nunitFolder
+        if(getNunitHome()){
+            nunitFolder = getNunitHome()
+        } else {
+            nunitFolder = getNunitFolder()
+        }
+        new File(project.file(nunitFolder), "bin/${file}")
+    }
+
+    File getNunitFolder() {
+        def nunitCacheDir = getNunitCacheDir()
+        if (!nunitCacheDir.exists()) {
+            nunitCacheDir.mkdirs()
+        }
+        new File(nunitCacheDir, getNunitName())
+    }
+
+    File getNunitCacheDir() {
+        new File(new File(project.gradle.gradleUserHomeDir, 'caches'), 'nunit')
+    }
+
+    String getNunitName() {
+        "NUnit-${getNunitVersion()}"
+    }
+
+    void downloadNUnit() {
+        def NUnitZipFile = getNunitName() + '.zip'
+        def downloadedFile = new File(getTemporaryDir(), NUnitZipFile)
+        def nunitCacheDirForVersion = new File(getNunitCacheDir(), getNunitName())
+        def version = getNunitVersion()
+        def nunitDownloadUrl = getNunitDownloadUrl()
+        // special handling for nunit3 flat zip file
+        def zipOutputDir = isV3 ? nunitCacheDirForVersion : nunitCacheDir;
+        def nunitFolder = getNunitFolder()
+        if (!nunitFolder.exists()) {
+            project.logger.info "Downloading & Unpacking NUnit ${version}"
+            project.download {
+                src "$nunitDownloadUrl/$version/$NUnitZipFile"
+                dest downloadedFile
+            }
+            project.copy {
+                from project.zipTree(downloadedFile)
+                into zipOutputDir
+            }
+        }
     }
 
     File getOutputFolder() {
@@ -76,6 +120,9 @@ class NUnit extends ConventionTask {
 
     @TaskAction
     def build() {
+        if(!getNunitHome()) {
+            downloadNUnit()
+        }
         decideExecutionPath(this.&singleRunExecute, this.&multipleRunsExecute)
     }
 

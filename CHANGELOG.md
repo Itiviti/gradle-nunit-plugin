@@ -4,6 +4,9 @@
 ### Added
 * `resultFormat` is added to NUnit task. It allows to set the test report format (nunit2 or nunit3) for NUnit v3.
 
+### Fixed
+* Downloading NUnit is done in the task itself and not in the closure to get NUnit folder. `parallelForks = true` feature can bring failure when NUnit is not already downloaded.
+
 ## 1.6
 ### Added
 * `getCommandArgs` is added to NUnit task

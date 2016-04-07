@@ -148,18 +148,16 @@ class NUnit extends ConventionTask {
             testRuns.eachParallel { testRun(it, new File(intermediatReportsPath, it + ".xml")) }
         }
 
-        mergeTestReports(intermediatReportsPath.listFiles(), getTestReportPath())
+        def files =  intermediatReportsPath.listFiles().toList()
+        def outputFile = getTestReportPath()
+        logger.info("Merging test reports $files into $outputFile ...")
+        new NUnitTestResultsMerger().merge(files, outputFile)
     }
 
     // Used by gradle-opencover-plugin
     def getCommandArgs() {
         def testRuns = getTestInputsAsString(this.getTest())
         buildCommandArgs (testRuns, getTestReportPath())
-    }
-
-    void mergeTestReports(File[] files, File outputFile) {
-        logger.info("Merging test reports $files into $outputFile ...")
-        outputFile.write(new NUnitTestResultsMerger().merge(files.collect { it.text }))
     }
 
     List<String> getTestInputAsList(def testInput)

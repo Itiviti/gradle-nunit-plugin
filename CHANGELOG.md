@@ -6,6 +6,7 @@
 
 ### Fixed
 * Downloading NUnit is done in the task itself and not in the closure to get NUnit folder. `parallelForks = true` feature can bring failure when NUnit is not already downloaded.
+* Encode merged file like NUnit.
 
 ## 1.6
 ### Added

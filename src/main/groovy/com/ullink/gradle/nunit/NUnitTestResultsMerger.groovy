@@ -2,7 +2,13 @@ package com.ullink.gradle.nunit
 
 import groovy.xml.XmlUtil
 
+import java.nio.charset.StandardCharsets
+
 class NUnitTestResultsMerger {
+    void merge(List<File> files, File outputFile) {
+        outputFile.write(merge(files.collect { it.text }), StandardCharsets.UTF_8.toString())
+    }
+
     String merge(List<String> stringTestResults) {
         def testResults = stringTestResults.collect { new XmlParser().parseText(it) }
         def firstTestResult = testResults.first()

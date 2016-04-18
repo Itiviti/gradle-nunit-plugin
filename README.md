@@ -50,7 +50,7 @@ It creates a task 'nunit' that may be configured as follows:
         shadowCopy = true
 
         // for NUnit v3+
-        resultFormat = nunit2
+        resultFormat = 'nunit2'
     }
 
 # License

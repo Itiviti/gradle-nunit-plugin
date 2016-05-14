@@ -69,7 +69,11 @@ class NUnit extends ConventionTask {
         if (!nunitCacheDir.exists()) {
             nunitCacheDir.mkdirs()
         }
-        new File(nunitCacheDir, getNunitName())
+        def nunitFolder = new File(nunitCacheDir, getNunitName())
+        if (!nunitFolder.exist()) {
+            downloadNUnit()
+        }
+        return nunitFolder
     }
 
     File getNunitCacheDir() {
@@ -120,9 +124,6 @@ class NUnit extends ConventionTask {
 
     @TaskAction
     def build() {
-        if(!getNunitHome()) {
-            downloadNUnit()
-        }
         decideExecutionPath(this.&singleRunExecute, this.&multipleRunsExecute)
     }
 

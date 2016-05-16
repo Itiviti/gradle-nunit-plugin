@@ -70,7 +70,7 @@ class NUnit extends ConventionTask {
             nunitCacheDir.mkdirs()
         }
         def nunitFolder = new File(nunitCacheDir, getNunitName())
-        if (!nunitFolder.exist()) {
+        if (!nunitFolder.exists()) {
             downloadNUnit()
         }
         return nunitFolder
@@ -92,17 +92,14 @@ class NUnit extends ConventionTask {
         def nunitDownloadUrl = getNunitDownloadUrl()
         // special handling for nunit3 flat zip file
         def zipOutputDir = isV3 ? nunitCacheDirForVersion : nunitCacheDir;
-        def nunitFolder = getNunitFolder()
-        if (!nunitFolder.exists()) {
-            project.logger.info "Downloading & Unpacking NUnit ${version}"
-            project.download {
-                src "$nunitDownloadUrl/$version/$NUnitZipFile"
-                dest downloadedFile
-            }
-            project.copy {
-                from project.zipTree(downloadedFile)
-                into zipOutputDir
-            }
+        project.logger.info "Downloading & Unpacking NUnit ${version}"
+        project.download {
+            src "$nunitDownloadUrl/$version/$NUnitZipFile"
+            dest downloadedFile
+        }
+        project.copy {
+            from project.zipTree(downloadedFile)
+            into zipOutputDir
         }
     }
 

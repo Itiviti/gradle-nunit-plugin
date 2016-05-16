@@ -36,7 +36,10 @@ class NUnit extends ConventionTask {
         inputs.files {
             getTestAssemblies()
         }
-
+        doFirst {
+            // ensure NUnit is downloaded before performing TaskAction for parallel run
+            getCachedOrDownloadNunit()
+        }
     }
 
     boolean getIsV3() {
@@ -59,12 +62,12 @@ class NUnit extends ConventionTask {
         if(getNunitHome()){
             nunitFolder = getNunitHome()
         } else {
-            nunitFolder = getNunitFolder()
+            nunitFolder = getCachedOrDownloadNunit()
         }
         new File(project.file(nunitFolder), "bin/${file}")
     }
 
-    File getNunitFolder() {
+    File getCachedOrDownloadNunit() {
         def nunitCacheDir = getNunitCacheDir()
         if (!nunitCacheDir.exists()) {
             nunitCacheDir.mkdirs()

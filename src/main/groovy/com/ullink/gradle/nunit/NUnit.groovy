@@ -98,7 +98,7 @@ class NUnit extends ConventionTask {
     void downloadNUnit() {
         def NUnitZipFile = getNunitName() + '.zip'
         def downloadedFile = new File(getTemporaryDir(), NUnitZipFile)
-        def nunitCacheDirForVersion = new File(getNunitCacheDir(), getNunitName())
+        def nunitCacheDirForVersion = getCachedNunitDir()
         def version = getNunitVersion()
         def nunitDownloadUrl = getNunitDownloadUrl()
         // special handling for nunit3 flat zip file

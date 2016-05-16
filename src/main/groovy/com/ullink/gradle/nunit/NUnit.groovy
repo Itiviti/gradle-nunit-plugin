@@ -38,7 +38,7 @@ class NUnit extends ConventionTask {
         }
         doFirst {
             // ensure NUnit is downloaded before performing TaskAction for parallel run
-            getCachedOrDownloadNunit()
+            ensureNunitInstalled()
         }
     }
 
@@ -59,27 +59,35 @@ class NUnit extends ConventionTask {
 
     File nunitBinFile(String file) {
         def nunitFolder
-        if(getNunitHome()){
+        if (getNunitHome()) {
             nunitFolder = getNunitHome()
         } else {
-            nunitFolder = getCachedOrDownloadNunit()
+            ensureNunitInstalled()
+            nunitFolder = getCachedNunitDir()
         }
         new File(project.file(nunitFolder), "bin/${file}")
     }
 
-    File getCachedOrDownloadNunit() {
-        def nunitCacheDir = getNunitCacheDir()
+    void ensureNunitInstalled() {
+        if (getNunitHome()) {
+            return;
+        }
+
+        def nunitCacheDir = getCacheDir()
         if (!nunitCacheDir.exists()) {
             nunitCacheDir.mkdirs()
         }
-        def nunitFolder = new File(nunitCacheDir, getNunitName())
+        def nunitFolder = getCachedNunitDir()
         if (!nunitFolder.exists()) {
             downloadNUnit()
         }
-        return nunitFolder
     }
 
-    File getNunitCacheDir() {
+    File getCachedNunitDir() {
+        new File(getCacheDir(), getNunitName())
+    }
+
+    File getCacheDir() {
         new File(new File(project.gradle.gradleUserHomeDir, 'caches'), 'nunit')
     }
 

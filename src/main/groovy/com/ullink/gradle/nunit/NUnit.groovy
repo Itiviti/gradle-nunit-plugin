@@ -102,7 +102,7 @@ class NUnit extends ConventionTask {
         def version = getNunitVersion()
         def nunitDownloadUrl = getNunitDownloadUrl()
         // special handling for nunit3 flat zip file
-        def zipOutputDir = isV3 ? nunitCacheDirForVersion : nunitCacheDir;
+        def zipOutputDir = isV3 ? nunitCacheDirForVersion : getCacheDir();
         project.logger.info "Downloading & Unpacking NUnit ${version}"
         project.download {
             src "$nunitDownloadUrl/$version/$NUnitZipFile"

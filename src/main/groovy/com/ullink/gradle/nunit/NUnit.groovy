@@ -36,7 +36,10 @@ class NUnit extends ConventionTask {
         inputs.files {
             getTestAssemblies()
         }
-
+        doFirst {
+            // ensure NUnit is downloaded before performing TaskAction for parallel run
+            ensureNunitInstalled()
+        }
     }
 
     boolean getIsV3() {
@@ -56,23 +59,35 @@ class NUnit extends ConventionTask {
 
     File nunitBinFile(String file) {
         def nunitFolder
-        if(getNunitHome()){
+        if (getNunitHome()) {
             nunitFolder = getNunitHome()
         } else {
-            nunitFolder = getNunitFolder()
+            ensureNunitInstalled()
+            nunitFolder = getCachedNunitDir()
         }
         new File(project.file(nunitFolder), "bin/${file}")
     }
 
-    File getNunitFolder() {
-        def nunitCacheDir = getNunitCacheDir()
+    void ensureNunitInstalled() {
+        if (getNunitHome()) {
+            return;
+        }
+
+        def nunitCacheDir = getCacheDir()
         if (!nunitCacheDir.exists()) {
             nunitCacheDir.mkdirs()
         }
-        new File(nunitCacheDir, getNunitName())
+        def nunitFolder = getCachedNunitDir()
+        if (!nunitFolder.exists()) {
+            downloadNUnit()
+        }
     }
 
-    File getNunitCacheDir() {
+    File getCachedNunitDir() {
+        new File(getCacheDir(), getNunitName())
+    }
+
+    File getCacheDir() {
         new File(new File(project.gradle.gradleUserHomeDir, 'caches'), 'nunit')
     }
 
@@ -83,22 +98,19 @@ class NUnit extends ConventionTask {
     void downloadNUnit() {
         def NUnitZipFile = getNunitName() + '.zip'
         def downloadedFile = new File(getTemporaryDir(), NUnitZipFile)
-        def nunitCacheDirForVersion = new File(getNunitCacheDir(), getNunitName())
+        def nunitCacheDirForVersion = getCachedNunitDir()
         def version = getNunitVersion()
         def nunitDownloadUrl = getNunitDownloadUrl()
         // special handling for nunit3 flat zip file
-        def zipOutputDir = isV3 ? nunitCacheDirForVersion : nunitCacheDir;
-        def nunitFolder = getNunitFolder()
-        if (!nunitFolder.exists()) {
-            project.logger.info "Downloading & Unpacking NUnit ${version}"
-            project.download {
-                src "$nunitDownloadUrl/$version/$NUnitZipFile"
-                dest downloadedFile
-            }
-            project.copy {
-                from project.zipTree(downloadedFile)
-                into zipOutputDir
-            }
+        def zipOutputDir = isV3 ? nunitCacheDirForVersion : getCacheDir();
+        project.logger.info "Downloading & Unpacking NUnit ${version}"
+        project.download {
+            src "$nunitDownloadUrl/$version/$NUnitZipFile"
+            dest downloadedFile
+        }
+        project.copy {
+            from project.zipTree(downloadedFile)
+            into zipOutputDir
         }
     }
 
@@ -120,9 +132,6 @@ class NUnit extends ConventionTask {
 
     @TaskAction
     def build() {
-        if(!getNunitHome()) {
-            downloadNUnit()
-        }
         decideExecutionPath(this.&singleRunExecute, this.&multipleRunsExecute)
     }
 

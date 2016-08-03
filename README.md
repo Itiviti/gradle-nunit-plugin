@@ -43,10 +43,10 @@ It creates a task 'nunit' that may be configured as follows:
         ignoreFailures = false
 
         // Mapped NUnit-Console Command Line Options
-        exclude 'Database'
-        include 'BaseLine'
+        exclude = 'Database'
+        include = 'BaseLine'
         // for NUnit v3+, use _where_ option instead of include/exclude
-        framework 'net-1.1'
+        framework = 'net-1.1'
         shadowCopy = true
 
         // for NUnit v3+

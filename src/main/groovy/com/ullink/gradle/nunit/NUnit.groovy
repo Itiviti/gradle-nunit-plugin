@@ -31,6 +31,9 @@ class NUnit extends ConventionTask {
     def test
     def testList
 
+    def custom = [:]
+    def env = [:]
+
     NUnit() {
         conventionMapping.map "reportFolder", { new File(outputFolder, 'reports') }
         inputs.files {
@@ -215,6 +218,7 @@ class NUnit extends ConventionTask {
         prepareExecute()
 
         def mbr = project.exec {
+            environment env
             commandLine = commandLineExec
             ignoreExitValue = ignoreFailures
         }
@@ -272,6 +276,12 @@ class NUnit extends ConventionTask {
                 commandLineArgs += file
             else
                 commandLineArgs += it
+        }
+
+        if (!custom.isEmpty()) {
+            commandLineArgs += custom.collect { k, v ->
+                v ? "/$k:$v" : "/$k"
+            }
         }
 
         commandLineArgs

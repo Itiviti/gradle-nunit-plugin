@@ -31,8 +31,8 @@ class NUnit extends ConventionTask {
     def test
     def testList
 
-    def custom = [:]
-    def env = [:]
+    def custom
+    def env
 
     NUnit() {
         conventionMapping.map "reportFolder", { new File(outputFolder, 'reports') }
@@ -110,6 +110,7 @@ class NUnit extends ConventionTask {
         project.download {
             src "$nunitDownloadUrl/$version/$NUnitZipFile"
             dest downloadedFile
+            acceptAnyCertificate = true
         }
         project.copy {
             from project.zipTree(downloadedFile)
@@ -218,7 +219,7 @@ class NUnit extends ConventionTask {
         prepareExecute()
 
         def mbr = project.exec {
-            environment env
+            environment = env
             commandLine = commandLineExec
             ignoreExitValue = ignoreFailures
         }
@@ -280,7 +281,7 @@ class NUnit extends ConventionTask {
 
         if (!custom.isEmpty()) {
             commandLineArgs += custom.collect { k, v ->
-                v ? "/$k:$v" : "/$k"
+                v ? "-$k:$v" : "-$k"
             }
         }
 

@@ -31,8 +31,8 @@ class NUnit extends ConventionTask {
     def test
     def testList
 
-    def custom
-    def env
+    Map<String, Object> custom = [:]
+    Map<String, Object> env = [:]
 
     NUnit() {
         conventionMapping.map "reportFolder", { new File(outputFolder, 'reports') }
@@ -219,7 +219,7 @@ class NUnit extends ConventionTask {
         prepareExecute()
 
         def mbr = project.exec {
-            environment = env
+            environment env
             commandLine = commandLineExec
             ignoreExitValue = ignoreFailures
         }

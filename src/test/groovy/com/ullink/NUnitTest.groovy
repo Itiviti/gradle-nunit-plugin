@@ -174,6 +174,17 @@ public class NUnitTest {
     }
 
     @Test
+    public void whenNUnit3_AllLabels_AlllabelsIsPassed() {
+        def nunit = getNUnitTask()
+        nunit.nunitVersion = '3.0.2'
+        nunit.labels = 'All'
+
+        def commandArgs = nunit.getCommandArgs()
+
+        assert commandArgs.find { it == '-labels:All' }
+    }
+
+    @Test
     public void whenNUnit3_setResultFormat_resultFormatIsSet()
     {
         def nunit = getNUnitTask()

@@ -20,6 +20,7 @@ class NUnit extends ConventionTask {
     def verbosity
     def config
     def timeout
+    def labels
 
     def reportFolder
     boolean useX86 = false
@@ -258,6 +259,9 @@ class NUnit extends ConventionTask {
         }
         if (config) {
             commandLineArgs += "-config:$config"
+        }
+        if (labels) {
+            commandLineArgs += "-labels:$labels"
         }
         if (timeout) {
             commandLineArgs += "-timeout:$timeout"

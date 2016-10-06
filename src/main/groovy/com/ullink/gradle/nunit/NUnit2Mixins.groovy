@@ -17,10 +17,26 @@ class NUnit2Mixins {
         this.setTestList(runList)
     }
 
+    void setTestInternal(def testWrapper, def whereWrapper, def target) {
+        testWrapper.value = target
+    }
+
     File getNunitExec() {
         File nunitExec = this.nunitBinFile("nunit-console${this.useX86 ? '-x86' : ''}.exe")
         assert nunitExec.isFile(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable"
         return nunitExec
+    }
+
+    def getRunActionInput() {
+        return test.value
+    }
+
+    def combine(def input) {
+        return input.join(',')
+    }
+
+    def toFileName(input) {
+        return input
     }
 
     def buildAdditionalCommandArgs(def testNames, def testReportPath) {

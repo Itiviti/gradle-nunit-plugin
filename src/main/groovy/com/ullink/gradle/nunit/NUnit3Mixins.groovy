@@ -3,15 +3,40 @@ package com.ullink.gradle.nunit
 import org.gradle.api.GradleException
 
 class NUnit3Mixins {
-
-    def where
-
     def resultFormat
 
     // Deprecated
     void setRun(def run) {
-        logDeprecatedParameters('run', 'test')
+        logDeprecatedParameters('run', 'where')
         this.setTest(run)
+    }
+
+    def setTestInternal(def testWrapper, def whereWrapper, def input) {
+        def isCollection = isACollection(input)
+        def isCSV = isACommaSeparatedList(input)
+        whereWrapper.value = isCollection || isCSV ? translateToWhereConditions(input, isCSV) : translateToWhereCondition(input)
+    }
+
+    Boolean isACollection(def input) {
+        [Collection, Object[]].any { it.isAssignableFrom(input.getClass()) }
+    }
+
+    def translateToWhereConditions(def input, boolean isCSV) {
+        return translateToWhereConditions(isCSV ? input.tokenize(',') : input)
+    }
+
+    def translateToWhereConditions(Collection<String> runs) {
+        def conditions = []
+
+        runs.each {
+            conditions.add(translateToWhereCondition(it))
+        }
+
+        return conditions
+    }
+
+    def translateToWhereCondition(def input) {
+        return "test == \'$input\'"
     }
 
     // Deprecated
@@ -44,14 +69,23 @@ class NUnit3Mixins {
         return nunitExec
     }
 
-    def buildAdditionalCommandArgs(def test, def testReportPath) {
+    def getRunActionInput() {
+        return where.value
+    }
+
+    def combine(def input) {
+        return input.join(' or ')
+    }
+
+    def toFileName(input) {
+        UUID.randomUUID().toString()
+    }
+
+    def buildAdditionalCommandArgs(def whereCondition, def testReportPath) {
         def commandLineArgs = []
 
         if (this.useX86) {
             commandLineArgs += '-x86'
-        }
-        if (where) {
-            commandLineArgs += "-where:$where"
         }
         if (this.shadowCopy) {
             commandLineArgs += '-shadowcopy'
@@ -59,8 +93,8 @@ class NUnit3Mixins {
         if (this.testList) {
             commandLineArgs += "-testlist:${this.testList}"
         }
-        if (test) {
-            commandLineArgs += "-test:${test}"
+        if (whereCondition) {
+            commandLineArgs += "-where:$whereCondition"
         }
         String resultFormatArg = ''
         if(resultFormat) {

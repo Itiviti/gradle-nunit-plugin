@@ -31,7 +31,7 @@ class NUnit extends ConventionTask {
     def test
     def testList
 
-    Map<String, Object> custom = [:]
+    Map<String, Object> extraCommandLineArgs = [:]
     Map<String, Object> env = [:]
 
     NUnit() {
@@ -279,8 +279,8 @@ class NUnit extends ConventionTask {
                 commandLineArgs += it
         }
 
-        if (!custom.isEmpty()) {
-            commandLineArgs += custom.collect { k, v ->
+        if (!extraCommandLineArgs.isEmpty()) {
+            commandLineArgs += extraCommandLineArgs.collect { k, v ->
                 v ? "-$k:$v" : "-$k"
             }
         }

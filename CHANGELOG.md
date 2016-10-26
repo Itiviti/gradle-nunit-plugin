@@ -4,6 +4,9 @@
 * 'labels' attribute is added to NUnit
 * Added support for multiple 'where' clauses for NUnit v3, redirected 'test' to 'where'
 
+### Changed
+* built (and compatible) with gradle 2.14
+
 ## 1.8
 ### Fixed
 * opencover-nunit could not be run if nunit is not yet cached or manually set

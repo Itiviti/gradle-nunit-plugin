@@ -126,6 +126,13 @@ class NUnit extends ConventionTask {
         project.file(getReportFolder())
     }
 
+    File getLogFolderImpl() {
+        if (logFolder)
+            project.file(logFolder)
+        else
+            return null
+    }
+
     @OutputFile
     File getTestReportPath() {
         // for the non-default nunit tasks, ensure we write the report in a separate file
@@ -133,10 +140,7 @@ class NUnit extends ConventionTask {
     }
 
     File getTestLogPath() {
-        if (logFolder)
-            return new File(project.file(logFolder), logFileName)
-        else
-            return project.file(logFileName)
+        new File((File)getLogFolderImpl(), logFileName)
     }
 
     @TaskAction
@@ -244,8 +248,7 @@ class NUnit extends ConventionTask {
 
     def prepareExecute() {
         getReportFolderImpl().mkdirs()
-        if (logFolder)
-            project.file(logFolder).mkdirs()
+        getLogFolderImpl()?.mkdirs()
     }
 
     def buildCommandArgs(def testInput, def testReportPath) {

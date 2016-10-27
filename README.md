@@ -48,7 +48,10 @@ It creates a task 'nunit' that may be configured as follows:
         include = 'BaseLine'
         // for NUnit v3+, use _where_ option instead of include/exclude
         framework = 'net-1.1'
-        shadowCopy = true
+        shadowCopy = true        
+        // redirect output to file
+        // additionally you can specify logFolder
+        logFileName = 'TestOutput.log'
 
         // for NUnit v3+
         resultFormat = 'nunit2'

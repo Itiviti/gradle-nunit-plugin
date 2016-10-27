@@ -53,9 +53,6 @@ It creates a task 'nunit' that may be configured as follows:
         // for NUnit v3+
         resultFormat = 'nunit2'
         
-        // directly specify comamand line arguments on your own risk
-        // map already defined (you can use put)
-        extraCommandLineArgs = [:]
         // environment variables map
         // map already defined (you can use put)
         env = [:]

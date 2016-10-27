@@ -31,7 +31,6 @@ class NUnit extends ConventionTask {
     def test
     def testList
 
-    Map<String, Object> extraCommandLineArgs = [:]
     Map<String, Object> env = [:]
 
     NUnit() {
@@ -110,7 +109,6 @@ class NUnit extends ConventionTask {
         project.download {
             src "$nunitDownloadUrl/$version/$NUnitZipFile"
             dest downloadedFile
-            acceptAnyCertificate = true
         }
         project.copy {
             from project.zipTree(downloadedFile)
@@ -277,12 +275,6 @@ class NUnit extends ConventionTask {
                 commandLineArgs += file
             else
                 commandLineArgs += it
-        }
-
-        if (!extraCommandLineArgs.isEmpty()) {
-            commandLineArgs += extraCommandLineArgs.collect { k, v ->
-                v ? "-$k:$v" : "-$k"
-            }
         }
 
         commandLineArgs

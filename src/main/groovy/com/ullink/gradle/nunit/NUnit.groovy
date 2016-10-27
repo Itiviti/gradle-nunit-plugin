@@ -127,9 +127,7 @@ class NUnit extends ConventionTask {
     @OutputFile
     File getTestReportPath() {
         // for the non-default nunit tasks, ensure we write the report in a separate file
-        // TODO: Do we need to supply prefix when user has specified its own report file name?
-        def reportFileNamePrefix = name == 'nunit' ? '' : name
-        new File(getReportFolderImpl(), reportFileNamePrefix + reportFileName)
+        new File(getReportFolderImpl(), reportFileName)
     }
 
     @TaskAction

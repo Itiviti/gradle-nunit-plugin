@@ -59,6 +59,21 @@ class NUnit extends ConventionTask {
         version.startsWith('3.')
     }
 
+    boolean getIsV35OrAbove() {
+        def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
+        major == 3 && minor >= 5
+    }
+
+    String getGitHubRepoName() {
+        if (isV35OrAbove) {
+            return 'nunit-console'
+        }
+        if (isV3) {
+            return 'nunit'
+        }
+        return 'nunitv2'
+    }
+
     void setNunitVersion(def version) {
         this.nunitVersion = version
         if (getIsV3(version)) {
@@ -78,7 +93,7 @@ class NUnit extends ConventionTask {
             ensureNunitInstalled()
             nunitFolder = getCachedNunitDir()
         }
-        new File(project.file(nunitFolder), "bin/${file}")
+        new File(project.file(nunitFolder), "${isV35OrAbove ? '' : 'bin/'}${file}")
     }
 
     void ensureNunitInstalled() {
@@ -105,7 +120,17 @@ class NUnit extends ConventionTask {
     }
 
     String getNunitName() {
+        if (isV35OrAbove) {
+            return "NUnit.${getNunitVersion()}"
+        }
         "NUnit-${getNunitVersion()}"
+    }
+
+    String getFixedDownloadVersion() {
+        if (getNunitVersion() == '3.5.0') {
+            return '3.5'
+        }
+        getNunitVersion()
     }
 
     void downloadNUnit() {
@@ -118,7 +143,7 @@ class NUnit extends ConventionTask {
         def zipOutputDir = isV3 ? nunitCacheDirForVersion : getCacheDir();
         project.logger.info "Downloading & Unpacking NUnit ${version}"
         project.download {
-            src "$nunitDownloadUrl/$version/$NUnitZipFile"
+            src "$nunitDownloadUrl/${fixedDownloadVersion}/$NUnitZipFile"
             dest downloadedFile
         }
         project.copy {

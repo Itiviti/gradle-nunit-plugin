@@ -15,6 +15,7 @@ dependencies {
     compile 'org.codehaus.gpars:gpars:1.2.1'
     testCompile 'xmlunit:xmlunit:1.6'
     testCompile 'junit:junit:4.11'
+    testCompile 'pl.pragmatists:JUnitParams:1.0.5'
 }
 
 bintray {

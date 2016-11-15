@@ -30,11 +30,25 @@ public class NUnitTest {
     }
 
     @Test
-    public void getTestInputsAsString_works() {
+    public void whenNUnit2_getTestInputsAsString_works() {
         def nunit = getNUnitTask()
+        nunit.nunitVersion = '2.0.0'
         assert nunit.getTestInputsAsString('A,B,C') == 'A,B,C'
         assert nunit.getTestInputsAsString('A') == 'A'
         assert nunit.getTestInputsAsString(['A', 'B', 'C']) == 'A,B,C'
+        assert nunit.getTestInputsAsString(['A']) == 'A'
+        assert nunit.getTestInputsAsString('') == ''
+        assert nunit.getTestInputsAsString([]) == ''
+        assert nunit.getTestInputsAsString(null) == ''
+    }
+
+    @Test
+    public void whenNUnit3_getTestInputsAsString_works() {
+        def nunit = getNUnitTask()
+        nunit.nunitVersion = '3.0.0'
+        assert nunit.getTestInputsAsString('A,B,C') == 'A,B,C'
+        assert nunit.getTestInputsAsString('A') == 'A'
+        assert nunit.getTestInputsAsString(['A', 'B', 'C']) == 'A or B or C'
         assert nunit.getTestInputsAsString(['A']) == 'A'
         assert nunit.getTestInputsAsString('') == ''
         assert nunit.getTestInputsAsString([]) == ''
@@ -109,25 +123,36 @@ public class NUnitTest {
     }
 
     @Test
-    public void whenNUnit3_test_testSpecified() {
+    public void whenNUnit3_where_whereSpecified() {
+        def nunit = getNUnitTask()
+        nunit.nunitVersion = '3.0.0'
+        nunit.where = [ 'test == \'Test1\'', 'test == \'Test2\'']
+
+        def commandArgs = nunit.getCommandArgs()
+
+        assert commandArgs.find { it == '-where:test == \'Test1\' or test == \'Test2\'' }
+    }
+
+    @Test
+    public void whenNUnit3_test_whereSpecified() {
         def nunit = getNUnitTask()
         nunit.nunitVersion = '3.0.0'
         nunit.test = ['Test1', 'Test2']
 
         def commandArgs = nunit.getCommandArgs()
 
-        assert commandArgs.find { it == '-test:Test1,Test2' }
+        assert commandArgs.find { it == '-where:test == \'Test1\' or test == \'Test2\'' }
     }
 
     @Test
-    public void whenNUnit3_run_testSpecified() {
+    public void whenNUnit3_run_whereSpecified() {
         def nunit = getNUnitTask()
         nunit.nunitVersion = '3.0.0'
         nunit.run = ['Test1', 'Test2']
 
         def commandArgs = nunit.getCommandArgs()
 
-        assert commandArgs.find { it == '-test:Test1,Test2' }
+        assert commandArgs.find {it == '-where:test == \'Test1\' or test == \'Test2\'' }
     }
 
     @Test
@@ -171,6 +196,17 @@ public class NUnitTest {
         def commandArgs = nunit.getCommandArgs()
 
         assert commandArgs.find { it == '-noshadow' }
+    }
+
+    @Test
+    public void whenNUnit3_AllLabels_AlllabelsIsPassed() {
+        def nunit = getNUnitTask()
+        nunit.nunitVersion = '3.0.2'
+        nunit.labels = 'All'
+
+        def commandArgs = nunit.getCommandArgs()
+
+        assert commandArgs.find { it == '-labels:All' }
     }
 
     @Test

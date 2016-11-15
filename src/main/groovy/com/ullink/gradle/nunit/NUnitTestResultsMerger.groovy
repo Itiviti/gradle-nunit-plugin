@@ -10,15 +10,16 @@ class NUnitTestResultsMerger {
     }
 
     String merge(List<String> stringTestResults) {
-        def testResults = stringTestResults.collect { new XmlParser().parseText(it) }
-        def firstTestResult = testResults.first()
-        def baseXml = new XmlParser().parseText(
-                '<test-results name="Merged results">' +
+        String xmlShell = '<test-results name="Merged results">' +
                 '   <test-suite type="Test Project" executed="True" name="" asserts="0">' +
                 '       <results/>' +
                 '  </test-suite>' +
                 '</test-results>'
-        )
+
+        def testResults = stringTestResults.collect { new XmlParser().parseText(it) }
+        def firstTestResult = testResults.first()
+
+        def baseXml = new XmlParser().parseText(xmlShell)
 
         baseXml.children().add(0, firstTestResult.environment.first())
         baseXml.children().add(1, firstTestResult.'culture-info'.first())

@@ -22,11 +22,10 @@ class NUnit extends ConventionTask {
     def timeout
 
     def reportFolder
-    def logFolder
     boolean useX86 = false
     boolean shadowCopy = false
     String reportFileName = 'TestResult.xml'
-    String logFileName
+    def logFile
     boolean ignoreFailures = false
     boolean parallelForks = true
 
@@ -126,21 +125,14 @@ class NUnit extends ConventionTask {
         project.file(getReportFolder())
     }
 
-    File getLogFolderImpl() {
-        if (logFolder)
-            project.file(logFolder)
-        else
-            return null
-    }
-
     @OutputFile
     File getTestReportPath() {
         // for the non-default nunit tasks, ensure we write the report in a separate file
         new File(getReportFolderImpl(), reportFileName)
     }
 
-    File getTestLogPath() {
-        new File((File)getLogFolderImpl(), logFileName)
+    File getTestLogFile() {
+        project.file(getLogFile())
     }
 
     @TaskAction
@@ -248,7 +240,7 @@ class NUnit extends ConventionTask {
 
     def prepareExecute() {
         getReportFolderImpl().mkdirs()
-        getLogFolderImpl()?.mkdirs()
+        getTestLogFile().getParentFile().mkdirs()
     }
 
     def buildCommandArgs(def testInput, def testReportPath) {
@@ -277,8 +269,8 @@ class NUnit extends ConventionTask {
         if (timeout) {
             commandLineArgs += "-timeout:$timeout"
         }
-        if (logFileName) {
-            commandLineArgs += "-output:${getTestLogPath()}"
+        if (logFile) {
+            commandLineArgs += "-output:${getTestLogFile().getPath()}"
         }
         commandLineArgs += "-work:$outputFolder"
 

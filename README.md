@@ -41,6 +41,8 @@ It creates a task 'nunit' that may be configured as follows:
         // optional - defaults to FALSE and termines the behavior of the task if the nunit-console.exe program exits
         // abnormally
         ignoreFailures = false
+        // optional - specify whether to write test case names to the output
+        labels = 'Off|On|All'
         // Mapped NUnit-Console Command Line Options
         exclude = 'Database'
         include = 'BaseLine'

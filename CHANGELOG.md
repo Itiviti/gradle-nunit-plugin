@@ -1,4 +1,11 @@
 # gradle-nunit-plugin changelog
+## 1.9
+### Added
+* 'labels' attribute is added to NUnit
+* Added support for multiple 'where' clauses for NUnit v3, redirected 'test' to 'where'
+
+### Changed
+* built (and compatible) with gradle 2.14
 
 ## 1.8
 ### Fixed

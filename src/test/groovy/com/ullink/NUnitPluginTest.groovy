@@ -1,6 +1,8 @@
 package com.ullink
 
 import com.ullink.gradle.nunit.NUnit
+import junitparams.JUnitParamsRunner
+import junitparams.Parameters;
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
@@ -8,10 +10,12 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertEquals
 
+@RunWith(JUnitParamsRunner.class)
 class NUnitPluginTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -58,10 +62,11 @@ class NUnitPluginTest {
     }
 
     @Test
-    public void execute_help_works_for_v3() {
+    @Parameters(["3.0.0", "3.5.0"])
+    public void execute_help_works_for_v3(String version) {
         project.nunit {
             testAssemblies = ['-help']
-            nunitVersion = '3.0.0'
+            nunitVersion = version
         }
 
         project.tasks.nunit.execute()

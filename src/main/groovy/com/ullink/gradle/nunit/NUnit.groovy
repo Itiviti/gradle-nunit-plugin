@@ -1,14 +1,21 @@
 package com.ullink.gradle.nunit
 
-import org.bouncycastle.math.raw.Nat
 import org.gradle.api.internal.ConventionTask
 import groovyx.gpars.GParsPool
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.OutputFiles
 import org.gradle.api.tasks.TaskAction
 
 import static org.apache.tools.ant.taskdefs.condition.Os.*
+
+class Wrapper {
+    def value;
+
+    Wrapper() {
+        value = ""
+    }
+}
+
 
 class NUnit extends ConventionTask {
     def nunitHome
@@ -20,6 +27,7 @@ class NUnit extends ConventionTask {
     def verbosity
     def config
     def timeout
+    def labels
 
     def reportFolder
     boolean useX86 = false
@@ -29,7 +37,8 @@ class NUnit extends ConventionTask {
     boolean ignoreFailures = false
     boolean parallelForks = true
 
-    def test
+    def test = Wrapper.newInstance()
+    def where = Wrapper.newInstance()
     def testList
 
     Map<String, Object> env = [:]
@@ -53,11 +62,30 @@ class NUnit extends ConventionTask {
         version.startsWith('3.')
     }
 
+    boolean getIsV35OrAbove() {
+        def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
+        major == 3 && minor >= 5
+    }
+
+    String getGitHubRepoName() {
+        if (isV35OrAbove) {
+            return 'nunit-console'
+        }
+        if (isV3) {
+            return 'nunit'
+        }
+        return 'nunitv2'
+    }
+
     void setNunitVersion(def version) {
         this.nunitVersion = version
         if (getIsV3(version)) {
             this.metaClass.mixin NUnit3Mixins
         }
+    }
+
+    void setTest(def input) {
+        setTestInternal(test, where, input)
     }
 
     File nunitBinFile(String file) {
@@ -68,7 +96,7 @@ class NUnit extends ConventionTask {
             ensureNunitInstalled()
             nunitFolder = getCachedNunitDir()
         }
-        new File(project.file(nunitFolder), "bin/${file}")
+        new File(project.file(nunitFolder), "${isV35OrAbove ? '' : 'bin/'}${file}")
     }
 
     void ensureNunitInstalled() {
@@ -95,7 +123,17 @@ class NUnit extends ConventionTask {
     }
 
     String getNunitName() {
+        if (isV35OrAbove) {
+            return "NUnit.${getNunitVersion()}"
+        }
         "NUnit-${getNunitVersion()}"
+    }
+
+    String getFixedDownloadVersion() {
+        if (getNunitVersion() == '3.5.0') {
+            return '3.5'
+        }
+        getNunitVersion()
     }
 
     void downloadNUnit() {
@@ -108,7 +146,7 @@ class NUnit extends ConventionTask {
         def zipOutputDir = isV3 ? nunitCacheDirForVersion : getCacheDir();
         project.logger.info "Downloading & Unpacking NUnit ${version}"
         project.download {
-            src "$nunitDownloadUrl/$version/$NUnitZipFile"
+            src "$nunitDownloadUrl/${fixedDownloadVersion}/$NUnitZipFile"
             dest downloadedFile
         }
         project.copy {
@@ -141,28 +179,34 @@ class NUnit extends ConventionTask {
     }
 
     def decideExecutionPath(Closure singleRunAction, Closure multipleRunsAction) {
-        if (!parallelForks || !test) {
-            return singleRunAction(test)
+        def input = getRunActionInput();
+
+        if (!parallelForks || !input) {
+            return singleRunAction(input)
         } else {
-            return multipleRunsAction(test)
+            return multipleRunsAction(input)
         }
     }
 
-    def singleRunExecute(def test) {
-        def testRuns = getTestInputsAsString(test)
-        testRun(testRuns, getTestReportPath())
+    def singleRunExecute(def input) {
+        def runs = getTestInputsAsString(input)
+        run(runs, getTestReportPath())
     }
 
-    def multipleRunsExecute(def test) {
-        def intermediatReportsPath = new File(getReportFolderImpl(), "intermediate-results-" + name)
-        intermediatReportsPath.mkdirs()
+    def multipleRunsExecute(def input) {
+        def intermediateReportsPath = new File(getReportFolderImpl(), "intermediate-results-" + name)
+        intermediateReportsPath.mkdirs()
 
-        def testRuns = getTestInputAsList(test)
+        def runs = getTestInputAsList(input)
         GParsPool.withPool {
-            testRuns.eachParallel { testRun(it, new File(intermediatReportsPath, it + ".xml")) }
+            runs.eachParallel {
+                def fileName = toFileName(it)
+                logger.info("Filename generated for the \'$it\' input was \'$fileName\'")
+                run(it, new File(intermediateReportsPath, fileName + ".xml"))
+            }
         }
 
-        def files =  intermediatReportsPath.listFiles().toList()
+        def files =  intermediateReportsPath.listFiles().toList()
         def outputFile = getTestReportPath()
         logger.info("Merging test reports $files into $outputFile ...")
         new NUnitTestResultsMerger().merge(files, outputFile)
@@ -170,13 +214,12 @@ class NUnit extends ConventionTask {
 
     // Used by gradle-opencover-plugin
     def getCommandArgs() {
-        def testRuns = getTestInputsAsString(this.getTest())
+        def testRuns = getTestInputsAsString(getRunActionInput())
         buildCommandArgs (testRuns, getTestReportPath())
     }
 
-    List<String> getTestInputAsList(def testInput)
-    {
-        if (!testInput){
+    List<String> getTestInputAsList(def testInput) {
+        if (!testInput) {
             return []
         }
 
@@ -185,16 +228,19 @@ class NUnit extends ConventionTask {
         }
 
         // Behave like NUnit
-        if (testInput.contains(',')) {
+        if (isACommaSeparatedList(testInput)) {
             return testInput.tokenize(',')
         }
 
         return [testInput]
     }
 
-    String getTestInputsAsString(def testInput)
-    {
-        if (!testInput){
+    Boolean isACommaSeparatedList(def input) {
+        return input != null && input.contains(',');
+    }
+
+    String getTestInputsAsString(def testInput) {
+        if (!testInput) {
             return ''
         }
 
@@ -202,11 +248,11 @@ class NUnit extends ConventionTask {
             return testInput
         }
 
-        return testInput.join(',')
+        return combine(testInput)
     }
 
-    def testRun(def test, def reportPath) {
-        def cmdLine = [getNunitExec().absolutePath, *buildCommandArgs(test, reportPath)]
+    def run(def input, def reportPath) {
+        def cmdLine = [getNunitExec().absolutePath, *buildCommandArgs(input, reportPath)]
         if (!isFamily(FAMILY_WINDOWS)) {
             cmdLine = ["mono", *cmdLine]
         }
@@ -265,6 +311,9 @@ class NUnit extends ConventionTask {
         }
         if (config) {
             commandLineArgs += "-config:$config"
+        }
+        if (labels) {
+            commandLineArgs += "-labels:$labels"
         }
         if (timeout) {
             commandLineArgs += "-timeout:$timeout"

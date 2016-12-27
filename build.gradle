@@ -1,7 +1,6 @@
 plugins {
     id 'nu.studer.plugindev' version '1.0.3'
     id "com.jfrog.bintray" version "1.2"
-    id "de.undercouch.download" version "2.0.0"
     id 'net.researchgate.release' version '2.3.4'
 }
 
@@ -11,9 +10,12 @@ group = 'com.ullink.gradle'
 description 'gradle-nunit-plugin is a Gradle plugin that enables NUnit testing'
 
 dependencies {
-    compile 'de.undercouch:gradle-download-task:2.0.0'
+    compile 'org.apache.httpcomponents:httpclient:4.5.2'
+    compile 'de.undercouch:gradle-download-task:3.1.1'
     compile 'org.codehaus.gpars:gpars:1.2.1'
     testCompile 'xmlunit:xmlunit:1.6'
+    testCompile 'junit:junit:4.11'
+    testCompile 'pl.pragmatists:JUnitParams:1.0.5'
 }
 
 bintray {

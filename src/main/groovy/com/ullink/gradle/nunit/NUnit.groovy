@@ -266,7 +266,8 @@ class NUnit extends ConventionTask {
         prepareExecute()
 
         def mbr = project.exec {
-            environment env
+            if (env != null)
+                environment env
             commandLine = commandLineExec
             ignoreExitValue = ignoreFailures
         }

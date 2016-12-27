@@ -266,7 +266,7 @@ class NUnit extends ConventionTask {
         prepareExecute()
 
         def mbr = project.exec {
-            if (env != null)
+            if (env)
                 environment env
             commandLine = commandLineExec
             ignoreExitValue = ignoreFailures
@@ -287,7 +287,8 @@ class NUnit extends ConventionTask {
 
     def prepareExecute() {
         getReportFolderImpl().mkdirs()
-        getTestLogFile().getParentFile().mkdirs()
+        if (logFile)
+            getTestLogFile().getParentFile().mkdirs()
     }
 
     def buildCommandArgs(def testInput, def testReportPath) {

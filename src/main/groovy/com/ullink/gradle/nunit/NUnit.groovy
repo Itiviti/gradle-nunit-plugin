@@ -121,7 +121,7 @@ class NUnit extends ConventionTask {
 
     String getNunitName() {
         if (isV35OrAbove) {
-            return "NUnit.${getNunitVersion()}"
+            return "NUnit.Console-${getNunitVersion()}"
         }
         "NUnit-${getNunitVersion()}"
     }

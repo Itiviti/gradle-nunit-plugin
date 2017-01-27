@@ -7,6 +7,9 @@
 ### Changed
 * built (and compatible) with gradle 2.14
 
+### Fixed
+* NUnit 3.5+ can now be used
+
 ## 1.8
 ### Fixed
 * opencover-nunit could not be run if nunit is not yet cached or manually set

@@ -55,8 +55,7 @@ It creates a task 'nunit' that may be configured as follows:
         // for NUnit v3+
         resultFormat = 'nunit2'
         
-        // environment variables map
-        // map already defined (you can use put)
+        // environment variables map (already defined)
         env = [:]
     }
 

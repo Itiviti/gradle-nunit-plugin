@@ -11,7 +11,7 @@ description 'gradle-nunit-plugin is a Gradle plugin that enables NUnit testing'
 
 dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.5.2'
-    compile 'de.undercouch:gradle-download-task:3.1.1'
+    compile 'de.undercouch:gradle-download-task:3.2.0'
     compile 'org.codehaus.gpars:gpars:1.2.1'
     testCompile 'xmlunit:xmlunit:1.6'
     testCompile 'junit:junit:4.11'

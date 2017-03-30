@@ -168,10 +168,10 @@ class NUnit extends ConventionTask {
     File getTestReportPath() {
         // for the non-default nunit tasks, ensure we write the report in a separate file
         if (reportFileName.equals(DEFAULT_REPORT_FILE_NAME)) {
-            new File(getReportFolderImpl(), reportFileName)
-        } else {
             def reportFileNamePrefix = name == 'nunit' ? '' : name
             new File(getReportFolderImpl(), reportFileNamePrefix + reportFileName)
+        } else {
+            new File(getReportFolderImpl(), reportFileName)
         }
     }
 

@@ -33,6 +33,7 @@ class NUnit extends ConventionTask {
     boolean useX86 = false
     boolean shadowCopy = false
     String reportFileName = 'TestResult.xml'
+    static final String DEFAULT_REPORT_FILE_NAME = 'TestResult.xml'
     def logFile
     boolean ignoreFailures = false
     boolean parallelForks = true
@@ -166,7 +167,12 @@ class NUnit extends ConventionTask {
     @OutputFile
     File getTestReportPath() {
         // for the non-default nunit tasks, ensure we write the report in a separate file
-        new File(getReportFolderImpl(), reportFileName)
+        if (reportFileName.equals(DEFAULT_REPORT_FILE_NAME)) {
+            new File(getReportFolderImpl(), reportFileName)
+        } else {
+            def reportFileNamePrefix = name == 'nunit' ? '' : name
+            new File(getReportFolderImpl(), reportFileNamePrefix + reportFileName)
+        }
     }
 
     File getTestLogFile() {

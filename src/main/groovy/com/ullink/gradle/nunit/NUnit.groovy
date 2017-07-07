@@ -33,12 +33,16 @@ class NUnit extends ConventionTask {
     boolean useX86 = false
     boolean shadowCopy = false
     String reportFileName = 'TestResult.xml'
+    static final String DEFAULT_REPORT_FILE_NAME = 'TestResult.xml'
+    def logFile
     boolean ignoreFailures = false
     boolean parallelForks = true
 
     def test = Wrapper.newInstance()
     def where = Wrapper.newInstance()
     def testList
+
+    Map<String, Object> env = [:]
 
     NUnit() {
         conventionMapping.map "reportFolder", { new File(outputFolder, 'reports') }
@@ -163,9 +167,16 @@ class NUnit extends ConventionTask {
     @OutputFile
     File getTestReportPath() {
         // for the non-default nunit tasks, ensure we write the report in a separate file
-        // TODO: Do we need to supply prefix when user has specified its own report file name?
-        def reportFileNamePrefix = name == 'nunit' ? '' : name
-        new File(getReportFolderImpl(), reportFileNamePrefix + reportFileName)
+        if (reportFileName.equals(DEFAULT_REPORT_FILE_NAME)) {
+            def reportFileNamePrefix = name == 'nunit' ? '' : name
+            new File(getReportFolderImpl(), reportFileNamePrefix + reportFileName)
+        } else {
+            new File(getReportFolderImpl(), reportFileName)
+        }
+    }
+
+    File getTestLogFile() {
+        project.file(getLogFile())
     }
 
     @TaskAction
@@ -261,6 +272,8 @@ class NUnit extends ConventionTask {
         prepareExecute()
 
         def mbr = project.exec {
+            if (env)
+                environment env
             commandLine = commandLineExec
             ignoreExitValue = ignoreFailures
         }
@@ -280,6 +293,8 @@ class NUnit extends ConventionTask {
 
     def prepareExecute() {
         getReportFolderImpl().mkdirs()
+        if (logFile)
+            getTestLogFile().getParentFile().mkdirs()
     }
 
     def buildCommandArgs(def testInput, def testReportPath) {
@@ -310,6 +325,9 @@ class NUnit extends ConventionTask {
         }
         if (timeout) {
             commandLineArgs += "-timeout:$timeout"
+        }
+        if (logFile) {
+            commandLineArgs += "-output:${getTestLogFile().getPath()}"
         }
         commandLineArgs += "-work:$outputFolder"
 

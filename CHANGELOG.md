@@ -1,4 +1,10 @@
 # gradle-nunit-plugin changelog
+## 1.11
+
+## 1.10
+### Fixed
+* NUnit 3.5+ can now be used
+
 ## 1.9
 ### Added
 * 'labels' attribute is added to NUnit

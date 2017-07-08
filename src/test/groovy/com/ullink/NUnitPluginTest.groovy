@@ -62,7 +62,7 @@ class NUnitPluginTest {
     }
 
     @Test
-    @Parameters(["3.0.0", "3.5.0"])
+    @Parameters(["3.0.0", "3.5.0", "3.6.0", "3.6.1"])
     public void execute_help_works_for_v3(String version) {
         project.nunit {
             testAssemblies = ['-help']

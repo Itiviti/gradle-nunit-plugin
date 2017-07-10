@@ -1,5 +1,17 @@
 # gradle-nunit-plugin changelog
+## 1.12
+
 ## 1.11
+### Added
+* New parameter logFile for defining the output file name
+* New paramter env for passing environment variable to nunit runner
+
+### Changed
+* built with gradle 3.5
+* upgrade gradle-download-plugin to 3.2
+
+### Fixed
+* Support nunit-console v3.6.0
 
 ## 1.10
 ### Fixed

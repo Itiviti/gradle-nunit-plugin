@@ -131,10 +131,12 @@ class NUnit extends ConventionTask {
     }
 
     String getFixedDownloadVersion() {
-        if (getNunitVersion() == '3.5.0') {
-            return '3.5'
+        def version = getNunitVersion()
+        if (isV35OrAbove && version.endsWith('.0')) {
+            return version.take(version.length() - 2)
         }
-        getNunitVersion()
+
+        version
     }
 
     void downloadNUnit() {
@@ -142,12 +144,12 @@ class NUnit extends ConventionTask {
         def downloadedFile = new File(getTemporaryDir(), NUnitZipFile)
         def nunitCacheDirForVersion = getCachedNunitDir()
         def version = getNunitVersion()
-        def nunitDownloadUrl = getNunitDownloadUrl()
+        def nunitDownloadUrl = "${getNunitDownloadUrl()}/${fixedDownloadVersion}/$NUnitZipFile"
         // special handling for nunit3 flat zip file
         def zipOutputDir = isV3 ? nunitCacheDirForVersion : getCacheDir();
-        project.logger.info "Downloading & Unpacking NUnit ${version}"
+        project.logger.info "Downloading & Unpacking NUnit ${version} from ${nunitDownloadUrl}"
         project.download {
-            src "$nunitDownloadUrl/${fixedDownloadVersion}/$NUnitZipFile"
+            src "$nunitDownloadUrl"
             dest downloadedFile
         }
         project.copy {

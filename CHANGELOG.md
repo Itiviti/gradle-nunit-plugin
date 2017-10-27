@@ -1,5 +1,13 @@
 # gradle-nunit-plugin changelog
 ## 1.12
+### Changed
+* upgrade gradle-download-plugin to 3.2
+* upgrade net.researchgate.release to 2.6.0
+* built with gradle 4.2.1
+
+## Fixed
+* Apply default parameters on plugin `com.ullink.msbuild` instead of `msbuild`
+which is required starting from `gradle-msbuild-plugin` 2.17
 
 ## 1.11
 ### Added

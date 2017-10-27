@@ -1,7 +1,7 @@
 plugins {
     id 'nu.studer.plugindev' version '1.0.3'
     id "com.jfrog.bintray" version "1.2"
-    id 'net.researchgate.release' version '2.3.4'
+    id 'net.researchgate.release' version '2.6.0'
 }
 
 apply plugin: 'groovy'
@@ -10,7 +10,7 @@ group = 'com.ullink.gradle'
 description 'gradle-nunit-plugin is a Gradle plugin that enables NUnit testing'
 
 dependencies {
-    compile 'de.undercouch:gradle-download-task:3.2.0'
+    compile 'de.undercouch:gradle-download-task:3.3.0'
     compile 'org.codehaus.gpars:gpars:1.2.1'
     testCompile 'xmlunit:xmlunit:1.6'
     testCompile 'junit:junit:4.11'

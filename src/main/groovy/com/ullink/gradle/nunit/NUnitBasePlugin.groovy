@@ -19,10 +19,12 @@ class NUnitBasePlugin implements Plugin<Project> {
                 return System.getenv()['NUNIT_HOME']
             }
         }
-        if (project.plugins.hasPlugin('msbuild')) {
-            task.dependsOn project.tasks.msbuild
-            task.conventionMapping.map "testAssemblies", {
-                project.tasks.msbuild.projects.findAll {
+        project.plugins.withId('com.ullink.msbuild') {
+            def msbuildTask = project.tasks.msbuild
+
+            task.dependsOn msbuildTask
+            task.conventionMapping.map 'testAssemblies', {
+                msbuildTask.projects.findAll {
                     it.key =~ 'test'
                 }
                 .collect {

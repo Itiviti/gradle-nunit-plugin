@@ -34,9 +34,9 @@ It creates a task 'nunit' that may be configured as follows:
         nunitHome
         // mandatory - the assemblies containing the tests to be run
         testAssemblies
-        // optional - the output location of the nunit test report, default is 'build\nunit\reports'
+        // optional - the output location of the nunit test report, defaults to 'build\nunit\reports'
         reportFolder = file('some/where/')
-        // optional - the file name of the nunit test report, default is 'TestResult.xml'
+        // optional - the file name of the nunit test report, defaults to 'TestResult.xml'
         reportFileName = 'foo.xml'
         // optional - if set, specifies the /trace argument of nunit-console
         verbosity

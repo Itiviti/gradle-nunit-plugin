@@ -6,7 +6,7 @@ A gradle plugin for launching NUnit tests
 It is compatible with the new plugin mechanism and can be used with:
 
     plugins {
-      id 'com.ullink.nunit' version '1.4'
+      id 'com.ullink.nunit' version '1.12'
     }
 
 Or, when using Gradle lower than 2.1:
@@ -17,7 +17,7 @@ Or, when using Gradle lower than 2.1:
         }
 
         dependencies {
-            classpath "com.ullink.gradle:gradle-nunit-plugin:1.4"
+            classpath "com.ullink.gradle:gradle-nunit-plugin:1.12"
         }
     }
 
@@ -34,6 +34,10 @@ It creates a task 'nunit' that may be configured as follows:
         nunitHome
         // mandatory - the assemblies containing the tests to be run
         testAssemblies
+        // optional - the output location of the nunit test report, default is 'build\nunit\reports'
+        reportFolder = file('some/where/')
+        // optional - the file name of the nunit test report, default is 'TestResult.xml'
+        reportFileName = 'foo.xml'
         // optional - if set, specifies the /trace argument of nunit-console
         verbosity
         // optional - defaults to FALSE and determines whether tests should run in x86 mode

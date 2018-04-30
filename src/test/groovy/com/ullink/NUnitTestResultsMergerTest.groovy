@@ -62,4 +62,24 @@ class NUnitTestResultsMergerTest {
             AssertContentIsLoadable(it)
         }
     }
+
+    @Test
+    public void givenFileWithIgnoredTests_merge_mergesIntoExpectedOutputResult()
+    {
+        def testResultFiles = [
+                'TestResult_ignored'
+        ].collect { getTestResultFile(it) }
+        File.createTempFile('nunit-plugin-test-results', '.xml').with {
+            new NUnitTestResultsMerger().merge(testResultFiles, it)
+            XMLUnit.setIgnoreComments(true)
+            XMLUnit.setIgnoreWhitespace(true)
+            XMLUnit.setIgnoreAttributeOrder(true)
+            def diff = XMLUnit.compareXML(
+                    getContent(getTestResultFile('TestResult_ignored_merged')),
+                    getContent(it))
+            diff.overrideElementQualifier(new RecursiveElementNameAndTextQualifier());
+            Assert.assertEquals('', new DetailedDiff(diff).allDifferences.join('\n'));
+            AssertContentIsLoadable(it)
+        }
+    }
 }

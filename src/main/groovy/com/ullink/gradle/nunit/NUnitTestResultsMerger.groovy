@@ -36,13 +36,34 @@ class NUnitTestResultsMerger {
         baseXml.@time = firstTestResult.@time
 
         def mergedTestSuite = baseXml.'test-suite'
-        mergedTestSuite.@time = testResults.inject(0.0d) { r, node ->
-            r + Double.valueOf(node.'test-suite'.first().@time)
-        }
+        mergedTestSuite.@time = getTestDuration(testResults)
         mergedTestSuite.@result = testResults.inject('Success') { r, node ->
             r == 'Failure' ? r : node.'test-suite'.first().@result
         }
 
         return XmlUtil.serialize(baseXml)
+    }
+
+    private double getTestDuration(List<groovy.util.Node> nodesList) {
+        return nodesList.inject(0.0d) { r, node ->
+            r + getTestDuration(node)
+        }
+    }
+
+    private double getTestDuration(groovy.util.Node parentNode) {
+        return parentNode.inject(0.0d, { duration, node ->
+            def currentNodeDuration = 0.0d
+            if (node.name() == 'test-suite' && node.@result == "Ignored")
+                currentNodeDuration = getTestDuration(node.'results'.first())
+            else if (node.name() == 'test-suite') {
+                currentNodeDuration = Double.valueOf(node.@time)
+            } else if (node.name() == 'test-case') {
+                def time = node.@time
+                currentNodeDuration = Double.valueOf(time ? time : "0")
+            } else if (node.name() == 'results') {
+                currentNodeDuration = getTestDuration(node.children())
+            }
+            return duration + currentNodeDuration
+        })
     }
 }

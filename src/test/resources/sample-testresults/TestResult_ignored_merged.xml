@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test-results name="Merged results" total="21" errors="0" failures="0" not-run="1" inconclusive="0" ignored="1" skipped="0" invalid="0" date="2018-03-20" time="15:14:27">
+  <environment nunit-version="3.6.0.0" clr-version="4.0.30319.42000" os-version="Microsoft Windows NT 10.0.14393.0" platform="Win32NT" cwd="c:\lucru\surse\ul-trader-extension\desk\extension\test\bin\Debug" machine-name="10-FDANELIUC" user="fdaneliuc" user-domain="ULLINK" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Test Project" executed="True" name="" asserts="0" time="0.9140000000000003" result="Ignored">
+    <results>
+      <test-suite type="Assembly" name="c:\lucru\surse\ul-trader-extension\desk\extension\test\bin\Debug\ul-trader-extension-test.dll" executed="False" result="Ignored">
+        <properties>
+          <property name="ApartmentState" value="STA" />
+          <property name="_PID" value="23424" />
+          <property name="_APPDOMAIN" value="domain-" />
+        </properties>
+        <reason>
+          <message><![CDATA[One or more child tests were ignored]]></message>
+        </reason>
+        <results>
+          <test-suite type="TestSuite" name="Ullink" executed="False" result="Ignored">
+            <reason>
+              <message><![CDATA[One or more child tests were ignored]]></message>
+            </reason>
+            <results>
+              <test-suite type="TestSuite" name="ultrader" executed="False" result="Ignored">
+                <reason>
+                  <message><![CDATA[One or more child tests were ignored]]></message>
+                </reason>
+                <results>
+                  <test-suite type="TestSuite" name="extension" executed="False" result="Ignored">
+                    <reason>
+                      <message><![CDATA[One or more child tests were ignored]]></message>
+                    </reason>
+                    <results>
+                      <test-suite type="TestSuite" name="test" executed="False" result="Ignored">
+                        <reason>
+                          <message><![CDATA[One or more child tests were ignored]]></message>
+                        </reason>
+                        <results>
+                          <test-suite type="TestSuite" name="legacy" executed="False" result="Ignored">
+                            <reason>
+                              <message><![CDATA[One or more child tests were ignored]]></message>
+                            </reason>
+                            <results>
+                              <test-suite type="TestSuite" name="ultrader" executed="False" result="Ignored">
+                                <reason>
+                                  <message><![CDATA[One or more child tests were ignored]]></message>
+                                </reason>
+                                <results>
+                                  <test-suite type="TestSuite" name="test" executed="False" result="Ignored">
+                                    <reason>
+                                      <message><![CDATA[One or more child tests were ignored]]></message>
+                                    </reason>
+                                    <results>
+                                      <test-suite type="TestSuite" name="ULMarketDataManager" executed="False" result="Ignored">
+                                        <reason>
+                                          <message><![CDATA[One or more child tests were ignored]]></message>
+                                        </reason>
+                                        <results>
+                                          <test-suite type="TestFixture" name="ULMarketDataManagerTests" executed="False" result="Ignored">
+                                            <reason>
+                                              <message><![CDATA[One or more child tests were ignored]]></message>
+                                            </reason>
+                                            <results>
+                                              <test-suite type="ParameterizedTest" name="CalculateTheoOpVariation" executed="True" result="Success" success="True" time="0.196" asserts="2">
+                                                <results>
+                                                  <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.CalculateTheoOpVariation(10.18d,10.12d)" executed="True" result="Success" success="True" time="0.171" asserts="1" />
+                                                  <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.CalculateTheoOpVariation(2.009d,1.986d)" executed="True" result="Success" success="True" time="0.019" asserts="1" />
+                                                </results>
+                                              </test-suite>
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.Ctor_InstanceIsSetToIt" executed="True" result="Success" success="True" time="0.012" asserts="1" />
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.ForceInstrumentMarketDataUpdate_MarketDepthUpdateAndQuotationRequestDoesNotExist_DoesNotThrow" executed="True" result="Success" success="True" time="0.251" asserts="1" />
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.ForceInstrumentMarketDataUpdate_QuotationUpdateAndQuotationRequestDoesNotExist_DoesNotThrow" executed="True" result="Success" success="True" time="0.041" asserts="1" />
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.InstrumentIntraday_AfterStopSubscriptionLastListener_TheSubscriptionIsCanceled" executed="True" result="Success" success="True" time="0.046" asserts="3">
+                                                <properties>
+                                                  <property name="Timeout" value="5000" />
+                                                </properties>
+                                              </test-case>
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.InstrumentIntraday_SubscriptionIsStopedAndThenRestarted_ShouldResubscribeToMarket" executed="True" result="Success" success="True" time="0.017" asserts="5">
+                                                <properties>
+                                                  <property name="Timeout" value="5000" />
+                                                </properties>
+                                              </test-case>
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.InstrumentIntradayStartSubscription_FungibleInstrumentIsSubscribed_InstrumentRecievesUpdates" executed="True" result="Success" success="True" time="0.144" asserts="4">
+                                                <properties>
+                                                  <property name="Timeout" value="5000" />
+                                                </properties>
+                                              </test-case>
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.InstrumentIntradayStartSubscription_InstrumentIsSubscribed" executed="True" result="Success" success="True" time="0.014" asserts="5">
+                                                <properties>
+                                                  <property name="Timeout" value="5000" />
+                                                </properties>
+                                              </test-case>
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.InstrumentIntradayStartSubscription_InstrumentIsSubscribed_InstrumentIsMarkedAsUpdatedAfterTradeUpdate" executed="True" result="Success" success="True" time="0.014" asserts="3">
+                                                <properties>
+                                                  <property name="Timeout" value="5000" />
+                                                </properties>
+                                              </test-case>
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.InstrumentIntradayStartSubscription_InstrumentIsSubscribed_InstrumentRecievesUpdates" executed="True" result="Success" success="True" time="0.013" asserts="4">
+                                                <properties>
+                                                  <property name="Timeout" value="5000" />
+                                                </properties>
+                                              </test-case>
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.InstrumentMarketData_VWAP_DevisionByZero_Should_Return_Empty" executed="True" result="Success" success="True" time="0.012" asserts="4" />
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.IntradayReceived_IntradayRequestDoesNotExists_DoesNotThrow" executed="True" result="Success" success="True" time="0.011" asserts="1" />
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.OnFlowStart_ItDoesNotSkipInstruments" executed="True" result="Success" success="True" time="0.025" asserts="0" />
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.OnFlowStart_ItLogsMessage" executed="True" result="Success" success="True" time="0.020" asserts="0" />
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.OnFlowStart_ItRestartsAllExistingSubscriptions" executed="True" result="Success" success="True" time="0.026" asserts="0" />
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.OnFlowStart_ItRestartsHistorySubscriptions" executed="False" result="Ignored">
+                                                <properties>
+                                                  <property name="_SKIPREASON" value="ULT-33325 - ignore until this is fixed.Should be part of the OnFlowStart_ItRestartsAllExistingSubscriptions, but separated until this is fixed." />
+                                                </properties>
+                                                <reason>
+                                                  <message><![CDATA[ULT-33325 - ignore until this is fixed.Should be part of the OnFlowStart_ItRestartsAllExistingSubscriptions, but separated until this is fixed.]]></message>
+                                                </reason>
+                                              </test-case>
+                                              <test-suite type="ParameterizedTest" name="OnFlowStateChage_ForUnknownOrStoppingState_AllInstrumentsAreMarkedAsInterrupted" executed="True" result="Success" success="True" time="0.025" asserts="16">
+                                                <results>
+                                                  <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.OnFlowStateChage_ForUnknownOrStoppingState_AllInstrumentsAreMarkedAsInterrupted(Unknown)" executed="True" result="Success" success="True" time="0.013" asserts="8" />
+                                                  <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.OnFlowStateChage_ForUnknownOrStoppingState_AllInstrumentsAreMarkedAsInterrupted(Stopping)" executed="True" result="Success" success="True" time="0.011" asserts="8" />
+                                                </results>
+                                              </test-suite>
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.RemoveOrderBookSubscriptionIsCalled_WhenMarketDepthSubscriptionCancelled" executed="True" result="Success" success="True" time="0.029" asserts="0" />
+                                              <test-case name="Ullink.ultrader.extension.test.legacy.ultrader.test.ULMarketDataManager.ULMarketDataManagerTests.RestartSubscriptions_LogsMessageForEachInstrument" executed="True" result="Success" success="True" time="0.018" asserts="0" />
+                                            </results>
+                                          </test-suite>
+                                        </results>
+                                      </test-suite>
+                                    </results>
+                                  </test-suite>
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

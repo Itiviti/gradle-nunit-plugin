@@ -41,6 +41,9 @@ class NUnit extends ConventionTask {
     def test = Wrapper.newInstance()
     def where = Wrapper.newInstance()
     def testList
+    def nunitCommandModifier = { nunitBin, args ->
+        [nunitBin, *args]
+    }
 
     Map<String, Object> env = [:]
 
@@ -259,8 +262,12 @@ class NUnit extends ConventionTask {
         return combine(testInput)
     }
 
+    def getCommandLine(input, reportPath){
+        return nunitCommandModifier(getNunitExec().absolutePath, buildCommandArgs(input, reportPath))
+    }
+
     def run(def input, def reportPath) {
-        def cmdLine = [getNunitExec().absolutePath, *buildCommandArgs(input, reportPath)]
+        def cmdLine = getCommandLine(input, reportPath)
         if (!isFamily(FAMILY_WINDOWS)) {
             cmdLine = ["mono", *cmdLine]
         }

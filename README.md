@@ -52,15 +52,18 @@ It creates a task 'nunit' that may be configured as follows:
         include = 'BaseLine'
         // for NUnit v3+, use _where_ option instead of include/exclude
         framework = 'net-1.1'
-        shadowCopy = true        
+        shadowCopy = true
         // redirect output to file
         logFile = 'TestOutput.log'
 
         // for NUnit v3+
         resultFormat = 'nunit2'
-        
+
         // environment variables map (already defined)
         env = [:]
+
+        // optional - if set, can overwrite the default command arguments in order to allow running of external tools like dotMemoryUnit
+        nunitCommandModifier = { nunitBin, args -> [nunitBin, *args] }
     }
 
 # License

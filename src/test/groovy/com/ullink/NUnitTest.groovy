@@ -221,6 +221,34 @@ public class NUnitTest {
         assert commandArgs.find { it =~ /-result:.*TestResult\.xml;format=nunit3/ }
     }
 
+    @Test
+    public void whenRun_withDefaultCommandModifier_setsPathAndBuildArgs()
+    {
+        def nunit = getNUnitTask()
+
+        def cmdLine = nunit.getCommandLine('input', 'path')
+
+        assert cmdLine == [nunit.getNunitExec().absolutePath, *nunit.buildCommandArgs('input', 'path')]
+    }
+
+    @Test
+    public void whenRun_withCustomCommandModifier_setsPathAndBuildArgsWithCustomArguments() {
+        def nunit = getNUnitTask()
+
+        nunit.nunitCommandModifier = { path, args ->
+            ['dotMemoryUnit.exe', path, 'custom-args', *args]
+        }
+
+        def cmdLine = nunit.getCommandLine('input', 'path')
+
+        assert cmdLine == [
+                'dotMemoryUnit.exe',
+                nunit.getNunitExec().absolutePath,
+                'custom-args',
+                *nunit.buildCommandArgs('input', 'path')
+        ]
+    }
+
     def getNUnitTask() {
         def project = ProjectBuilder.builder().build()
         project.apply plugin: 'nunit'

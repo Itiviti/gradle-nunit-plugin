@@ -58,7 +58,10 @@ class NUnitPluginTest {
         expectedException.expect(GradleException.class);
         expectedException.expectMessage("Execution failed for task ':nunit'.")
 
-        project.tasks.nunit.execute()
+        project.tasks.nunit
+                {
+                    nunitVersion = '2.6.4'
+                }.execute()
     }
 
     @Test

@@ -1,11 +1,20 @@
 # gradle-nunit-plugin changelog
+##1.13
+### Changed
+* increase default NUnit runner version from 2.6.4 to 3.9.0
+* built with gradle 4.10.2
+
+### Fixed
+* Upgrade `gradle-download-task` to 3.4.4 to fix 'Invalid cookie expiry' on download
+* Allow download of NUnit 3.9 runner
+
 ## 1.12
 ### Changed
 * upgrade gradle-download-plugin to 3.2
 * upgrade net.researchgate.release to 2.6.0
 * built with gradle 4.2.1
 
-## Fixed
+### Fixed
 * Apply default parameters on plugin `com.ullink.msbuild` instead of `msbuild`
 which is required starting from `gradle-msbuild-plugin` 2.17
 

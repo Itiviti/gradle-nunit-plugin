@@ -71,6 +71,11 @@ class NUnit extends ConventionTask {
         major == 3 && minor >= 5
     }
 
+    boolean getIsV39() {
+        def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
+        major == 3 && minor == 9
+    }
+
     String getGitHubRepoName() {
         if (isV35OrAbove) {
             return 'nunit-console'
@@ -85,6 +90,9 @@ class NUnit extends ConventionTask {
         this.nunitVersion = version
         if (getIsV3(version)) {
             this.metaClass.mixin NUnit3Mixins
+        }
+        else {
+            this.metaClass.mixin NUnit2Mixins
         }
     }
 
@@ -134,9 +142,12 @@ class NUnit extends ConventionTask {
     }
 
     String getFixedDownloadVersion() {
-        def version = getNunitVersion()
+        String version = getNunitVersion()
         if (isV35OrAbove && version.endsWith('.0')) {
-            return version.take(version.length() - 2)
+            version = version.take(version.length() - 2)
+            if (isV39) {
+                version = "v${version}"
+            }
         }
 
         version

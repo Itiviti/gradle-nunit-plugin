@@ -3,6 +3,8 @@
 ### Changed
 * increase default NUnit runner version from 2.6.4 to 3.9.0
 * built with gradle 4.10.2
+* take as test assemblies only those containing "test.dll" or "tests.dll"
+to not require explicit config for projects like "test-framework.dll"
 
 ### Fixed
 * Upgrade `gradle-download-task` to 3.4.4 to fix 'Invalid cookie expiry' on download

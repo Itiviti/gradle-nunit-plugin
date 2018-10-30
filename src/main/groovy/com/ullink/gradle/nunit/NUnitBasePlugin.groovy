@@ -7,13 +7,13 @@ class NUnitBasePlugin implements Plugin<Project> {
         project.apply plugin: 'de.undercouch.download'
         project.tasks.withType(NUnit).whenTaskAdded { NUnit task ->
             applyNunitConventions(task, project)
-            task.metaClass.mixin NUnit2Mixins
+            task.metaClass.mixin NUnit3Mixins
         }
     }
 
     def applyNunitConventions(NUnit task, Project project) {
         task.conventionMapping.map "nunitDownloadUrl", { "https://github.com/nunit/${task.gitHubRepoName}/releases/download" }
-        task.conventionMapping.map "nunitVersion", { '2.6.4' }
+        task.conventionMapping.map "nunitVersion", { '3.9.0' }
         task.conventionMapping.map "nunitHome", {
             if (System.getenv()['NUNIT_HOME']) {
                 return System.getenv()['NUNIT_HOME']
@@ -25,7 +25,7 @@ class NUnitBasePlugin implements Plugin<Project> {
             task.dependsOn msbuildTask
             task.conventionMapping.map 'testAssemblies', {
                 msbuildTask.projects.findAll {
-                    it.key =~ 'test'
+                    it.key =~ 'test(s?)\\.dll'
                 }
                 .collect {
                     it.value.getDotnetAssemblyFile()

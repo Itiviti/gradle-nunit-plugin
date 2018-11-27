@@ -24,7 +24,6 @@ bintray {
     pkg.repo = 'gradle-plugins'
     pkg.version.gpg.sign = true
     pkg.userOrg = 'ullink'
-	override = true
 }
 
 plugindev {

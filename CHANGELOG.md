@@ -7,7 +7,7 @@
 to not require explicit config for projects like "test-framework.dll"
 
 ### Fixed
-* Upgrade `gradle-download-task` to 3.4.4 to fix 'Invalid cookie expiry' on download
+* Upgrade `gradle-download-task` to 3.4.3 to fix 'Invalid cookie expiry' on download
 * Allow download of NUnit 3.9 runner
 
 ## 1.12

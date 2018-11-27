@@ -1,5 +1,6 @@
 # gradle-nunit-plugin changelog
-##1.13
+
+## 1.13
 ### Changed
 * increase default NUnit runner version from 2.6.4 to 3.9.0
 * built with gradle 4.10.2

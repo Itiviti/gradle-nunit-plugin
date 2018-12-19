@@ -25,7 +25,7 @@ class NUnitBasePlugin implements Plugin<Project> {
             task.dependsOn msbuildTask
             task.conventionMapping.map 'testAssemblies', {
                 msbuildTask.projects.findAll {
-                    it.key =~ 'test(s?)\\.dll'
+                    it.key =~ '^.+test(s?)$'
                 }
                 .collect {
                     it.value.getDotnetAssemblyFile()

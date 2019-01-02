@@ -3,7 +3,7 @@
 ## 1.13
 ### Changed
 * increase default NUnit runner version from 2.6.4 to 3.9.0
-* built with gradle 4.8.1 (above won't work till we migrate out of plugindev)
+* built with gradle 4.7 (above won't work till we migrate out of plugindev)
 * take as test assemblies only those containing "test.dll" or "tests.dll"
 to not require explicit config for projects like "test-framework.dll"
 

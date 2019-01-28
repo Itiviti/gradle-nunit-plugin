@@ -1,5 +1,9 @@
 # gradle-nunit-plugin changelog
 
+## 1.14
+### Fixed
+* test binaries are now correctly found
+
 ## 1.13
 ### Changed
 * increase default NUnit runner version from 2.6.4 to 3.9.0

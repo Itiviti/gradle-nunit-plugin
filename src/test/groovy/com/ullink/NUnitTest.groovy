@@ -1,252 +1,252 @@
 package com.ullink
 
-import static groovy.test.GroovyAssert.shouldFail
-
 import org.gradle.api.GradleException
 import org.gradle.testfixtures.ProjectBuilder
-import org.junit.Test
+import spock.lang.Specification
 
-public class NUnitTest {
-
-    @Test
-    public void getTestInputAsList_works() {
+class NUnitTest extends Specification {
+    def "test input correctly parses lists and comma delimited strings"() {
+        expect:
         def nunit = getNUnitTask()
-        assert nunit.getTestInputAsList('A,B,C') == ['A', 'B', 'C']
-        assert nunit.getTestInputAsList('A') == ['A']
-        assert nunit.getTestInputAsList(['A', 'B', 'C']) == ['A', 'B', 'C']
-        assert nunit.getTestInputAsList(['A']) == ['A']
-
-        def emptyStringList = nunit.getTestInputAsList('')
-        assert (emptyStringList instanceof List)
-        assert !emptyStringList
-
-        def emptyListList = nunit.getTestInputAsList([])
-        assert (emptyListList instanceof List)
-        assert !emptyListList
-
-        def nullList = nunit.getTestInputAsList(null)
-        assert (nullList instanceof List)
-        assert !nullList
+            nunit.getTestInputAsList('A,B,C') == ['A', 'B', 'C']
+            nunit.getTestInputAsList('A') == ['A']
+            nunit.getTestInputAsList(['A', 'B', 'C']) == ['A', 'B', 'C']
+            nunit.getTestInputAsList(['A']) == ['A']
     }
 
-    @Test
-    public void whenNUnit2_getTestInputsAsString_works() {
-        def nunit = getNUnitTask()
-        nunit.nunitVersion = '2.0.0'
-        assert nunit.getTestInputsAsString('A,B,C') == 'A,B,C'
-        assert nunit.getTestInputsAsString('A') == 'A'
-        assert nunit.getTestInputsAsString(['A', 'B', 'C']) == 'A,B,C'
-        assert nunit.getTestInputsAsString(['A']) == 'A'
-        assert nunit.getTestInputsAsString('') == ''
-        assert nunit.getTestInputsAsString([]) == ''
-        assert nunit.getTestInputsAsString(null) == ''
+    def "test input is parsed correctly as List in corner cases"() {
+        when:
+            def nunit = getNUnitTask()
+            def emptyStringList = nunit.getTestInputAsList('')
+            def emptyListList = nunit.getTestInputAsList([])
+            def nullList = nunit.getTestInputAsList(null)
+        then:
+            emptyStringList instanceof List
+            !emptyStringList
+            emptyListList instanceof List
+            !emptyListList
+            nullList instanceof List
+            !nullList
     }
 
-    @Test
-    public void whenNUnit3_getTestInputsAsString_works() {
-        def nunit = getNUnitTask()
-        nunit.nunitVersion = '3.0.0'
-        assert nunit.getTestInputsAsString('A,B,C') == 'A,B,C'
-        assert nunit.getTestInputsAsString('A') == 'A'
-        assert nunit.getTestInputsAsString(['A', 'B', 'C']) == 'A or B or C'
-        assert nunit.getTestInputsAsString(['A']) == 'A'
-        assert nunit.getTestInputsAsString('') == ''
-        assert nunit.getTestInputsAsString([]) == ''
-        assert nunit.getTestInputsAsString(null) == ''
+    def "test input is parsed correctly when using nunit 2"() {
+        when: "Nunit 2 is used"
+            def nunit = getNUnitTask()
+            nunit.nunitVersion = '2.0.0'
+        then:
+            nunit.getTestInputsAsString('A,B,C') == 'A,B,C'
+            nunit.getTestInputsAsString('A') == 'A'
+            nunit.getTestInputsAsString(['A', 'B', 'C']) == 'A,B,C'
+            nunit.getTestInputsAsString(['A']) == 'A'
+            nunit.getTestInputsAsString('') == ''
+            nunit.getTestInputsAsString([]) == ''
+            nunit.getTestInputsAsString(null) == ''
     }
 
-    @Test
-    public void whenSingleTest_notParallel_singleTestReport(){
-        def nunit = getNUnitTask()
-        nunit.reportFileName = 'TestResult.xml'
-        nunit.parallelForks = true
-        nunit.run = 'Test1'
-        nunit.reportFolder = './'
-
-        assert nunit.getTestReportPath() == new File(nunit.project.projectDir, "TestResult.xml")
+    def "test input is parsed correctly when using nunit 3"() {
+        when: "nunit 3 is used"
+            def nunit = getNUnitTask()
+            nunit.nunitVersion = '3.0.0'
+        then:
+            nunit.getTestInputsAsString('A,B,C') == 'A,B,C'
+            nunit.getTestInputsAsString('A') == 'A'
+            nunit.getTestInputsAsString(['A', 'B', 'C']) == 'A or B or C'
+            nunit.getTestInputsAsString(['A']) == 'A'
+            nunit.getTestInputsAsString('') == ''
+            nunit.getTestInputsAsString([]) == ''
+            nunit.getTestInputsAsString(null) == ''
     }
 
-    @Test
-    public void whenSingleTest_parallel_singleTestReport(){
-        def nunit = getNUnitTask()
-        nunit.reportFileName = 'TestResult.xml'
-        nunit.parallelForks = true
-        nunit.run = 'Test1'
-        nunit.reportFolder = './'
-
-        assert nunit.getTestReportPath() == new File(nunit.project.projectDir, "TestResult.xml")
+    def "a single run in parallel generates one report file"() {
+        when:
+            def nunit = getNUnitTask()
+            nunit.reportFileName = 'TestResult.xml'
+            nunit.parallelForks = true
+            nunit.run = 'Test1'
+            nunit.reportFolder = './'
+        then:
+            nunit.getTestReportPath() == new File(nunit.project.projectDir, "TestResult.xml")
     }
 
-    @Test
-    public void whenMultipleTests_notParallel_singleTestReport(){
-        def nunit = getNUnitTask()
-        nunit.reportFileName = 'TestResult.xml'
-        nunit.parallelForks = false
-        nunit.run = ['Test1', 'Test2']
-        nunit.reportFolder = './'
-
-        assert nunit.getTestReportPath() == new File(nunit.project.projectDir, "TestResult.xml")
+    def "a single run generates only one report file"() {
+        when:
+            def nunit = getNUnitTask()
+            nunit.reportFileName = 'TestResult.xml'
+            nunit.parallelForks = false
+            nunit.run = 'Test1'
+            nunit.reportFolder = './'
+        then:
+            nunit.getTestReportPath() == new File(nunit.project.projectDir, "TestResult.xml")
     }
 
-    @Test
-    public void whenMultipleTests_parallel_singleTestReport(){
-        def nunit = getNUnitTask()
-        nunit.reportFileName = 'TestResult.xml'
-        nunit.parallelForks = true
-        nunit.run = ['Test1', 'Test2']
-        nunit.reportFolder = './'
-
-        assert nunit.getTestReportPath() == new File(nunit.project.projectDir, "TestResult.xml")
+    def "multiple runs generate only one report file"() {
+        when:
+            def nunit = getNUnitTask()
+            nunit.reportFileName = 'TestResult.xml'
+            nunit.parallelForks = false
+            nunit.run = ['Test1', 'Test2']
+            nunit.reportFolder = './'
+        then:
+            nunit.getTestReportPath() == new File(nunit.project.projectDir, "TestResult.xml")
     }
 
-    @Test
-    public void whenNUnit2_run_runSpecified() {
-        def nunit = getNUnitTask()
-        nunit.nunitVersion = '2.0.0'
-        nunit.run = ['Test1', 'Test2']
-
-        def commandArgs = nunit.getCommandArgs()
-
-        // list contains does not work with GString
-        assert commandArgs.find { it == '-run:Test1,Test2' }
+    def "multiple runs in parallel generate only one report file"() {
+        when:
+            def nunit = getNUnitTask()
+            nunit.reportFileName = 'TestResult.xml'
+            nunit.parallelForks = true
+            nunit.run = ['Test1', 'Test2']
+            nunit.reportFolder = './'
+        then:
+            nunit.getTestReportPath() == new File(nunit.project.projectDir, "TestResult.xml")
     }
 
-    @Test
-    public void whenNUnit2_test_runSpecified() {
-        def nunit = getNUnitTask()
-        nunit.nunitVersion = '2.0.0'
-        nunit.test = ['Test1', 'Test2']
+    def "command args contain runs when using nunit 2"() {
+        when:
+            def nunit = getNUnitTask()
+            nunit.nunitVersion = '2.0.0'
+            nunit.run = ['Test1', 'Test2']
 
-        def commandArgs = nunit.getCommandArgs()
-
-        assert commandArgs.find { it == '-run:Test1,Test2' }
+            def commandArgs = nunit.getCommandArgs()
+        then:
+            // list contains does not work with GString
+            commandArgs.find { it == '-run:Test1,Test2' }
     }
 
-    @Test
-    public void whenNUnit3_where_whereSpecified() {
-        def nunit = getNUnitTask()
-        nunit.nunitVersion = '3.0.0'
-        nunit.where = [ 'test == \'Test1\'', 'test == \'Test2\'']
+    def "command args contain tests when using nunit 2"() {
+        when:
+            def nunit = getNUnitTask()
+            nunit.nunitVersion = '2.0.0'
+            nunit.test = ['Test1', 'Test2']
 
-        def commandArgs = nunit.getCommandArgs()
-
-        assert commandArgs.find { it == '-where:test == \'Test1\' or test == \'Test2\'' }
+            def commandArgs = nunit.getCommandArgs()
+        then:
+            commandArgs.find { it == '-run:Test1,Test2' }
     }
 
-    @Test
-    public void whenNUnit3_test_whereSpecified() {
-        def nunit = getNUnitTask()
-        nunit.nunitVersion = '3.0.0'
-        nunit.test = ['Test1', 'Test2']
+    def "command args contain where when using nunit 3"() {
+        when:
+            def nunit = getNUnitTask()
+            nunit.nunitVersion = '3.0.0'
+            nunit.where = [ 'test == \'Test1\'', 'test == \'Test2\'']
 
-        def commandArgs = nunit.getCommandArgs()
-
-        assert commandArgs.find { it == '-where:test == \'Test1\' or test == \'Test2\'' }
+            def commandArgs = nunit.getCommandArgs()
+        then:
+            commandArgs.find { it == '-where:test == \'Test1\' or test == \'Test2\'' }
     }
 
-    @Test
-    public void whenNUnit3_run_whereSpecified() {
-        def nunit = getNUnitTask()
-        nunit.nunitVersion = '3.0.0'
-        nunit.run = ['Test1', 'Test2']
+    def "command args contain test when using nunit 3"() {
+        when:
+            def nunit = getNUnitTask()
+            nunit.nunitVersion = '3.0.0'
+            nunit.test = ['Test1', 'Test2']
 
-        def commandArgs = nunit.getCommandArgs()
-
-        assert commandArgs.find {it == '-where:test == \'Test1\' or test == \'Test2\'' }
+            def commandArgs = nunit.getCommandArgs()
+        then:
+            commandArgs.find { it == '-where:test == \'Test1\' or test == \'Test2\'' }
     }
 
-    @Test
-    public void whenNUnit2_include_shouldPass() {
-        def nunit = getNUnitTask()
-        nunit.nunitVersion = '2.0.0'
-        nunit.include = 'foo'
+    def "command args contain runs when using nunit 3"() {
+        when:
+            def nunit = getNUnitTask()
+            nunit.nunitVersion = '3.0.0'
+            nunit.run = ['Test1', 'Test2']
 
-        def commandArgs = nunit.getCommandArgs()
-
-        assert commandArgs.find { it == '-include:foo' }
+            def commandArgs = nunit.getCommandArgs()
+        then:
+            commandArgs.find {it == '-where:test == \'Test1\' or test == \'Test2\'' }
     }
 
-    @Test
-    public void whenNUnit3_include_shouldFail() {
-        def nunit = getNUnitTask()
-        nunit.nunitVersion = '3.0.0'
-
-        shouldFail(GradleException) {
+    def "command args contain include when using nunit 2"() {
+        when:
+            def nunit = getNUnitTask()
+            nunit.nunitVersion = '2.0.0'
             nunit.include = 'foo'
-        }
+
+            def commandArgs = nunit.getCommandArgs()
+        then:
+            commandArgs.find { it == '-include:foo' }
     }
 
-    @Test
-    public void whenNUnit3_shadowcopy_shadowcopy() {
-        def nunit = getNUnitTask()
-        nunit.nunitVersion = '3.0.0'
-        nunit.shadowCopy = true
-
-        def commandArgs = nunit.getCommandArgs()
-
-        assert commandArgs.find { it == '-shadowcopy' }
+    def "exception is thrown when calling include on nunit 3"() {
+        when:
+            def nunit = getNUnitTask()
+            nunit.nunitVersion = '3.0.0'
+            nunit.include = 'foo'
+        then:
+            thrown GradleException
     }
 
-    @Test
-    public void whenNUnit2_notShadowcopy_noshadow() {
-        def nunit = getNUnitTask()
-        nunit.nunitVersion = '2.0.0'
-        nunit.shadowCopy = false
+    def "command args contain shadow copy attribute on nunit 3"() {
+        when:
+            def nunit = getNUnitTask()
+            nunit.nunitVersion = '3.0.0'
+            nunit.shadowCopy = true
 
-        def commandArgs = nunit.getCommandArgs()
-
-        assert commandArgs.find { it == '-noshadow' }
+            def commandArgs = nunit.getCommandArgs()
+        then:
+            commandArgs.find { it == '-shadowcopy' }
     }
 
-    @Test
-    public void whenNUnit3_AllLabels_AlllabelsIsPassed() {
-        def nunit = getNUnitTask()
-        nunit.nunitVersion = '3.0.2'
-        nunit.labels = 'All'
+    def "command args contain noshadow attribute on nunit 2"() {
+        when:
+            def nunit = getNUnitTask()
+            nunit.nunitVersion = '2.0.0'
+            nunit.shadowCopy = false
 
-        def commandArgs = nunit.getCommandArgs()
-
-        assert commandArgs.find { it == '-labels:All' }
+            def commandArgs = nunit.getCommandArgs()
+        then:
+            commandArgs.find { it == '-noshadow' }
     }
 
-    @Test
-    public void whenNUnit3_setResultFormat_resultFormatIsSet()
-    {
-        def nunit = getNUnitTask()
-        nunit.nunitVersion = '3.0.1'
-        nunit.resultFormat = 'nunit3'
+    def "command args contain all labels"() {
+        when:
+            def nunit = getNUnitTask()
+            nunit.nunitVersion = '3.0.2'
+            nunit.labels = 'All'
 
-        def commandArgs = nunit.getCommandArgs()
-
-        assert commandArgs.find { it =~ /-result:.*TestResult\.xml;format=nunit3/ }
+            def commandArgs = nunit.getCommandArgs()
+        then:
+            commandArgs.find { it == '-labels:All' }
     }
 
-    @Test
-    public void whenRun_withDefaultCommandModifier_setsPathAndBuildArgs()
-    {
-        def nunit = getNUnitTask()
+    def "command args contain result format"() {
+        when:
+            def nunit = getNUnitTask()
+            nunit.nunitVersion = '3.0.1'
+            nunit.resultFormat = 'nunit3'
 
-        def cmdLine = nunit.getCommandLine('input', 'path')
+            def commandArgs = nunit.getCommandArgs()
 
-        assert cmdLine == [nunit.getNunitExec().absolutePath, *nunit.buildCommandArgs('input', 'path')]
+        then:
+            commandArgs.find { it =~ /-result:.*TestResult\.xml;format=nunit3/ }
     }
 
-    @Test
-    public void whenRun_withCustomCommandModifier_setsPathAndBuildArgsWithCustomArguments() {
-        def nunit = getNUnitTask()
+    def "running with default command modifier sets path and build args"() {
+        when:
+            def nunit = getNUnitTask()
 
-        nunit.nunitCommandModifier = { path, args ->
-            ['dotMemoryUnit.exe', path, 'custom-args', *args]
-        }
+            def cmdLine = nunit.getCommandLine('input', 'path')
+        then:
+            cmdLine == [nunit.getNunitExec().absolutePath, *nunit.buildCommandArgs('input', 'path')]
+    }
 
-        def cmdLine = nunit.getCommandLine('input', 'path')
+    def "running with custom command modifier sets path and build args with custom arguments"() {
+        when:
+            def nunit = getNUnitTask()
 
-        assert cmdLine == [
-                'dotMemoryUnit.exe',
-                nunit.getNunitExec().absolutePath,
-                'custom-args',
-                *nunit.buildCommandArgs('input', 'path')
-        ]
+            nunit.nunitCommandModifier = { path, args ->
+                ['dotMemoryUnit.exe', path, 'custom-args', *args]
+            }
+
+            def cmdLine = nunit.getCommandLine('input', 'path')
+        then:
+            cmdLine == [
+                    'dotMemoryUnit.exe',
+                    nunit.getNunitExec().absolutePath,
+                    'custom-args',
+                    *nunit.buildCommandArgs('input', 'path')
+            ]
     }
 
     def getNUnitTask() {

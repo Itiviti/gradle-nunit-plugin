@@ -5,6 +5,7 @@ plugins {
 }
 
 apply plugin: 'groovy'
+apply plugin: 'java-gradle-plugin'
 
 group = 'com.ullink.gradle'
 description 'gradle-nunit-plugin is a Gradle plugin that enables NUnit testing'
@@ -15,6 +16,9 @@ dependencies {
     testCompile 'xmlunit:xmlunit:1.6'
     testCompile 'junit:junit:4.11'
     testCompile 'pl.pragmatists:JUnitParams:1.0.5'
+    testImplementation('org.spockframework:spock-core:1.1-groovy-2.4') {
+        exclude module: 'groovy-all'
+    }
 }
 
 bintray {

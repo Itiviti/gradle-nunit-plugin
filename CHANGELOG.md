@@ -1,5 +1,11 @@
 # gradle-nunit-plugin changelog
 
+## 2.00
+### Breaking change
+* rename timeout to testCaseTimeout due to conflict with AbstractTask after update to Gradle 5.0
+### Changed
+* build with gradle 5.0
+
 ## 1.14
 ### Fixed
 * test binaries are now correctly found

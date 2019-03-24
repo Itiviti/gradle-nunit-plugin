@@ -3,6 +3,7 @@ package com.ullink
 import com.ullink.gradle.nunit.NUnit
 import org.gradle.api.GradleException
 import org.gradle.api.Project
+import org.gradle.process.internal.ExecException
 import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Specification
 
@@ -24,10 +25,10 @@ class NUnitPluginTest extends Specification {
             project.tasks.nunit
             {
                 nunitVersion = '2.6.4'
-            }.execute()
+            }.build()
         then:
-            GradleException exception = thrown()
-            exception.message == "Execution failed for task ':nunit'."
+            ExecException exception = thrown()
+            exception.message.contains("finished with non-zero exit value")
     }
 
     def "setting report folder works"() {

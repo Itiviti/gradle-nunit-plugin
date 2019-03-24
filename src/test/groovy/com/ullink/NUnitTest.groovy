@@ -102,11 +102,11 @@ class NUnitTest extends Specification {
     }
 
     def "command args contain runs when using nunit 2"() {
-        when:
+        given:
             def nunit = getNUnitTask()
             nunit.nunitVersion = '2.0.0'
             nunit.run = ['Test1', 'Test2']
-
+        when:
             def commandArgs = nunit.getCommandArgs()
         then:
             // list contains does not work with GString
@@ -114,108 +114,109 @@ class NUnitTest extends Specification {
     }
 
     def "command args contain tests when using nunit 2"() {
-        when:
+        given:
             def nunit = getNUnitTask()
             nunit.nunitVersion = '2.0.0'
             nunit.test = ['Test1', 'Test2']
-
+        when:
             def commandArgs = nunit.getCommandArgs()
         then:
             commandArgs.find { it == '-run:Test1,Test2' }
     }
 
     def "command args contain where when using nunit 3"() {
-        when:
+        given:
             def nunit = getNUnitTask()
             nunit.nunitVersion = '3.0.0'
             nunit.where = [ 'test == \'Test1\'', 'test == \'Test2\'']
-
+        when:
             def commandArgs = nunit.getCommandArgs()
         then:
             commandArgs.find { it == '-where:test == \'Test1\' or test == \'Test2\'' }
     }
 
     def "command args contain test when using nunit 3"() {
-        when:
+        given:
             def nunit = getNUnitTask()
             nunit.nunitVersion = '3.0.0'
             nunit.test = ['Test1', 'Test2']
-
+        when:
             def commandArgs = nunit.getCommandArgs()
         then:
             commandArgs.find { it == '-where:test == \'Test1\' or test == \'Test2\'' }
     }
 
     def "command args contain runs when using nunit 3"() {
-        when:
+        given:
             def nunit = getNUnitTask()
             nunit.nunitVersion = '3.0.0'
             nunit.run = ['Test1', 'Test2']
-
+        when:
             def commandArgs = nunit.getCommandArgs()
         then:
             commandArgs.find {it == '-where:test == \'Test1\' or test == \'Test2\'' }
     }
 
     def "command args contain include when using nunit 2"() {
-        when:
+        given:
             def nunit = getNUnitTask()
             nunit.nunitVersion = '2.0.0'
             nunit.include = 'foo'
-
+        when:
             def commandArgs = nunit.getCommandArgs()
         then:
             commandArgs.find { it == '-include:foo' }
     }
 
     def "exception is thrown when calling include on nunit 3"() {
-        when:
+        given:
             def nunit = getNUnitTask()
             nunit.nunitVersion = '3.0.0'
+        when:
             nunit.include = 'foo'
         then:
             thrown GradleException
     }
 
     def "command args contain shadow copy attribute on nunit 3"() {
-        when:
+        given:
             def nunit = getNUnitTask()
             nunit.nunitVersion = '3.0.0'
             nunit.shadowCopy = true
-
+        when:
             def commandArgs = nunit.getCommandArgs()
         then:
             commandArgs.find { it == '-shadowcopy' }
     }
 
     def "command args contain noshadow attribute on nunit 2"() {
-        when:
+        given:
             def nunit = getNUnitTask()
             nunit.nunitVersion = '2.0.0'
             nunit.shadowCopy = false
-
+        when:
             def commandArgs = nunit.getCommandArgs()
         then:
             commandArgs.find { it == '-noshadow' }
     }
 
     def "command args contain all labels"() {
-        when:
+        given:
             def nunit = getNUnitTask()
             nunit.nunitVersion = '3.0.2'
             nunit.labels = 'All'
-
+        when:
             def commandArgs = nunit.getCommandArgs()
         then:
             commandArgs.find { it == '-labels:All' }
     }
 
     def "command args contain result format"() {
-        when:
+        given:
             def nunit = getNUnitTask()
             nunit.nunitVersion = '3.0.1'
             nunit.resultFormat = 'nunit3'
-
+        when:
             def commandArgs = nunit.getCommandArgs()
 
         then:

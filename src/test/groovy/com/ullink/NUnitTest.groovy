@@ -6,8 +6,9 @@ import spock.lang.Specification
 
 class NUnitTest extends Specification {
     def "test input correctly parses lists and comma delimited strings"() {
+        given:
+            def nunit = getNUnitTask()
         expect:
-        def nunit = getNUnitTask()
             nunit.getTestInputAsList('A,B,C') == ['A', 'B', 'C']
             nunit.getTestInputAsList('A') == ['A']
             nunit.getTestInputAsList(['A', 'B', 'C']) == ['A', 'B', 'C']
@@ -15,8 +16,9 @@ class NUnitTest extends Specification {
     }
 
     def "test input is parsed correctly as List in corner cases"() {
-        when:
+        given:
             def nunit = getNUnitTask()
+        when:
             def emptyStringList = nunit.getTestInputAsList('')
             def emptyListList = nunit.getTestInputAsList([])
             def nullList = nunit.getTestInputAsList(null)
@@ -30,10 +32,10 @@ class NUnitTest extends Specification {
     }
 
     def "test input is parsed correctly when using nunit 2"() {
-        when: "Nunit 2 is used"
+        given:
             def nunit = getNUnitTask()
             nunit.nunitVersion = '2.0.0'
-        then:
+        expect:
             nunit.getTestInputsAsString('A,B,C') == 'A,B,C'
             nunit.getTestInputsAsString('A') == 'A'
             nunit.getTestInputsAsString(['A', 'B', 'C']) == 'A,B,C'
@@ -44,8 +46,9 @@ class NUnitTest extends Specification {
     }
 
     def "test input is parsed correctly when using nunit 3"() {
-        when: "nunit 3 is used"
+        given:
             def nunit = getNUnitTask()
+        when: "nunit 3 is used"
             nunit.nunitVersion = '3.0.0'
         then:
             nunit.getTestInputsAsString('A,B,C') == 'A,B,C'
@@ -58,8 +61,9 @@ class NUnitTest extends Specification {
     }
 
     def "a single run in parallel generates one report file"() {
-        when:
+        given:
             def nunit = getNUnitTask()
+        when:
             nunit.reportFileName = 'TestResult.xml'
             nunit.parallelForks = true
             nunit.run = 'Test1'
@@ -69,8 +73,9 @@ class NUnitTest extends Specification {
     }
 
     def "a single run generates only one report file"() {
-        when:
+        given:
             def nunit = getNUnitTask()
+        when:
             nunit.reportFileName = 'TestResult.xml'
             nunit.parallelForks = false
             nunit.run = 'Test1'
@@ -80,8 +85,9 @@ class NUnitTest extends Specification {
     }
 
     def "multiple runs generate only one report file"() {
-        when:
+        given:
             def nunit = getNUnitTask()
+        when:
             nunit.reportFileName = 'TestResult.xml'
             nunit.parallelForks = false
             nunit.run = ['Test1', 'Test2']
@@ -91,8 +97,9 @@ class NUnitTest extends Specification {
     }
 
     def "multiple runs in parallel generate only one report file"() {
-        when:
+        given:
             def nunit = getNUnitTask()
+        when:
             nunit.reportFileName = 'TestResult.xml'
             nunit.parallelForks = true
             nunit.run = ['Test1', 'Test2']

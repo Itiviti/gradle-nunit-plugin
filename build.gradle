@@ -4,6 +4,7 @@ plugins {
     id 'net.researchgate.release' version '2.6.0'
 }
 
+apply plugin: 'java-gradle-plugin'
 apply plugin: 'groovy'
 
 group = 'com.ullink.gradle'
@@ -14,7 +15,9 @@ dependencies {
     compile 'org.codehaus.gpars:gpars:1.2.1'
     testCompile 'xmlunit:xmlunit:1.6'
     testCompile 'junit:junit:4.11'
-    testCompile 'pl.pragmatists:JUnitParams:1.0.5'
+    testImplementation('org.spockframework:spock-core:1.1-groovy-2.4') {
+        exclude module: 'groovy-all'
+    }
 }
 
 bintray {

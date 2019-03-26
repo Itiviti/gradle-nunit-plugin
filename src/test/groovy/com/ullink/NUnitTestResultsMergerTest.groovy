@@ -5,38 +5,77 @@ import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl
 import org.custommonkey.xmlunit.DetailedDiff
 import org.custommonkey.xmlunit.XMLUnit
 import org.custommonkey.xmlunit.examples.RecursiveElementNameAndTextQualifier
-import org.junit.Assert
-import org.junit.Test
+import spock.lang.Specification
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
 
-class NUnitTestResultsMergerTest {
-    @Test
-    public void givenMultipleTestResultFilesForSameAssembly_merge_mergesIntoExpectedOutputResult()
-    {
-        def testResultFiles = [
-                'TestResult_integrationTest_ILRepack.IntegrationTests.NuGet',
-                'TestResult_integrationTest_ILRepack.IntegrationTests.WPF',
-                'TestResult_unitTests'
-                ].collect { getTestResultFile(it) }
-        File.createTempFile('nunit-plugin-test-results', '.xml').with {
-            new NUnitTestResultsMerger().merge(testResultFiles, it)
+class NUnitTestResultsMergerTest extends Specification {
+
+    def "multiple test result files for same assembly are merged into expected output"() {
+        given:
+            def testResultFiles = [
+                    'TestResult_integrationTest_ILRepack.IntegrationTests.NuGet',
+                    'TestResult_integrationTest_ILRepack.IntegrationTests.WPF',
+                    'TestResult_unitTests'
+            ].collect { getTestResultFile(it) }
+            def file = File.createTempFile('nunit-plugin-test-results', '.xml')
+            file.deleteOnExit()
+        when:
+            new NUnitTestResultsMerger().merge(testResultFiles, file)
             XMLUnit.setIgnoreComments(true)
             XMLUnit.setIgnoreWhitespace(true)
             XMLUnit.setIgnoreAttributeOrder(true)
             def diff = XMLUnit.compareXML(
                     getContent(getTestResultFile('TestResults_merged')),
-                    getContent(it))
+                    getContent(file))
+            diff.overrideElementQualifier(new RecursiveElementNameAndTextQualifier())
+        then:
+            '' == new DetailedDiff(diff).allDifferences.join('\n')
+            AssertContentIsLoadable(file)
+    }
+
+    def "test result with accent and other kind of characters merges correctly"() {
+        given:
+            def file = File.createTempFile('nunit-plugin-test-results', '.xml')
+            file.deleteOnExit()
+        when:
+            new NUnitTestResultsMerger().merge([getTestResultFile('TestResult_withAccents')], file)
+            XMLUnit.setIgnoreComments(true)
+            XMLUnit.setIgnoreWhitespace(true)
+            XMLUnit.setIgnoreAttributeOrder(true)
+            def diff = XMLUnit.compareXML(
+                    getContent(getTestResultFile('TestResult_withAccents_merged')),
+                    getContent(file))
             diff.overrideElementQualifier(new RecursiveElementNameAndTextQualifier());
-            Assert.assertEquals('', new DetailedDiff(diff).allDifferences.join('\n'));
-            AssertContentIsLoadable(it)
-        }
+        then:
+            '' == new DetailedDiff(diff).allDifferences.join('\n')
+            AssertContentIsLoadable(file)
+    }
+
+    def "test result with ignored tests is merged correctly"() {
+        given:
+            def testResultFiles = [
+                    'TestResult_ignored'
+            ].collect { getTestResultFile(it) }
+            def file = File.createTempFile('nunit-plugin-test-results', '.xml')
+        when:
+            new NUnitTestResultsMerger().merge(testResultFiles, file)
+            XMLUnit.setIgnoreComments(true)
+            XMLUnit.setIgnoreWhitespace(true)
+            XMLUnit.setIgnoreAttributeOrder(true)
+            def diff = XMLUnit.compareXML(
+                    getContent(getTestResultFile('TestResult_ignored_merged')),
+                    getContent(file))
+            diff.overrideElementQualifier(new RecursiveElementNameAndTextQualifier())
+        then:
+            '' == new DetailedDiff(diff).allDifferences.join('\n')
+            AssertContentIsLoadable(file)
     }
 
     void AssertContentIsLoadable(File file) {
-        Assert.assertNotNull(new DocumentBuilderFactoryImpl().newDocumentBuilder().parse(file))
+        null != new DocumentBuilderFactoryImpl().newDocumentBuilder().parse(file)
     }
 
     private File getTestResultFile(String fileName) {
@@ -45,41 +84,5 @@ class NUnitTestResultsMergerTest {
 
     private String getContent(File file) {
         Files.readAllLines(Paths.get(file.toURI()), StandardCharsets.UTF_8).join('\n')
-    }
-
-    @Test
-    public void givenATestResultWithAccentAndOtherKindOfCharacters_merge_mergesIntoExpectedOutputResult() {
-        File.createTempFile('nunit-plugin-test-results', '.xml').with {
-            new NUnitTestResultsMerger().merge([getTestResultFile('TestResult_withAccents')], it)
-            XMLUnit.setIgnoreComments(true)
-            XMLUnit.setIgnoreWhitespace(true)
-            XMLUnit.setIgnoreAttributeOrder(true)
-            def diff = XMLUnit.compareXML(
-                    getContent(getTestResultFile('TestResult_withAccents_merged')),
-                    getContent(it))
-            diff.overrideElementQualifier(new RecursiveElementNameAndTextQualifier());
-            Assert.assertEquals('', new DetailedDiff(diff).allDifferences.join('\n'));
-            AssertContentIsLoadable(it)
-        }
-    }
-
-    @Test
-    public void givenFileWithIgnoredTests_merge_mergesIntoExpectedOutputResult()
-    {
-        def testResultFiles = [
-                'TestResult_ignored'
-        ].collect { getTestResultFile(it) }
-        File.createTempFile('nunit-plugin-test-results', '.xml').with {
-            new NUnitTestResultsMerger().merge(testResultFiles, it)
-            XMLUnit.setIgnoreComments(true)
-            XMLUnit.setIgnoreWhitespace(true)
-            XMLUnit.setIgnoreAttributeOrder(true)
-            def diff = XMLUnit.compareXML(
-                    getContent(getTestResultFile('TestResult_ignored_merged')),
-                    getContent(it))
-            diff.overrideElementQualifier(new RecursiveElementNameAndTextQualifier());
-            Assert.assertEquals('', new DetailedDiff(diff).allDifferences.join('\n'));
-            AssertContentIsLoadable(it)
-        }
     }
 }

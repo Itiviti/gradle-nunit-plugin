@@ -26,7 +26,7 @@ class NUnit extends ConventionTask {
     def framework
     def verbosity
     def config
-    def timeout
+    def testCaseTimeout
     def labels
 
     def reportFolder
@@ -89,10 +89,14 @@ class NUnit extends ConventionTask {
     void setNunitVersion(def version) {
         this.nunitVersion = version
         if (getIsV3(version)) {
+            this.metaClass = new ExpandoMetaClass(NUnit.class, false, false)
             this.metaClass.mixin NUnit3Mixins
+            this.metaClass.initialize()
         }
         else {
+            this.metaClass = new ExpandoMetaClass(NUnit.class, false, false)
             this.metaClass.mixin NUnit2Mixins
+            this.metaClass.initialize()
         }
     }
 
@@ -343,8 +347,8 @@ class NUnit extends ConventionTask {
         if (labels) {
             commandLineArgs += "-labels:$labels"
         }
-        if (timeout) {
-            commandLineArgs += "-timeout:$timeout"
+        if (testCaseTimeout) {
+            commandLineArgs += "-timeout:$testCaseTimeout"
         }
         if (logFile) {
             commandLineArgs += "-output:${getTestLogFile().getPath()}"

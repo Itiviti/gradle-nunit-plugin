@@ -9,6 +9,10 @@ class NUnitPlugin implements Plugin<Project> {
         project.apply plugin: 'nunit-base'
 
         Task defaultNUnitTask = project.task('nunit', type: NUnit)
+
+        Task reportingTask = project.task('nunitReport', type: ReportGenerator)
+        defaultNUnitTask.finalizedBy(reportingTask)
+
         defaultNUnitTask.description = 'Executes NUnit tests'
     }
 }

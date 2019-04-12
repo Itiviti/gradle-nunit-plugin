@@ -84,4 +84,23 @@ class NUnitPluginFunctionalTest extends Specification {
             result.output.contains("NUnit Console Runner 3.0.5797")
             result.task(':nunit').outcome == TaskOutcome.SUCCESS
     }
+
+    def "nunitReport task is executed once nunit task is finished"() {
+        given:
+            buildFile << """
+                    nunit {
+                        testAssemblies = ['-help']
+                        nunitVersion = '3.9.0'
+                    }
+                """
+        when:
+            def result = GradleRunner.create()
+                .withProjectDir(testProjectDir.root)
+                .withArguments( 'nunit')
+                .withPluginClasspath()
+                .withDebug(true)
+                .build()
+        then:
+            result.output.contains('nunitReport')
+    }
 }

@@ -36,7 +36,7 @@ class NUnitPluginFunctionalTest extends Specification {
                     .withDebug(true)
                     .build()
         then: "help command was written for the default nunit version"
-            result.output.contains('NUnit Console Runner 3.9.0')
+            result.output.contains('NUnit Console Runner 3.10.0')
             result.task(':clean').outcome == TaskOutcome.UP_TO_DATE
             result.task(':nunit').outcome == TaskOutcome.SUCCESS
     }

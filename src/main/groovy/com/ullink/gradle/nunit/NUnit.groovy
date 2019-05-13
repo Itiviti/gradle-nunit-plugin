@@ -71,9 +71,14 @@ class NUnit extends ConventionTask {
         major == 3 && minor >= 5
     }
 
-    boolean getIsV39() {
+    boolean getIsV39OrAbove() {
         def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
-        major == 3 && minor == 9
+        major == 3 && minor >= 9
+    }
+
+    boolean getIsV310OrAbove() {
+        def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
+        major == 3 && minor >= 10
     }
 
     String getGitHubRepoName() {
@@ -112,7 +117,14 @@ class NUnit extends ConventionTask {
             ensureNunitInstalled()
             nunitFolder = getCachedNunitDir()
         }
-        new File(project.file(nunitFolder), "${isV35OrAbove ? '' : 'bin/'}${file}")
+
+        String folderName = "bin/"
+        if (isV310OrAbove) {
+            folderName = "bin/net35/"
+        } else if (isV35OrAbove) {
+            folderName = ""
+        }
+        new File(project.file(nunitFolder), "${folderName}${file}")
     }
 
     void ensureNunitInstalled() {
@@ -149,7 +161,7 @@ class NUnit extends ConventionTask {
         String version = getNunitVersion()
         if (isV35OrAbove && version.endsWith('.0')) {
             version = version.take(version.length() - 2)
-            if (isV39) {
+            if (isV39OrAbove) {
                 version = "v${version}"
             }
         }

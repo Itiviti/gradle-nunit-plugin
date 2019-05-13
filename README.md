@@ -24,7 +24,7 @@ Or, when using Gradle lower than 2.1:
 It creates a task 'nunit' that may be configured as follows:
 
     nunit {
-        // optional - defaults to '3.9.0', but plugin is compatible with v3+ as well
+        // optional - defaults to '3.10.0', but plugin is compatible with v3+ as well
         // for compatibility reason, nunitVersion should be set (if needed) before applying version specific parameters
         nunitVersion
         // optional - defaults to 'https://github.com/nunit/nunit-console/releases/download'

@@ -1,5 +1,6 @@
 package com.ullink.functional
 
+import org.gradle.internal.impldep.org.apache.commons.io.FileUtils
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.Rule
@@ -76,12 +77,43 @@ class NUnitPluginFunctionalTest extends Specification {
         when:
             def result = GradleRunner.create()
                     .withProjectDir(testProjectDir.root)
-                    .withArguments( 'nunit')
+                    .withArguments( 'nunit', '--stacktrace')
                     .withPluginClasspath()
                     .withDebug(true)
                     .build()
         then:
             result.output.contains("NUnit Console Runner 3.0.5797")
             result.task(':nunit').outcome == TaskOutcome.SUCCESS
+    }
+
+    def "nunit for two parallel namespaces successfully creates the merged TestResult.xml"() {
+        given:
+        FileUtils.copyDirectory(
+                new File(getClass().getResource("/mock-assemblies").toURI()),
+                testProjectDir.root);
+        buildFile << """
+                    final List filterExpressions = [
+                        "test == 'MockAssembly.FirstNamespace'",
+                        "test == 'MockAssembly.SecondNamespace'"
+                    ]
+                    nunit {
+                        testAssemblies = ['MockAssembly.dll']
+                        where = filterExpressions
+                        nunitVersion = '3.0.0'
+                        parallelForks = true
+                        resultFormat = 'nunit2'
+                    }
+                """
+        when:
+        def result = GradleRunner.create()
+                .withProjectDir(testProjectDir.root)
+                .withArguments( 'nunit')
+                .withPluginClasspath()
+                .withDebug(true)
+                .build()
+        then:
+        new File(testProjectDir.root.path + '/build/nunit/reports/TestResult.xml').exists()
+        result.output.contains("NUnit Console Runner 3.0.5797")
+        result.task(':nunit').outcome == TaskOutcome.SUCCESS
     }
 }

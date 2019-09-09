@@ -1,6 +1,6 @@
 # gradle-nunit-plugin changelog
 
-## 2.00
+## 2.0
 ### Fixed
 * NUnit 3.10 can now be used and it's the new default
 

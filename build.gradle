@@ -1,6 +1,5 @@
 plugins {
-    id 'nu.studer.plugindev' version '1.0.5'
-    id "com.jfrog.bintray" version "1.8.0"
+    id 'nu.studer.plugindev' version '1.0.7'
     id 'net.researchgate.release' version '2.6.0'
 }
 

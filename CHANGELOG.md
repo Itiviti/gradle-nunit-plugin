@@ -1,10 +1,14 @@
 # gradle-nunit-plugin changelog
 
 ## 2.00
-### Breaking change
+### Fixed
+* NUnit 3.10 can now be used and it's the new default
+
+### Breaking changes
 * rename timeout to testCaseTimeout due to conflict with AbstractTask after update to Gradle 5.0
+
 ### Changed
-* build with gradle 5.0
+* plugin is now built with Gradle 5.0
 
 ## 1.14
 ### Fixed

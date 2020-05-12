@@ -15,6 +15,21 @@ class NUnitTest extends Specification {
             nunit.getTestInputAsList(['A']) == ['A']
     }
 
+    def "test version generates correct fixed download version"(String version, String result) {
+        given:
+            def nunit = getNUnitTask()
+        when:
+            nunit.nunitVersion = version
+        then:
+            nunit.getFixedDownloadVersion() == result
+        where:
+            version | result
+            "2.0.0" | "2.0.0"
+            "3.5.0" | "3.5"
+            "3.9.0" | "v3.9"
+            "3.11.1" | "v3.11.1"
+    }
+
     def "test input is parsed correctly as List in corner cases"() {
         given:
             def nunit = getNUnitTask()

@@ -159,8 +159,11 @@ class NUnit extends ConventionTask {
 
     String getFixedDownloadVersion() {
         String version = getNunitVersion()
-        if (isV35OrAbove && version.endsWith('.0')) {
-            version = version.take(version.length() - 2)
+        if (isV35OrAbove) {
+            if(version.endsWith('.0')) {
+                version = version.take(version.length() - 2)
+            }
+
             if (isV39OrAbove) {
                 version = "v${version}"
             }

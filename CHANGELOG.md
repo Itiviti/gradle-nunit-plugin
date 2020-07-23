@@ -1,5 +1,7 @@
 # gradle-nunit-plugin changelog
 
+## 2.2
+
 ## 2.1
 ### Fixed
 * Fixed downloading URL for versions above 3.11

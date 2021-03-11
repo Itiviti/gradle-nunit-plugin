@@ -47,10 +47,15 @@ It creates a task 'nunit' that may be configured as follows:
         ignoreFailures = false
         // optional - specify whether to write test case names to the output
         labels = 'Off|On|All'
+        // optional - defaults to true, specifies whether nunit should run in parallel or sequential. This needs to be coordinated with the `where` flag
+        parallelForks
+        
         // Mapped NUnit-Console Command Line Options
         exclude = 'Database'
         include = 'BaseLine'
-        // for NUnit v3+, use _where_ option instead of include/exclude
+        // for NUnit v3+, use _where_ option instead of include/exclude:
+        where = [ 'cat == CustomCategory' ]
+
         framework = 'net-1.1'
         shadowCopy = true
         // redirect output to file

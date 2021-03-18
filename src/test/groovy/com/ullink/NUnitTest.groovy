@@ -157,6 +157,30 @@ class NUnitTest extends Specification {
             commandArgs.find { it == '-where:test == \'Test1\' or test == \'Test2\'' }
     }
 
+    def "command args contain a single where (non-array) when using nunit 3"() {
+        given:
+        def nunit = getNUnitTask()
+        nunit.nunitVersion = '3.0.0'
+        nunit.parallelForks = false
+        nunit.where = 'cat == LongRunning'
+        when:
+        def commandArgs = nunit.getCommandArgs()
+        then:
+        commandArgs.find { it == '-where:cat == LongRunning' }
+    }
+
+    def "command args contain a single where (array) when using nunit 3"() {
+        given:
+        def nunit = getNUnitTask()
+        nunit.nunitVersion = '3.0.0'
+        nunit.parallelForks = false
+        nunit.where = ['cat == LongRunning']
+        when:
+        def commandArgs = nunit.getCommandArgs()
+        then:
+        commandArgs.find { it == '-where:cat == LongRunning' }
+    }
+
     def "command args contain test when using nunit 3"() {
         given:
             def nunit = getNUnitTask()

@@ -11,10 +11,11 @@ class NUnit3Mixins {
         this.setTest(run)
     }
 
-    def setTestInternal(def testWrapper, def whereWrapper, def input) {
+    def setTestInternal(def nunit, def input) {
+        project.logger.warn('Usage of the "test" field detected while running with NUnit 3. Please use "where" instead')
         def isCollection = isACollection(input)
         def isCSV = isACommaSeparatedList(input)
-        whereWrapper.value = isCollection || isCSV ? translateToWhereConditions(input, isCSV) : translateToWhereCondition(input)
+        nunit.where = isCollection || isCSV ? translateToWhereConditions(input, isCSV) : translateToWhereCondition(input)
     }
 
     Boolean isACollection(def input) {
@@ -70,7 +71,7 @@ class NUnit3Mixins {
     }
 
     def getRunActionInput() {
-        return where.value
+        return where
     }
 
     def combine(def input) {

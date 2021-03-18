@@ -8,15 +8,6 @@ import org.gradle.api.tasks.TaskAction
 
 import static org.apache.tools.ant.taskdefs.condition.Os.*
 
-class Wrapper {
-    def value;
-
-    Wrapper() {
-        value = ""
-    }
-}
-
-
 class NUnit extends ConventionTask {
     def nunitHome
     def nunitVersion
@@ -38,8 +29,8 @@ class NUnit extends ConventionTask {
     boolean ignoreFailures = false
     boolean parallelForks = true
 
-    def test = Wrapper.newInstance()
-    def where = Wrapper.newInstance()
+    def test
+    def where
     def testList
     def nunitCommandModifier = { nunitBin, args ->
         [nunitBin, *args]
@@ -106,7 +97,8 @@ class NUnit extends ConventionTask {
     }
 
     void setTest(def input) {
-        setTestInternal(test, where, input)
+        this.test = input
+        setTestInternal(this, input)
     }
 
     File nunitBinFile(String file) {
@@ -220,7 +212,7 @@ class NUnit extends ConventionTask {
     }
 
     def decideExecutionPath(Closure singleRunAction, Closure multipleRunsAction) {
-        def input = getRunActionInput();
+        def input = getRunActionInput()
 
         if (!parallelForks || !input) {
             return singleRunAction(input)

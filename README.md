@@ -49,7 +49,7 @@ It creates a task 'nunit' that may be configured as follows:
         labels = 'Off|On|All'
         // optional - defaults to true, specifies whether nunit should run in parallel or sequential. This needs to be coordinated with the `where` flag
         parallelForks
-        
+
         // Mapped NUnit-Console Command Line Options
         exclude = 'Database'
         include = 'BaseLine'

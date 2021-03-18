@@ -1,6 +1,8 @@
 # gradle-nunit-plugin changelog
 
 ## 2.2
+### Fixed
+* Fixed usage of the `where` flag with a single string
 
 ## 2.1
 ### Fixed

@@ -17,8 +17,7 @@ class NUnit2Mixins {
         this.setTestList(runList)
     }
 
-    void setTestInternal(def testWrapper, def whereWrapper, def target) {
-        testWrapper.value = target
+    void setTestInternal(def nunit, def target) {
     }
 
     File getNunitExec() {
@@ -28,7 +27,7 @@ class NUnit2Mixins {
     }
 
     def getRunActionInput() {
-        return test.value
+        return test
     }
 
     def combine(def input) {

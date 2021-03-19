@@ -74,6 +74,30 @@ class NUnitTestResultsMergerTest extends Specification {
             AssertContentIsLoadable(file)
     }
 
+    def "nunit3 test results"() {
+        given:
+        def testResultFiles = [
+                'nunit3_1',
+                'nunit3_2'
+        ].collect { getTestResultFile(it) }
+        def file = File.createTempFile('nunit-plugin-test-results', '.xml')
+        file.deleteOnExit()
+
+        when:
+        new NUnitTestResultsMerger().merge(testResultFiles, file)
+        XMLUnit.setIgnoreComments(true)
+        XMLUnit.setIgnoreWhitespace(true)
+        XMLUnit.setIgnoreAttributeOrder(true)
+        def diff = XMLUnit.compareXML(
+                getContent(getTestResultFile('nunit3_merged')),
+                getContent(file))
+        diff.overrideElementQualifier(new RecursiveElementNameAndTextQualifier())
+
+        then:
+        '' == new DetailedDiff(diff).allDifferences.join('\n')
+        AssertContentIsLoadable(file)
+    }
+
     void AssertContentIsLoadable(File file) {
         null != new DocumentBuilderFactoryImpl().newDocumentBuilder().parse(file)
     }

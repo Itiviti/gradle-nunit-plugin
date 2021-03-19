@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><test-run id="0" name="Merged results" total="10" errors="0" failures="0" not-run="0" inconclusive="0" skipped="0" invalid="0" ignored="0" start-time="2021-03-11 11:42:57Z" end-time="2021-03-11 11:43:02Z">
+  <test-suite type="Assembly" id="1-1128" name="ILRepack.Tests.dll" fullname="E:\il-repack\ILRepack.Tests\bin\Release\ILRepack.Tests.dll" runstate="Runnable" testcasecount="107" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.007175" total="0" passed="0" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="0" time="4.15092">
+    <environment framework-version="3.12.0.0" clr-version="4.0.30319.42000" os-version="Microsoft Windows NT 10.0.18362.0" platform="Win32NT" cwd="E:\il-repack" machine-name="machine" user="user" user-domain="ORC" culture="en-US" uiculture="en-GB" os-architecture="x64"/>
+    <settings>
+      <setting name="DisposeRunners" value="True"/>
+      <setting name="InternalTraceLevel" value="Info"/>
+      <setting name="WorkDirectory" value="E:\il-repack\build\nunit"/>
+      <setting name="ImageRuntimeVersion" value="4.0.30319"/>
+      <setting name="ImageTargetFrameworkName" value=".NETFramework,Version=v4.0"/>
+      <setting name="ImageRequiresX86" value="False"/>
+      <setting name="ImageRequiresDefaultAppDomainAssemblyResolver" value="False"/>
+      <setting name="RuntimeFramework" value="net-4.0"/>
+      <setting name="NumberOfTestWorkers" value="8"/>
+    </settings>
+    <properties>
+      <property name="_PID" value="4324"/>
+      <property name="_APPDOMAIN" value="domain-9cf4dbb2-ILRepack.Tests.dll"/>
+    </properties>
+  </test-suite>
+  <test-suite type="Assembly" id="2-1019" name="ILRepack.IntegrationTests.dll" fullname="E:\il-repack\ILRepack.IntegrationTests\bin\Release\ILRepack.IntegrationTests.dll" runstate="Runnable" testcasecount="16" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:43:02Z" duration="4.097745" total="7" passed="7" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="21" time="4.15092">
+    <environment framework-version="3.12.0.0" clr-version="4.0.30319.42000" os-version="Microsoft Windows NT 10.0.18362.0" platform="Win32NT" cwd="E:\il-repack" machine-name="machine" user="user" user-domain="ORC" culture="en-US" uiculture="en-GB" os-architecture="x64"/>
+    <settings>
+      <setting name="DisposeRunners" value="True"/>
+      <setting name="InternalTraceLevel" value="Info"/>
+      <setting name="WorkDirectory" value="E:\il-repack\build\nunit"/>
+      <setting name="ImageRuntimeVersion" value="4.0.30319"/>
+      <setting name="ImageTargetFrameworkName" value=".NETFramework,Version=v4.0"/>
+      <setting name="ImageRequiresX86" value="False"/>
+      <setting name="ImageRequiresDefaultAppDomainAssemblyResolver" value="False"/>
+      <setting name="RuntimeFramework" value="net-4.0"/>
+      <setting name="NumberOfTestWorkers" value="8"/>
+    </settings>
+    <properties>
+      <property name="_PID" value="26096"/>
+      <property name="_APPDOMAIN" value="domain-9c69824a-ILRepack.IntegrationTests.dll"/>
+    </properties>
+    <test-suite type="TestSuite" id="2-1020" name="ILRepack" fullname="ILRepack" runstate="Runnable" testcasecount="16" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:43:02Z" duration="4.077015" total="7" passed="7" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="21">
+      <test-suite type="TestSuite" id="2-1021" name="IntegrationTests" fullname="ILRepack.IntegrationTests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:43:02Z" duration="4.076466" total="7" passed="7" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="21">
+        <test-suite type="TestFixture" id="2-1000" name="Scenarios" fullname="ILRepack.IntegrationTests.Scenarios" classname="ILRepack.IntegrationTests.Scenarios" runstate="Runnable" testcasecount="7" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:43:02Z" duration="4.065382" total="7" passed="7" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="21">
+          <test-case id="2-1004" name="GivenApplicationThatUsesThemingAndStylesFromA_MergedWPFApplicationRunsSuccessfully" fullname="ILRepack.IntegrationTests.Scenarios.GivenApplicationThatUsesThemingAndStylesFromA_MergedWPFApplicationRunsSuccessfully" methodname="GivenApplicationThatUsesThemingAndStylesFromA_MergedWPFApplicationRunsSuccessfully" classname="ILRepack.IntegrationTests.Scenarios" runstate="Runnable" seed="742302680" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:59Z" duration="0.369945" asserts="3">
+            <output>
+Scenario 'WPFThemingAndLibraryStyles' STDOUT: 
+</output>
+          </test-case>
+          <test-case id="2-1006" name="GivenDotNet462AppReferencingMicrosoftBclAsyncAndSystemRuntime_MergedApplicationRunsSuccessfully" fullname="ILRepack.IntegrationTests.Scenarios.GivenDotNet462AppReferencingMicrosoftBclAsyncAndSystemRuntime_MergedApplicationRunsSuccessfully" methodname="GivenDotNet462AppReferencingMicrosoftBclAsyncAndSystemRuntime_MergedApplicationRunsSuccessfully" classname="ILRepack.IntegrationTests.Scenarios" runstate="Runnable" seed="1485392325" result="Passed" start-time="2021-03-11 11:42:59Z" end-time="2021-03-11 11:42:59Z" duration="0.806098" asserts="3">
+            <output>
+Scenario 'DotNet462Application' STDOUT: 1
+CallerMemberName: Main
+42
+
+</output>
+          </test-case>
+          <test-case id="2-1007" name="GivenDotNet462AppUsingNetStandard2LibrarySetAndReflection_MergedApplicationRunsSuccessfully" fullname="ILRepack.IntegrationTests.Scenarios.GivenDotNet462AppUsingNetStandard2LibrarySetAndReflection_MergedApplicationRunsSuccessfully" methodname="GivenDotNet462AppUsingNetStandard2LibrarySetAndReflection_MergedApplicationRunsSuccessfully" classname="ILRepack.IntegrationTests.Scenarios" runstate="Runnable" seed="1849136735" result="Passed" start-time="2021-03-11 11:42:59Z" end-time="2021-03-11 11:43:00Z" duration="0.122148" asserts="3">
+            <output>
+Scenario 'DotNet462NetStandard2' STDOUT: Unsafe success
+Reflection success
+
+</output>
+          </test-case>
+          <test-case id="2-1005" name="GivenSampleApplicationWithMahAppsAndSystemWindowsInteractivityWPF_MergedWPFApplicationRunsSuccessfully" fullname="ILRepack.IntegrationTests.Scenarios.GivenSampleApplicationWithMahAppsAndSystemWindowsInteractivityWPF_MergedWPFApplicationRunsSuccessfully" methodname="GivenSampleApplicationWithMahAppsAndSystemWindowsInteractivityWPF_MergedWPFApplicationRunsSuccessfully" classname="ILRepack.IntegrationTests.Scenarios" runstate="Runnable" seed="1566109203" result="Passed" start-time="2021-03-11 11:43:00Z" end-time="2021-03-11 11:43:01Z" duration="1.372716" asserts="3">
+            <output>
+Scenario 'WPFSampleApplication' STDOUT: 
+</output>
+          </test-case>
+          <test-case id="2-1001" name="GivenXAMLThatUsesLibraryClass_MergedWPFApplicationRunsSuccessfully" fullname="ILRepack.IntegrationTests.Scenarios.GivenXAMLThatUsesLibraryClass_MergedWPFApplicationRunsSuccessfully" methodname="GivenXAMLThatUsesLibraryClass_MergedWPFApplicationRunsSuccessfully" classname="ILRepack.IntegrationTests.Scenarios" runstate="Runnable" seed="213223370" result="Passed" start-time="2021-03-11 11:43:01Z" end-time="2021-03-11 11:43:01Z" duration="0.302080" asserts="3">
+            <output>
+Scenario 'LibraryClassUsageInXAML' STDOUT: 
+</output>
+          </test-case>
+          <test-case id="2-1002" name="GivenXAMLThatUsesLibraryUserControl_MergedWPFApplicationRunsSuccessfully" fullname="ILRepack.IntegrationTests.Scenarios.GivenXAMLThatUsesLibraryUserControl_MergedWPFApplicationRunsSuccessfully" methodname="GivenXAMLThatUsesLibraryUserControl_MergedWPFApplicationRunsSuccessfully" classname="ILRepack.IntegrationTests.Scenarios" runstate="Runnable" seed="1108929158" result="Passed" start-time="2021-03-11 11:43:01Z" end-time="2021-03-11 11:43:01Z" duration="0.283276" asserts="3">
+            <output>
+Scenario 'LibraryUserControlUsageInXAML' STDOUT: 
+</output>
+          </test-case>
+          <test-case id="2-1003" name="GivenXAMLThatUsesNestedLibraryUserControlAndClass_MergedWPFApplicationRunsSuccessfully" fullname="ILRepack.IntegrationTests.Scenarios.GivenXAMLThatUsesNestedLibraryUserControlAndClass_MergedWPFApplicationRunsSuccessfully" methodname="GivenXAMLThatUsesNestedLibraryUserControlAndClass_MergedWPFApplicationRunsSuccessfully" classname="ILRepack.IntegrationTests.Scenarios" runstate="Runnable" seed="364659154" result="Passed" start-time="2021-03-11 11:43:01Z" end-time="2021-03-11 11:43:02Z" duration="0.794188" asserts="3">
+            <output>
+Scenario 'NestedLibraryUsageInXAML' STDOUT: CallerMemberName: MainWindowLoaded
+
+</output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+  <test-suite type="Assembly" id="1-1128" name="ILRepack.Tests.dll" fullname="E:\il-repack\ILRepack.Tests\bin\Release\ILRepack.Tests.dll" runstate="Runnable" testcasecount="107" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.039692" total="3" passed="3" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="3" time="4.15092">
+    <environment framework-version="3.12.0.0" clr-version="4.0.30319.42000" os-version="Microsoft Windows NT 10.0.18362.0" platform="Win32NT" cwd="E:\il-repack" machine-name="machine" user="user" user-domain="ORC" culture="en-US" uiculture="en-GB" os-architecture="x64"/>
+    <settings>
+      <setting name="DisposeRunners" value="True"/>
+      <setting name="InternalTraceLevel" value="Info"/>
+      <setting name="WorkDirectory" value="E:\il-repack\build\nunit"/>
+      <setting name="ImageRuntimeVersion" value="4.0.30319"/>
+      <setting name="ImageTargetFrameworkName" value=".NETFramework,Version=v4.0"/>
+      <setting name="ImageRequiresX86" value="False"/>
+      <setting name="ImageRequiresDefaultAppDomainAssemblyResolver" value="False"/>
+      <setting name="RuntimeFramework" value="net-4.0"/>
+      <setting name="NumberOfTestWorkers" value="8"/>
+    </settings>
+    <properties>
+      <property name="_PID" value="28296"/>
+      <property name="_APPDOMAIN" value="domain-9cf4dbb2-ILRepack.Tests.dll"/>
+    </properties>
+    <test-suite type="TestSuite" id="1-1129" name="ILRepack" fullname="ILRepack" runstate="Runnable" testcasecount="107" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.024200" total="3" passed="3" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="3">
+      <test-suite type="TestSuite" id="1-1130" name="Tests" fullname="ILRepack.Tests" runstate="Runnable" testcasecount="107" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.023684" total="3" passed="3" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="3">
+        <test-suite type="TestFixture" id="1-1017" name="RepackLoggerTests" fullname="ILRepack.Tests.RepackLoggerTests" classname="ILRepack.Tests.RepackLoggerTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.019191" total="3" passed="3" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="3">
+          <test-case id="1-1019" name="GivenAnEmptyOutputFile__OpenFile_CloseFile__OpenReturnsFalse_ClosedDoesNotThrowError" fullname="ILRepack.Tests.RepackLoggerTests.GivenAnEmptyOutputFile__OpenFile_CloseFile__OpenReturnsFalse_ClosedDoesNotThrowError" methodname="GivenAnEmptyOutputFile__OpenFile_CloseFile__OpenReturnsFalse_ClosedDoesNotThrowError" classname="ILRepack.Tests.RepackLoggerTests" runstate="Runnable" seed="273476442" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.007456" asserts="1"/>
+          <test-case id="1-1018" name="GivenAnEmptyOutputFile__OpenFile_LogLine__OpenReturnsFalse_LogDoesNotThrowError" fullname="ILRepack.Tests.RepackLoggerTests.GivenAnEmptyOutputFile__OpenFile_LogLine__OpenReturnsFalse_LogDoesNotThrowError" methodname="GivenAnEmptyOutputFile__OpenFile_LogLine__OpenReturnsFalse_LogDoesNotThrowError" classname="ILRepack.Tests.RepackLoggerTests" runstate="Runnable" seed="1246094137" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.000534" asserts="1">
+            <output>Hello
+</output>
+          </test-case>
+          <test-case id="1-1020" name="GivenOutputFile__OpenFile_CloseFile_LogError__StreamIsOpened_StreamIsClosed_NoErrorIsThrown" fullname="ILRepack.Tests.RepackLoggerTests.GivenOutputFile__OpenFile_CloseFile_LogError__StreamIsOpened_StreamIsClosed_NoErrorIsThrown" methodname="GivenOutputFile__OpenFile_CloseFile_LogError__StreamIsOpened_StreamIsClosed_NoErrorIsThrown" classname="ILRepack.Tests.RepackLoggerTests" runstate="Runnable" seed="1012559726" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.001719" asserts="1">
+            <output>ERROR: Only written to the console. No error is thrown.
+WARN: Only written to the console. No error is thrown.
+INFO: Only written to the console. No error is thrown.
+</output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+  <test-suite type="Assembly" id="2-1019" name="ILRepack.IntegrationTests.dll" fullname="E:\il-repack\ILRepack.IntegrationTests\bin\Release\ILRepack.IntegrationTests.dll" runstate="Runnable" testcasecount="16" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.006308" total="0" passed="0" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="0" time="4.15092">
+    <environment framework-version="3.12.0.0" clr-version="4.0.30319.42000" os-version="Microsoft Windows NT 10.0.18362.0" platform="Win32NT" cwd="E:\il-repack" machine-name="machine" user="user" user-domain="ORC" culture="en-US" uiculture="en-GB" os-architecture="x64"/>
+    <settings>
+      <setting name="DisposeRunners" value="True"/>
+      <setting name="InternalTraceLevel" value="Info"/>
+      <setting name="WorkDirectory" value="E:\il-repack\build\nunit"/>
+      <setting name="ImageRuntimeVersion" value="4.0.30319"/>
+      <setting name="ImageTargetFrameworkName" value=".NETFramework,Version=v4.0"/>
+      <setting name="ImageRequiresX86" value="False"/>
+      <setting name="ImageRequiresDefaultAppDomainAssemblyResolver" value="False"/>
+      <setting name="RuntimeFramework" value="net-4.0"/>
+      <setting name="NumberOfTestWorkers" value="8"/>
+    </settings>
+    <properties>
+      <property name="_PID" value="14864"/>
+      <property name="_APPDOMAIN" value="domain-9c69824a-ILRepack.IntegrationTests.dll"/>
+    </properties>
+  </test-suite>
+</test-run>

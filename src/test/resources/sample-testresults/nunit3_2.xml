@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-run id="0" runstate="Runnable" testcasecount="123" result="Passed" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="3" engine-version="3.11.1.0" clr-version="4.0.30319.42000" start-time="2021-03-11 11:42:57Z" end-time="2021-03-11 11:42:59Z" duration="1.119350">
+  <command-line><![CDATA[C:\Users\user\.gradle\caches\nunit\NUnit.Console-3.11.1\bin\net35\nunit3-console.exe -trace=Info -work:E:\il-repack\build\nunit "-where: test == 'ILRepack.Tests.RepackLoggerTests' " -result:E:\il-repack\build\nunit\reports\intermediate-results-nunit\cce8ba92-22c8-446f-8f98-e2d270941309.xml E:\il-repack\ILRepack.Tests\bin\Release\ILRepack.Tests.dll E:\il-repack\ILRepack.IntegrationTests\bin\Release\ILRepack.IntegrationTests.dll]]></command-line>
+  <filter>
+    <test>ILRepack.Tests.RepackLoggerTests</test>
+  </filter>
+  <test-suite type="Assembly" id="1-1128" name="ILRepack.Tests.dll" fullname="E:\il-repack\ILRepack.Tests\bin\Release\ILRepack.Tests.dll" runstate="Runnable" testcasecount="107" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.039692" total="3" passed="3" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="3">
+    <environment framework-version="3.12.0.0" clr-version="4.0.30319.42000" os-version="Microsoft Windows NT 10.0.18362.0" platform="Win32NT" cwd="E:\il-repack" machine-name="machine" user="user" user-domain="ORC" culture="en-US" uiculture="en-GB" os-architecture="x64" />
+    <settings>
+      <setting name="DisposeRunners" value="True" />
+      <setting name="InternalTraceLevel" value="Info" />
+      <setting name="WorkDirectory" value="E:\il-repack\build\nunit" />
+      <setting name="ImageRuntimeVersion" value="4.0.30319" />
+      <setting name="ImageTargetFrameworkName" value=".NETFramework,Version=v4.0" />
+      <setting name="ImageRequiresX86" value="False" />
+      <setting name="ImageRequiresDefaultAppDomainAssemblyResolver" value="False" />
+      <setting name="RuntimeFramework" value="net-4.0" />
+      <setting name="NumberOfTestWorkers" value="8" />
+    </settings>
+    <properties>
+      <property name="_PID" value="28296" />
+      <property name="_APPDOMAIN" value="domain-9cf4dbb2-ILRepack.Tests.dll" />
+    </properties>
+    <test-suite type="TestSuite" id="1-1129" name="ILRepack" fullname="ILRepack" runstate="Runnable" testcasecount="107" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.024200" total="3" passed="3" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="3">
+      <test-suite type="TestSuite" id="1-1130" name="Tests" fullname="ILRepack.Tests" runstate="Runnable" testcasecount="107" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.023684" total="3" passed="3" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="3">
+        <test-suite type="TestFixture" id="1-1017" name="RepackLoggerTests" fullname="ILRepack.Tests.RepackLoggerTests" classname="ILRepack.Tests.RepackLoggerTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.019191" total="3" passed="3" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="3">
+          <test-case id="1-1019" name="GivenAnEmptyOutputFile__OpenFile_CloseFile__OpenReturnsFalse_ClosedDoesNotThrowError" fullname="ILRepack.Tests.RepackLoggerTests.GivenAnEmptyOutputFile__OpenFile_CloseFile__OpenReturnsFalse_ClosedDoesNotThrowError" methodname="GivenAnEmptyOutputFile__OpenFile_CloseFile__OpenReturnsFalse_ClosedDoesNotThrowError" classname="ILRepack.Tests.RepackLoggerTests" runstate="Runnable" seed="273476442" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.007456" asserts="1" />
+          <test-case id="1-1018" name="GivenAnEmptyOutputFile__OpenFile_LogLine__OpenReturnsFalse_LogDoesNotThrowError" fullname="ILRepack.Tests.RepackLoggerTests.GivenAnEmptyOutputFile__OpenFile_LogLine__OpenReturnsFalse_LogDoesNotThrowError" methodname="GivenAnEmptyOutputFile__OpenFile_LogLine__OpenReturnsFalse_LogDoesNotThrowError" classname="ILRepack.Tests.RepackLoggerTests" runstate="Runnable" seed="1246094137" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.000534" asserts="1">
+            <output><![CDATA[Hello
+]]></output>
+          </test-case>
+          <test-case id="1-1020" name="GivenOutputFile__OpenFile_CloseFile_LogError__StreamIsOpened_StreamIsClosed_NoErrorIsThrown" fullname="ILRepack.Tests.RepackLoggerTests.GivenOutputFile__OpenFile_CloseFile_LogError__StreamIsOpened_StreamIsClosed_NoErrorIsThrown" methodname="GivenOutputFile__OpenFile_CloseFile_LogError__StreamIsOpened_StreamIsClosed_NoErrorIsThrown" classname="ILRepack.Tests.RepackLoggerTests" runstate="Runnable" seed="1012559726" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.001719" asserts="1">
+            <output><![CDATA[ERROR: Only written to the console. No error is thrown.
+WARN: Only written to the console. No error is thrown.
+INFO: Only written to the console. No error is thrown.
+]]></output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+  <test-suite type="Assembly" id="2-1019" name="ILRepack.IntegrationTests.dll" fullname="E:\il-repack\ILRepack.IntegrationTests\bin\Release\ILRepack.IntegrationTests.dll" runstate="Runnable" testcasecount="16" result="Passed" start-time="2021-03-11 11:42:58Z" end-time="2021-03-11 11:42:58Z" duration="0.006308" total="0" passed="0" failed="0" warnings="0" inconclusive="0" skipped="0" asserts="0">
+    <environment framework-version="3.12.0.0" clr-version="4.0.30319.42000" os-version="Microsoft Windows NT 10.0.18362.0" platform="Win32NT" cwd="E:\il-repack" machine-name="machine" user="user" user-domain="ORC" culture="en-US" uiculture="en-GB" os-architecture="x64" />
+    <settings>
+      <setting name="DisposeRunners" value="True" />
+      <setting name="InternalTraceLevel" value="Info" />
+      <setting name="WorkDirectory" value="E:\il-repack\build\nunit" />
+      <setting name="ImageRuntimeVersion" value="4.0.30319" />
+      <setting name="ImageTargetFrameworkName" value=".NETFramework,Version=v4.0" />
+      <setting name="ImageRequiresX86" value="False" />
+      <setting name="ImageRequiresDefaultAppDomainAssemblyResolver" value="False" />
+      <setting name="RuntimeFramework" value="net-4.0" />
+      <setting name="NumberOfTestWorkers" value="8" />
+    </settings>
+    <properties>
+      <property name="_PID" value="14864" />
+      <property name="_APPDOMAIN" value="domain-9c69824a-ILRepack.IntegrationTests.dll" />
+    </properties>
+  </test-suite>
+</test-run>

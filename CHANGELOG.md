@@ -1,5 +1,7 @@
 # gradle-nunit-plugin changelog
 
+## 2.3
+
 ## 2.2
 ### Added
 * NUnit 3 reports can now be merged if running in parallel (just like the NUnit 2 ones)

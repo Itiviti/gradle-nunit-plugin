@@ -1,10 +1,11 @@
 plugins {
-    id 'nu.studer.plugindev' version '1.0.7'
+    id 'com.gradle.plugin-publish' version '0.15.0'
     id 'net.researchgate.release' version '2.6.0'
 }
 
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'groovy'
+apply plugin: 'com.gradle.plugin-publish'
 
 group = 'com.ullink.gradle'
 description 'gradle-nunit-plugin is a Gradle plugin that enables NUnit testing'
@@ -19,28 +20,25 @@ dependencies {
     }
 }
 
-bintray {
-    // to remove when upgraded plugindev to 1.0.4
-    user project.properties.bintrayUser
-    key project.properties.bintrayApiKey
-    pkg.repo = 'gradle-plugins'
-    pkg.version.gpg.sign = true
-    pkg.userOrg = 'ullink'
+pluginBundle {
+    website = 'https://github.com/Itiviti/gradle-nunit-plugin'
+    vcsUrl = 'https://github.com/Itiviti/gradle-nunit-plugin'
+    tags = ['nunit', 'c#', '.net']
+
+    mavenCoordinates {
+        groupId = 'com.ullink.gradle'
+    }
 }
 
-plugindev {
-    pluginId 'com.ullink.nunit'
-    pluginName 'com.ullink.gradle:gradle-nunit-plugin'
-    pluginImplementationClass 'com.ullink.gradle.nunit.NUnitPlugin'
-    pluginDescription project.description
-    pluginLicenses 'Apache-2.0'
-    pluginTags 'gradle', 'plugin', 'nunit', 'c#', '.net', 'test'
-    authorId 'muryoh'
-    authorName 'Remy Masson'
-    authorEmail 'muryoh@gmail.com'
-    projectUrl "https://github.com/Ullink/${project.name}"
-    projectInceptionYear '2015'
-    done()
+gradlePlugin {
+    plugins {
+        nunitPlugin {
+            id = 'com.ullink.nunit'
+            description = project.description
+            displayName = 'Gradle NUnit Plugin'
+            implementationClass = 'com.ullink.gradle.nunit.NUnitPlugin'
+        }
+    }
 }
 
-project.tasks.afterReleaseBuild.dependsOn project.tasks.bintrayUpload
+afterReleaseBuild.dependsOn project.tasks.publishPlugins

@@ -1,5 +1,9 @@
 # gradle-nunit-plugin changelog
 
+## 2.4
+### Fixed
+* Compiled in Gradle 6 to make sure the plugin still compatible with Gradle 5 and 6
+
 ## 2.3
 ### Fixed
 * Gradle 7 support

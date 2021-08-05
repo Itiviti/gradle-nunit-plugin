@@ -3,17 +3,17 @@ package com.ullink.functional
 import org.gradle.internal.impldep.org.apache.commons.io.FileUtils
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
+import spock.lang.TempDir
 import spock.lang.Unroll
 
 class NUnitPluginFunctionalTest extends Specification {
-    @Rule TemporaryFolder testProjectDir = new TemporaryFolder()
+    @TempDir
+    File testProjectDir
     File buildFile
 
     def setup() {
-        buildFile = testProjectDir.newFile('build.gradle')
+        buildFile = testProjectDir.toPath().resolve('build.gradle').toFile()
         buildFile << """
             plugins {
                 id 'base'
@@ -31,7 +31,7 @@ class NUnitPluginFunctionalTest extends Specification {
             """
         when: "clean and nunit tasks are executed"
             def result = GradleRunner.create()
-                    .withProjectDir(testProjectDir.root)
+                    .withProjectDir(testProjectDir)
                     .withArguments('clean', 'nunit')
                     .withPluginClasspath()
                     .withDebug(true)
@@ -53,7 +53,7 @@ class NUnitPluginFunctionalTest extends Specification {
                 """
         when: "nunit task is executed"
             def result = GradleRunner.create()
-                    .withProjectDir(testProjectDir.root)
+                    .withProjectDir(testProjectDir)
                     .withArguments( 'nunit')
                     .withPluginClasspath()
                     .withDebug(true)
@@ -76,7 +76,7 @@ class NUnitPluginFunctionalTest extends Specification {
                 """
         when:
             def result = GradleRunner.create()
-                    .withProjectDir(testProjectDir.root)
+                    .withProjectDir(testProjectDir)
                     .withArguments( 'nunit', '--stacktrace')
                     .withPluginClasspath()
                     .withDebug(true)
@@ -90,7 +90,7 @@ class NUnitPluginFunctionalTest extends Specification {
         given:
         FileUtils.copyDirectory(
                 new File(getClass().getResource("/mock-assemblies").toURI()),
-                testProjectDir.root);
+                testProjectDir)
         buildFile << """
                     final List filterExpressions = [
                         "test == 'MockAssembly.FirstNamespace'",
@@ -106,13 +106,13 @@ class NUnitPluginFunctionalTest extends Specification {
                 """
         when:
         def result = GradleRunner.create()
-                .withProjectDir(testProjectDir.root)
+                .withProjectDir(testProjectDir)
                 .withArguments( 'nunit')
                 .withPluginClasspath()
                 .withDebug(true)
                 .build()
         then:
-        new File(testProjectDir.root.path + '/build/nunit/reports/TestResult.xml').exists()
+        new File(testProjectDir.path + '/build/nunit/reports/TestResult.xml').exists()
         result.output.contains("NUnit Console Runner 3.0.5797")
         result.task(':nunit').outcome == TaskOutcome.SUCCESS
     }

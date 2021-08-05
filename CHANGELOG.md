@@ -1,6 +1,8 @@
 # gradle-nunit-plugin changelog
 
 ## 2.3
+### Fixed
+* Gradle 7 support
 
 ## 2.2
 ### Added

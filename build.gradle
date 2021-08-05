@@ -1,6 +1,7 @@
 plugins {
     id 'com.gradle.plugin-publish' version '0.15.0'
     id 'net.researchgate.release' version '2.6.0'
+    id 'maven-publish'
 }
 
 apply plugin: 'java-gradle-plugin'
@@ -11,13 +12,10 @@ group = 'com.ullink.gradle'
 description 'gradle-nunit-plugin is a Gradle plugin that enables NUnit testing'
 
 dependencies {
-    compile 'de.undercouch:gradle-download-task:3.4.3'
-    compile 'org.codehaus.gpars:gpars:1.2.1'
-    testCompile 'xmlunit:xmlunit:1.6'
-    testCompile 'junit:junit:4.11'
-    testImplementation('org.spockframework:spock-core:1.1-groovy-2.4') {
-        exclude module: 'groovy-all'
-    }
+    implementation 'de.undercouch:gradle-download-task:3.4.3'
+    implementation 'org.codehaus.gpars:gpars:1.2.1'
+    testImplementation 'xmlunit:xmlunit:1.6'
+    testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
 }
 
 pluginBundle {
@@ -39,6 +37,10 @@ gradlePlugin {
             implementationClass = 'com.ullink.gradle.nunit.NUnitPlugin'
         }
     }
+}
+
+test {
+    useJUnitPlatform()
 }
 
 afterReleaseBuild.dependsOn project.tasks.publishPlugins

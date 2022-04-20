@@ -126,6 +126,12 @@ class NUnit extends ConventionTask {
     }
 
     @Internal
+    boolean getIsV313OrAbove() {
+        def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
+        major == 3 && minor >= 13
+    }
+
+    @Internal
     String getGitHubRepoName() {
         if (isV35OrAbove) {
             return 'nunit-console'
@@ -209,7 +215,7 @@ class NUnit extends ConventionTask {
     @Internal
     String getFixedDownloadVersion() {
         String version = getNunitVersion()
-        if (isV35OrAbove) {
+        if (isV35OrAbove && !isV313OrAbove) {
             if(version.endsWith('.0')) {
                 version = version.take(version.length() - 2)
             }

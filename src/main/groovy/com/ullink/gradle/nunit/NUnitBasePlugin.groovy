@@ -13,7 +13,7 @@ class NUnitBasePlugin implements Plugin<Project> {
 
     def applyNunitConventions(NUnit task, Project project) {
         task.conventionMapping.map "nunitDownloadUrl", { "https://github.com/nunit/${task.gitHubRepoName}/releases/download" }
-        task.conventionMapping.map "nunitVersion", { '3.10.0' }
+        task.conventionMapping.map "nunitVersion", { '3.15.0' }
         task.conventionMapping.map "nunitHome", {
             if (System.getenv()['NUNIT_HOME']) {
                 return System.getenv()['NUNIT_HOME']

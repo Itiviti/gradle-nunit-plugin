@@ -1,5 +1,10 @@
 # gradle-nunit-plugin changelog
 
+## 2.5
+### Fixed
+* Fix download of NUnit console from 3.13.0
+* Default NUnit version to 3.15.0
+
 ## 2.4
 ### Fixed
 * Compiled in Gradle 6 to make sure the plugin still compatible with Gradle 5 and 6

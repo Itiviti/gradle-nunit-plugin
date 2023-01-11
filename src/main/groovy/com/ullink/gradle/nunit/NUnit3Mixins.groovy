@@ -66,7 +66,7 @@ class NUnit3Mixins {
 
     File getNunitExec() {
         File nunitExec = this.nunitBinFile('nunit3-console.exe')
-        assert nunitExec.isFile(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable"
+        assert nunitExec.isFile(), "You must install NUnit and set nunit.home property or NUNIT_HOME env variable ('${nunitExec.absolutePath}' not found)"
         return nunitExec
     }
 

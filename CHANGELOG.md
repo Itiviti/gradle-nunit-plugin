@@ -1,6 +1,22 @@
 # gradle-nunit-plugin changelog
 
+## 2.5
+### Fixed
+* Fix download of NUnit console from 3.13.0
+* Default NUnit version to 3.15.0
+
+## 2.4
+### Fixed
+* Compiled in Gradle 6 to make sure the plugin still compatible with Gradle 5 and 6
+
+## 2.3
+### Fixed
+* Gradle 7 support
+
 ## 2.2
+### Added
+* NUnit 3 reports can now be merged if running in parallel (just like the NUnit 2 ones)
+
 ### Fixed
 * Fixed usage of the `where` flag with a single string
 

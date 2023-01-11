@@ -1,46 +1,46 @@
 plugins {
-    id 'nu.studer.plugindev' version '1.0.7'
+    id 'com.gradle.plugin-publish' version '0.15.0'
     id 'net.researchgate.release' version '2.6.0'
+    id 'maven-publish'
 }
 
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'groovy'
+apply plugin: 'com.gradle.plugin-publish'
 
 group = 'com.ullink.gradle'
 description 'gradle-nunit-plugin is a Gradle plugin that enables NUnit testing'
 
 dependencies {
-    compile 'de.undercouch:gradle-download-task:3.4.3'
-    compile 'org.codehaus.gpars:gpars:1.2.1'
-    testCompile 'xmlunit:xmlunit:1.6'
-    testCompile 'junit:junit:4.11'
-    testImplementation('org.spockframework:spock-core:1.1-groovy-2.4') {
-        exclude module: 'groovy-all'
+    implementation 'de.undercouch:gradle-download-task:3.4.3'
+    implementation 'org.codehaus.gpars:gpars:1.2.1'
+    testImplementation 'xmlunit:xmlunit:1.6'
+    testImplementation 'org.spockframework:spock-core:2.0-groovy-2.5'
+}
+
+pluginBundle {
+    website = 'https://github.com/Itiviti/gradle-nunit-plugin'
+    vcsUrl = 'https://github.com/Itiviti/gradle-nunit-plugin'
+    tags = ['nunit', 'c#', '.net']
+
+    mavenCoordinates {
+        groupId = 'com.ullink.gradle'
     }
 }
 
-bintray {
-    // to remove when upgraded plugindev to 1.0.4
-    user project.properties.bintrayUser
-    key project.properties.bintrayApiKey
-    pkg.repo = 'gradle-plugins'
-    pkg.version.gpg.sign = true
-    pkg.userOrg = 'ullink'
+gradlePlugin {
+    plugins {
+        nunitPlugin {
+            id = 'com.ullink.nunit'
+            description = project.description
+            displayName = 'Gradle NUnit Plugin'
+            implementationClass = 'com.ullink.gradle.nunit.NUnitPlugin'
+        }
+    }
 }
 
-plugindev {
-    pluginId 'com.ullink.nunit'
-    pluginName 'com.ullink.gradle:gradle-nunit-plugin'
-    pluginImplementationClass 'com.ullink.gradle.nunit.NUnitPlugin'
-    pluginDescription project.description
-    pluginLicenses 'Apache-2.0'
-    pluginTags 'gradle', 'plugin', 'nunit', 'c#', '.net', 'test'
-    authorId 'muryoh'
-    authorName 'Remy Masson'
-    authorEmail 'muryoh@gmail.com'
-    projectUrl "https://github.com/Ullink/${project.name}"
-    projectInceptionYear '2015'
-    done()
+test {
+    useJUnitPlatform()
 }
 
-project.tasks.afterReleaseBuild.dependsOn project.tasks.bintrayUpload
+afterReleaseBuild.dependsOn project.tasks.publishPlugins

@@ -3,39 +3,88 @@ package com.ullink.gradle.nunit
 import org.gradle.api.internal.ConventionTask
 import groovyx.gpars.GParsPool
 import org.gradle.api.GradleException
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
 import static org.apache.tools.ant.taskdefs.condition.Os.*
 
 class NUnit extends ConventionTask {
+    static final String DEFAULT_REPORT_FILE_NAME = 'TestResult.xml'
+
+    @Optional
+    @Input
     def nunitHome
+    @Optional
+    @Input
     def nunitVersion
+    @Optional
+    @Input
     def nunitDownloadUrl
+    @Optional
+    @Input
     List testAssemblies
 
+    @Optional
+    @Input
     def framework
+    @Optional
+    @Input
     def verbosity
+    @Optional
+    @Input
     def config
+    @Optional
+    @Input
     def testCaseTimeout
+    @Optional
+    @Input
     def labels
 
+    @OutputDirectory
     def reportFolder
+
+    @Input
     boolean useX86 = false
+
+    @Input
     boolean shadowCopy = false
-    String reportFileName = 'TestResult.xml'
-    static final String DEFAULT_REPORT_FILE_NAME = 'TestResult.xml'
+
+    @Input
+    String reportFileName = DEFAULT_REPORT_FILE_NAME
+
+    @Optional
+    @Input
     def logFile
+
+    @Input
     boolean ignoreFailures = false
+
+    @Input
     boolean parallelForks = true
 
+    @Optional
+    @Input
     def test
+
+    @Optional
+    @Input
     def where
+
+    @Optional
+    @Input
     def testList
+
+    @Internal
     def nunitCommandModifier = { nunitBin, args ->
         [nunitBin, *args]
     }
 
+    @Input
     Map<String, Object> env = [:]
 
     NUnit() {
@@ -49,6 +98,7 @@ class NUnit extends ConventionTask {
         }
     }
 
+    @Internal
     boolean getIsV3() {
         getIsV3(getNunitVersion())
     }
@@ -57,26 +107,37 @@ class NUnit extends ConventionTask {
         version.startsWith('3.')
     }
 
+    @Internal
     boolean getIsV35OrAbove() {
         def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
         major == 3 && minor >= 5
     }
 
+    @Internal
     boolean getIsV39OrAbove() {
         def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
         major == 3 && minor >= 9
     }
 
+    @Internal
     boolean getIsV310OrAbove() {
         def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
         major == 3 && minor >= 10
     }
 
+    @Internal
+    boolean getIsV313OrAbove() {
+        def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
+        major == 3 && minor >= 13
+    }
+
+    @Internal
     boolean getIsV316OrAbove() {
         def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
         major == 3 && minor >= 16
     }
 
+    @Internal
     String getGitHubRepoName() {
         if (isV35OrAbove) {
             return 'nunit-console'
@@ -128,7 +189,7 @@ class NUnit extends ConventionTask {
 
     void ensureNunitInstalled() {
         if (getNunitHome()) {
-            return;
+            return
         }
 
         def nunitCacheDir = getCacheDir()
@@ -141,14 +202,17 @@ class NUnit extends ConventionTask {
         }
     }
 
+    @Internal
     File getCachedNunitDir() {
         new File(getCacheDir(), getNunitName())
     }
 
+    @Internal
     File getCacheDir() {
         new File(new File(project.gradle.gradleUserHomeDir, 'caches'), 'nunit')
     }
 
+    @Internal
     String getNunitName() {
         if (isV35OrAbove) {
             return "NUnit.Console-${getNunitVersion()}"
@@ -156,9 +220,10 @@ class NUnit extends ConventionTask {
         "NUnit-${getNunitVersion()}"
     }
 
+    @Internal
     String getFixedDownloadVersion() {
         String version = getNunitVersion()
-        if (isV35OrAbove) {
+        if (isV35OrAbove && !isV313OrAbove) {
             if(version.endsWith('.0')) {
                 version = version.take(version.length() - 2)
             }
@@ -190,10 +255,12 @@ class NUnit extends ConventionTask {
         }
     }
 
+    @OutputDirectory
     File getOutputFolder() {
         new File(project.buildDir, 'nunit')
     }
 
+    @OutputDirectory
     File getReportFolderImpl() {
         project.file(getReportFolder())
     }
@@ -209,6 +276,7 @@ class NUnit extends ConventionTask {
         }
     }
 
+    @Internal
     File getTestLogFile() {
         project.file(getLogFile())
     }
@@ -253,6 +321,7 @@ class NUnit extends ConventionTask {
     }
 
     // Used by gradle-opencover-plugin
+    @Internal
     def getCommandArgs() {
         def testRuns = getTestInputsAsString(getRunActionInput())
         buildCommandArgs (testRuns, getTestReportPath())

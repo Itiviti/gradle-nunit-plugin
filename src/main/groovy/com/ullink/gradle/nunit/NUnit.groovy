@@ -132,6 +132,12 @@ class NUnit extends ConventionTask {
     }
 
     @Internal
+    boolean getIsV316OrAbove() {
+        def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
+        major == 3 && minor >= 16
+    }
+
+    @Internal
     String getGitHubRepoName() {
         if (isV35OrAbove) {
             return 'nunit-console'
@@ -171,7 +177,9 @@ class NUnit extends ConventionTask {
         }
 
         String folderName = "bin/"
-        if (isV310OrAbove) {
+        if (isV316OrAbove){
+            folderName = "bin/"
+        } else if (isV310OrAbove) {
             folderName = "bin/net35/"
         } else if (isV35OrAbove) {
             folderName = ""

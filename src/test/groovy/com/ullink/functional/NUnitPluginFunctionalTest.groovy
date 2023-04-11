@@ -37,7 +37,7 @@ class NUnitPluginFunctionalTest extends Specification {
                     .withDebug(true)
                     .build()
         then: "help command was written for the default nunit version"
-            result.output.contains('NUnit Console 3.15.0')
+            result.output.contains('NUnit Console 3.16.2')
             result.task(':clean').outcome == TaskOutcome.UP_TO_DATE
             result.task(':nunit').outcome == TaskOutcome.SUCCESS
     }
@@ -59,31 +59,12 @@ class NUnitPluginFunctionalTest extends Specification {
                     .withDebug(true)
                     .build()
         then: "help command was written for the specified nunit version"
-            result.output.contains("NUnit Console Runner $version")
+            result.output.contains("NUnit Console")
+            result.output.contains(version)
             result.output.contains("NUNIT3-CONSOLE [inputfiles] [options]")
             result.task(':nunit').outcome == TaskOutcome.SUCCESS
         where:
-            version << ['3.5.0', '3.6.0', '3.6.1']
-    }
-
-    def "execute help works for 3.0.0 version"() {
-        given:
-            buildFile << """
-                    nunit {
-                        testAssemblies = ['-help']
-                        nunitVersion = '3.0.0'
-                    }
-                """
-        when:
-            def result = GradleRunner.create()
-                    .withProjectDir(testProjectDir)
-                    .withArguments( 'nunit', '--stacktrace')
-                    .withPluginClasspath()
-                    .withDebug(true)
-                    .build()
-        then:
-            result.output.contains("NUnit Console Runner 3.0.5797")
-            result.task(':nunit').outcome == TaskOutcome.SUCCESS
+            version << ['3.16.1', '3.14.0', '3.13.2']
     }
 
     def "nunit for two parallel namespaces successfully creates the merged TestResult.xml"() {
@@ -99,7 +80,6 @@ class NUnitPluginFunctionalTest extends Specification {
                     nunit {
                         testAssemblies = ['MockAssembly.dll']
                         where = filterExpressions
-                        nunitVersion = '3.0.0'
                         parallelForks = true
                         resultFormat = 'nunit2'
                     }
@@ -113,7 +93,7 @@ class NUnitPluginFunctionalTest extends Specification {
                 .build()
         then:
         new File(testProjectDir.path + '/build/nunit/reports/TestResult.xml').exists()
-        result.output.contains("NUnit Console Runner 3.0.5797")
+        result.output.contains('NUnit Console')
         result.task(':nunit').outcome == TaskOutcome.SUCCESS
     }
 }

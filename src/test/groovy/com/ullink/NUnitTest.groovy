@@ -15,6 +15,31 @@ class NUnitTest extends Specification {
             nunit.getTestInputAsList(['A']) == ['A']
     }
 
+    def 'get exe path based on version'(String version, String binFilePath) {
+        given:
+            def nunit = getNUnitTask()
+        when:
+            nunit.nunitVersion = version
+            nunit.nunitHome = 'home'
+        then:
+            nunit.nunitBinFile("something.exe") == new File(nunit.project.projectDir, "home/" + binFilePath)
+        where:
+            version | binFilePath
+            '3.2.0' | "bin\\something.exe"
+            '3.5.0' | "something.exe"
+            '3.5.1' | "something.exe"
+            '3.6.1' | "something.exe"
+            '3.10.0'| "bin\\net35\\something.exe"
+            '3.15.2'| "bin\\net35\\something.exe"
+            '3.16.0'| "bin\\something.exe"
+            '3.16.3'| "bin\\something.exe"
+            //next ones are fake version to pass/fail when logic for new versions is added
+            '3.17.0'| "bin\\something.exe"
+            '3.18.0'| "bin\\something.exe"
+            '3.19.0'| "bin\\something.exe"
+            '4.5.9' | "bin\\something.exe"
+    }
+
     def "test version generates correct fixed download version"(String version, String result) {
         given:
             def nunit = getNUnitTask()

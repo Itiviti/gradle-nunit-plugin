@@ -1,10 +1,9 @@
 package com.ullink.gradle.nunit
 
+import de.undercouch.gradle.tasks.download.DownloadExtension
 import org.gradle.api.internal.ConventionTask
-import groovyx.gpars.GParsPool
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
@@ -245,7 +244,7 @@ class NUnit extends ConventionTask {
         // special handling for nunit3 flat zip file
         def zipOutputDir = isV3 ? nunitCacheDirForVersion : getCacheDir()
         project.logger.info "Downloading & Unpacking NUnit ${version} from ${nunitDownloadUrl}"
-        project.download {
+        project.extensions.getByType(DownloadExtension).run {
             src "$nunitDownloadUrl"
             dest downloadedFile
         }
@@ -268,7 +267,7 @@ class NUnit extends ConventionTask {
     @OutputFile
     File getTestReportPath() {
         // for the non-default nunit tasks, ensure we write the report in a separate file
-        if (reportFileName.equals(DEFAULT_REPORT_FILE_NAME)) {
+        if (reportFileName == DEFAULT_REPORT_FILE_NAME) {
             def reportFileNamePrefix = name == 'nunit' ? '' : name
             new File(getReportFolderImpl(), reportFileNamePrefix + reportFileName)
         } else {
@@ -306,13 +305,12 @@ class NUnit extends ConventionTask {
         intermediateReportsPath.mkdirs()
 
         def runs = getTestInputAsList(input)
-        GParsPool.withPool {
-            runs.eachParallel {
+        runs.parallelStream()
+            .forEach {
                 def fileName = toFileName(it)
                 logger.info("Filename generated for the \'$it\' input was \'$fileName\'")
                 run(it, new File(intermediateReportsPath, fileName + ".xml"))
             }
-        }
 
         def files =  intermediateReportsPath.listFiles().toList()
         def outputFile = getTestReportPath()

@@ -12,8 +12,7 @@ group = 'com.ullink.gradle'
 description 'gradle-nunit-plugin is a Gradle plugin that enables NUnit testing'
 
 dependencies {
-    implementation 'de.undercouch:gradle-download-task:3.4.3'
-    implementation 'org.codehaus.gpars:gpars:1.2.1'
+    implementation 'de.undercouch:gradle-download-task:5.5.0'
     testImplementation 'xmlunit:xmlunit:1.6'
     testImplementation 'org.spockframework:spock-core:2.0-groovy-2.5'
 }

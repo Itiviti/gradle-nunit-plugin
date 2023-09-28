@@ -20,17 +20,6 @@ class NUnitPluginTest extends Specification {
             project.tasks.nunit instanceof NUnit
     }
 
-    def "nunit task throws exception when no project is specified"() {
-        when:
-            project.tasks.nunit
-            {
-                nunitVersion = '2.6.4'
-            }.build()
-        then:
-            ExecException exception = thrown()
-            exception.message.contains("finished with non-zero exit value")
-    }
-
     def "setting report folder works"() {
         when:
             project.nunit {

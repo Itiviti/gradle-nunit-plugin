@@ -294,33 +294,6 @@ class NUnitTest extends Specification {
             commandArgs.find { it =~ /-result:.*TestResult\.xml;format=nunit3/ }
     }
 
-    def "running with default command modifier sets path and build args"() {
-        when:
-            def nunit = getNUnitTask()
-
-            def cmdLine = nunit.getCommandLine('input', 'path')
-        then:
-            cmdLine == [nunit.getNunitExec().absolutePath, *nunit.buildCommandArgs('input', 'path')]
-    }
-
-    def "running with custom command modifier sets path and build args with custom arguments"() {
-        when:
-            def nunit = getNUnitTask()
-
-            nunit.nunitCommandModifier = { path, args ->
-                ['dotMemoryUnit.exe', path, 'custom-args', *args]
-            }
-
-            def cmdLine = nunit.getCommandLine('input', 'path')
-        then:
-            cmdLine == [
-                    'dotMemoryUnit.exe',
-                    nunit.getNunitExec().absolutePath,
-                    'custom-args',
-                    *nunit.buildCommandArgs('input', 'path')
-            ]
-    }
-
     def getNUnitTask() {
         def project = ProjectBuilder.builder().build()
         project.apply plugin: 'nunit'

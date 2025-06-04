@@ -28,16 +28,17 @@ class NUnitTest extends Specification {
             '3.2.0' | "bin\\something.exe"
             '3.5.0' | "something.exe"
             '3.5.1' | "something.exe"
+            '4.5.9' | "bin\\something.exe"
             '3.6.1' | "something.exe"
             '3.10.0'| "bin\\net35\\something.exe"
             '3.15.2'| "bin\\net35\\something.exe"
             '3.16.0'| "bin\\something.exe"
             '3.16.3'| "bin\\something.exe"
             //next ones are fake version to pass/fail when logic for new versions is added
-            '3.17.0'| "bin\\something.exe"
-            '3.18.0'| "bin\\something.exe"
-            '3.19.0'| "bin\\something.exe"
-            '4.5.9' | "bin\\something.exe"
+            '3.17.0'| "bin\\net35\\something.exe"
+            '3.18.0'| "bin\\net462\\something.exe"
+            '3.19.0'| "bin\\net462\\something.exe"
+            '3.20.1'| "bin\\net462\\something.exe"
     }
 
     def "test version generates correct fixed download version"(String version, String result) {
@@ -53,6 +54,10 @@ class NUnitTest extends Specification {
             "3.5.0" | "3.5"
             "3.9.0" | "v3.9"
             "3.11.1" | "v3.11.1"
+            "3.12.0" | "v3.12"
+            "3.13.0" | "3.13"
+            "3.13.1" | "3.13.1"
+            "3.14.0" | "3.14.0"
     }
 
     def "test input is parsed correctly as List in corner cases"() {

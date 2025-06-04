@@ -107,38 +107,50 @@ class NUnit extends ConventionTask {
     }
 
     @Internal
-    boolean getIsV35OrAbove() {
-        def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
+    boolean getIsV3_5OrAbove() {
+        def (major, minor, _) = getNunitVersion().tokenize('.')*.toInteger()
         major == 3 && minor >= 5
     }
 
     @Internal
-    boolean getIsV39OrAbove() {
-        def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
+    boolean getIsV3_9OrAbove() {
+        def (major, minor, _) = getNunitVersion().tokenize('.')*.toInteger()
         major == 3 && minor >= 9
     }
 
     @Internal
-    boolean getIsV310OrAbove() {
-        def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
+    boolean getIsV3_10OrAbove() {
+        def (major, minor, _) = getNunitVersion().tokenize('.')*.toInteger()
         major == 3 && minor >= 10
     }
 
     @Internal
-    boolean getIsV313OrAbove() {
-        def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
-        major == 3 && minor >= 13
+    boolean getIsV3_14OrAbove() {
+        def (major, minor, _) = getNunitVersion().tokenize('.')*.toInteger()
+        major == 3 && minor >= 14
     }
 
     @Internal
-    boolean getIsV316OrAbove() {
-        def (major, minor, patch) = getNunitVersion().tokenize('.')*.toInteger()
-        major == 3 && minor >= 16
+    boolean getIsV3_16() {
+        def (major, minor, _) = getNunitVersion().tokenize('.')*.toInteger()
+        major == 3 && minor == 16
+    }
+
+    @Internal
+    boolean getIsV3_17() {
+        def (major, minor, _) = getNunitVersion().tokenize('.')*.toInteger()
+        major == 3 && minor == 17
+    }
+
+    @Internal
+    boolean getIsV3_18OrAbove() {
+        def (major, minor, _) = getNunitVersion().tokenize('.')*.toInteger()
+        major == 3 && minor >= 18
     }
 
     @Internal
     String getGitHubRepoName() {
-        if (isV35OrAbove) {
+        if (isV3_5OrAbove) {
             return 'nunit-console'
         }
         if (isV3) {
@@ -176,11 +188,15 @@ class NUnit extends ConventionTask {
         }
 
         String folderName = "bin/"
-        if (isV316OrAbove){
-            folderName = "bin/"
-        } else if (isV310OrAbove) {
+        if (isV3_18OrAbove) {
+            folderName = "bin/net462/"
+        } else if (isV3_17){
             folderName = "bin/net35/"
-        } else if (isV35OrAbove) {
+        } else if (isV3_16){
+            folderName = "bin/"
+        } else if (isV3_10OrAbove) {
+            folderName = "bin/net35/"
+        } else if (isV3_5OrAbove) {
             folderName = ""
         }
         new File(project.file(nunitFolder), "${folderName}${file}")
@@ -203,7 +219,7 @@ class NUnit extends ConventionTask {
 
     @Internal
     File getCachedNunitDir() {
-        new File(getCacheDir(), getNunitName())
+        new File(getCacheDir(), getDownloadFileName())
     }
 
     @Internal
@@ -212,8 +228,8 @@ class NUnit extends ConventionTask {
     }
 
     @Internal
-    String getNunitName() {
-        if (isV35OrAbove) {
+    String getDownloadFileName() {
+        if (isV3_5OrAbove) {
             return "NUnit.Console-${getNunitVersion()}"
         }
         "NUnit-${getNunitVersion()}"
@@ -222,12 +238,12 @@ class NUnit extends ConventionTask {
     @Internal
     String getFixedDownloadVersion() {
         String version = getNunitVersion()
-        if (isV35OrAbove && !isV313OrAbove) {
+        if (isV3_5OrAbove && !isV3_14OrAbove) {
             if(version.endsWith('.0')) {
                 version = version.take(version.length() - 2)
             }
 
-            if (isV39OrAbove) {
+            if (isV3_9OrAbove) {
                 version = "v${version}"
             }
         }
@@ -236,7 +252,7 @@ class NUnit extends ConventionTask {
     }
 
     void downloadNUnit() {
-        def NUnitZipFile = getNunitName() + '.zip'
+        def NUnitZipFile = getDownloadFileName() + '.zip'
         def downloadedFile = new File(getTemporaryDir(), NUnitZipFile)
         def nunitCacheDirForVersion = getCachedNunitDir()
         def version = getNunitVersion()

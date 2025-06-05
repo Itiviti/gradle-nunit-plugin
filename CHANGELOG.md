@@ -1,5 +1,9 @@
 # gradle-nunit-plugin changelog
 
+## 2.11
+### Fixed
+* Support for nunit > 3.11
+
 ## 2.9
 ### Changed
 * Default NUnit version to 3.16.2

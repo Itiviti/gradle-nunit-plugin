@@ -65,6 +65,7 @@ class NUnit extends ConventionTask {
 
     @Input
     boolean parallelForks = true
+    boolean adjustTestResults = false
 
     @Optional
     @Input
@@ -396,7 +397,7 @@ class NUnit extends ConventionTask {
             if (env)
                 environment env
             commandLine = commandLineExec
-            ignoreExitValue = ignoreFailures
+            ignoreExitValue = true
         }
 
         int exitValue = mbr.exitValue
@@ -404,12 +405,15 @@ class NUnit extends ConventionTask {
             return
         }
 
-        boolean anyTestFailing = exitValue > 0
-        if (anyTestFailing && ignoreFailures) {
+        if (exitValue > 0) {
+            //failed tests but no error
+            if (!ignoreFailures) {
+                throw new GradleException("There are failing tests (exitCode = ${mbr.exitValue})")
+            }
             return
         }
 
-        throw new GradleException("${getNunitExec()} execution failed (ret=${mbr.exitValue})");
+        throw new GradleException("${getNunitExec()} execution failed (exitCode =${mbr.exitValue})")
     }
 
     def prepareExecute() {

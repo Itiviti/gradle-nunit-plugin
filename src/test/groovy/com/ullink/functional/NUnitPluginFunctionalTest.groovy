@@ -7,12 +7,25 @@ import spock.lang.Specification
 import spock.lang.TempDir
 import spock.lang.Unroll
 
+import java.nio.file.Paths
+
 class NUnitPluginFunctionalTest extends Specification {
     @TempDir
     File testProjectDir
     File buildFile
 
     def setup() {
+        def cachesDir = Paths.get(System.getProperty("user.home"), ".gradle", "caches", "nunit").toFile()
+        if (cachesDir.exists()) {
+            println "Cleaning up caches directory: $cachesDir"
+            cachesDir.eachDir { File dir ->
+                println "Deleting directory: $dir"
+                FileUtils.deleteDirectory(dir)
+            }
+        } else {
+            println "Caches directory does not exist: $cachesDir, no cleanup needed"
+        }
+
         buildFile = testProjectDir.toPath().resolve('build.gradle').toFile()
         buildFile << """
             plugins {
@@ -64,7 +77,7 @@ class NUnitPluginFunctionalTest extends Specification {
             result.output.contains("NUNIT3-CONSOLE [inputfiles] [options]")
             result.task(':nunit').outcome == TaskOutcome.SUCCESS
         where:
-            version << ['3.16.1', '3.14.0', '3.13.2']
+            version << ['3.16.1', '3.14.0', '3.13.2', '3.13.0', '3.12.0', '3.11.1', '3.11.0', '3.10.0', '3.9.0', '3.8.0']
     }
 
     def "nunit for two parallel namespaces successfully creates the merged TestResult.xml"() {

@@ -125,6 +125,12 @@ class NUnit extends ConventionTask {
     }
 
     @Internal
+    boolean getIsV3_13OrAbove() {
+        def (major, minor, _) = getNunitVersion().tokenize('.')*.toInteger()
+        major == 3 && minor >= 13
+    }
+
+    @Internal
     boolean getIsV3_14OrAbove() {
         def (major, minor, _) = getNunitVersion().tokenize('.')*.toInteger()
         major == 3 && minor >= 14
@@ -238,14 +244,11 @@ class NUnit extends ConventionTask {
     @Internal
     String getFixedDownloadVersion() {
         String version = getNunitVersion()
-        if (isV3_5OrAbove && !isV3_14OrAbove) {
-            if(version.endsWith('.0')) {
-                version = version.take(version.length() - 2)
-            }
-
-            if (isV3_9OrAbove) {
-                version = "v${version}"
-            }
+        if (isV3_9OrAbove && !isV3_13OrAbove) {
+            version = "v${version}"
+        }
+        if (isV3_5OrAbove && !isV3_14OrAbove && version.endsWith('.0')) {
+            version = version.take(version.length() - 2)
         }
 
         version

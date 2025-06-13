@@ -1,5 +1,6 @@
 package com.ullink.functional
 
+import com.ullink.DownloadCacheCleaner
 import org.gradle.internal.impldep.org.apache.commons.io.FileUtils
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
@@ -7,24 +8,13 @@ import spock.lang.Specification
 import spock.lang.TempDir
 import spock.lang.Unroll
 
-import java.nio.file.Paths
-
 class NUnitPluginFunctionalTest extends Specification {
     @TempDir
     File testProjectDir
     File buildFile
 
     def setup() {
-        def cachesDir = Paths.get(System.getProperty("user.home"), ".gradle", "caches", "nunit").toFile()
-        if (cachesDir.exists()) {
-            println "Cleaning up caches directory: $cachesDir"
-            cachesDir.eachDir { File dir ->
-                println "Deleting directory: $dir"
-                FileUtils.deleteDirectory(dir)
-            }
-        } else {
-            println "Caches directory does not exist: $cachesDir, no cleanup needed"
-        }
+        DownloadCacheCleaner.clear()
 
         buildFile = testProjectDir.toPath().resolve('build.gradle').toFile()
         buildFile << """
@@ -50,7 +40,7 @@ class NUnitPluginFunctionalTest extends Specification {
                     .withDebug(true)
                     .build()
         then: "help command was written for the default nunit version"
-            result.output.contains('NUnit Console 3.16.2')
+            result.output.contains('NUnit Console Runner 3.20.1')
             result.task(':clean').outcome == TaskOutcome.UP_TO_DATE
             result.task(':nunit').outcome == TaskOutcome.SUCCESS
     }

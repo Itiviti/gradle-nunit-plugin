@@ -1,6 +1,9 @@
 # gradle-nunit-plugin changelog
+## 2.12
+### Changed
+* Default NUnit runner version to 3.20.1
 
-## 2.11
+## 2.11 - 2025.06.12
 ### Fixed
 * Support for nunit > 3.11
 

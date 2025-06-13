@@ -5,6 +5,10 @@ import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Specification
 
 class NUnitTest extends Specification {
+    def setup() {
+        DownloadCacheCleaner.clear()
+    }
+
     def "test input correctly parses lists and comma delimited strings"() {
         given:
             def nunit = getNUnitTask()

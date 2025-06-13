@@ -1,9 +1,7 @@
 package com.ullink
 
 import com.ullink.gradle.nunit.NUnit
-import org.gradle.api.GradleException
 import org.gradle.api.Project
-import org.gradle.process.internal.ExecException
 import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Specification
 
@@ -11,6 +9,7 @@ class NUnitPluginTest extends Specification {
     private Project project
 
     def setup() {
+        DownloadCacheCleaner.clear()
         project = ProjectBuilder.builder().build()
         project.apply plugin: 'nunit'
     }
